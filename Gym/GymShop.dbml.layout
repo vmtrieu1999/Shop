@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 14.125, 8.5" name="GymShop">
+  <DataContextMoniker Name="/GymShopDataContext" />
+  <nestedChildShapes>
+    <classShape Id="398dbf56-b343-4e89-8012-b5706c9a1f4b" absoluteBounds="11.875, 0.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/GymShopDataContext/PACKAGE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6a92fb8b-ea05-4a8c-922d-59711c4b777b" absoluteBounds="11.89, 0.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4f2ad16b-8b26-4ec6-bb2a-503fb712e8ea" absoluteBounds="3.5, 2.25, 2, 1.7708968098958326">
+      <DataClassMoniker Name="/GymShopDataContext/USER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3b960ac9-8e2d-4800-a5ff-ab86692513c3" absoluteBounds="3.515, 2.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c94a598b-52d9-48e7-a8cc-8d0cf67356cf" absoluteBounds="11.875, 2.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/GymShopDataContext/CUSTOMER_SHIP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bc8d5bcb-0943-48ca-8524-363a18837799" absoluteBounds="11.89, 3.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="96dcb28e-cf12-4807-aada-8d0cfe0f6e7b" absoluteBounds="6.375, 2, 2, 2.155499674479167">
+      <DataClassMoniker Name="/GymShopDataContext/ROOM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fa0975ca-0dd0-4837-b9cb-e988c3b114f6" absoluteBounds="6.39, 2.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(12.875 : 2.07859537760417); (12.875 : 2.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/GymShopDataContext/PACKAGE/PACKAGE_CUSTOMER_SHIP" />
+      <nodes>
+        <classShapeMoniker Id="398dbf56-b343-4e89-8012-b5706c9a1f4b" />
+        <classShapeMoniker Id="c94a598b-52d9-48e7-a8cc-8d0cf67356cf" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="0af9ddbe-778e-4c43-a8f7-e4fd9b4f1b95" absoluteBounds="9, 1.875, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/GymShopDataContext/CUSTOMER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="afdd1ddf-e163-47d5-a931-4dbc788fdfc3" absoluteBounds="9.015, 2.335, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(11 : 3.82774983723958); (11.875 : 3.82774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymShopDataContext/CUSTOMER/CUSTOMER_CUSTOMER_SHIP" />
+      <nodes>
+        <classShapeMoniker Id="0af9ddbe-778e-4c43-a8f7-e4fd9b4f1b95" />
+        <classShapeMoniker Id="c94a598b-52d9-48e7-a8cc-8d0cf67356cf" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.375 : 3.07774983723958); (9 : 3.07774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymShopDataContext/ROOM/ROOM_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="96dcb28e-cf12-4807-aada-8d0cfe0f6e7b" />
+        <classShapeMoniker Id="0af9ddbe-778e-4c43-a8f7-e4fd9b4f1b95" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

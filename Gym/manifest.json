@@ -1,0 +1,20 @@
+﻿{
+  "name": "Gym Shop",
+  "short_name": "GymShop",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0077b6",
+  "icons": [
+    {
+      "src": "/wwwroot/images/gym_10484999.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/wwwroot/images/gym_10484999.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

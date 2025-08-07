@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="gymshop" Class="GymShopDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.PACKAGES" Member="PACKAGEs">
+    <Type Name="PACKAGE">
+      <Column Name="PACKAGEID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PACKAGENAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DURATIONDAYS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PRICE" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="PACKAGE_CUSTOMER_SHIP" Member="CUSTOMER_SHIPs" ThisKey="PACKAGEID" OtherKey="PACKAGEID" Type="CUSTOMER_SHIP" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USERS" Member="USERs">
+    <Type Name="USER">
+      <Column Name="USERID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PASSWORDHASH" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ROLE" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ISACTIVE" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CUSTOMER_SHIPS" Member="CUSTOMER_SHIPs">
+    <Type Name="CUSTOMER_SHIP">
+      <Column Name="CUSTOMER_SHIPID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CUSTOMER_CODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="PACKAGEID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="STARTDATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ENDDATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TOTALPRICE" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CREATEDAT" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PACKAGE_CUSTOMER_SHIP" Member="PACKAGE" ThisKey="PACKAGEID" OtherKey="PACKAGEID" Type="PACKAGE" IsForeignKey="true" />
+      <Association Name="CUSTOMER_CUSTOMER_SHIP" Member="CUSTOMER" ThisKey="CUSTOMER_CODE" OtherKey="CUSTOMER_CODE" Type="CUSTOMER" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ROOMS" Member="ROOMs">
+    <Type Name="ROOM">
+      <Column Name="ROOM_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ROOM_CODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ROOM_NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CAPACITY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LOCATION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="NOTE" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="ROOM_CUSTOMER" Member="CUSTOMERs" ThisKey="ROOM_CODE" OtherKey="ROOM_CODE" Type="CUSTOMER" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CUSTOMER" Member="CUSTOMERs">
+    <Type Name="CUSTOMER">
+      <Column Name="CUSTOMER_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ROOM_CODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_CODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_EMAIL" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="CUSTOMER_PHONE" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_CCCD" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_GENDER" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CUSTOMER_ADDRESS" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CUSTOMER_PHOTOURL" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="CUSTOMER_EXPIRYDATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="STATUS" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NOTE" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="CREATE_DATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CREATE_USER" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LAST_UPDATE_USER" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LAST_UPDATE_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="CUSTOMER_CUSTOMER_SHIP" Member="CUSTOMER_SHIPs" ThisKey="CUSTOMER_CODE" OtherKey="CUSTOMER_CODE" Type="CUSTOMER_SHIP" />
+      <Association Name="ROOM_CUSTOMER" Member="ROOM" ThisKey="ROOM_CODE" OtherKey="ROOM_CODE" Type="ROOM" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

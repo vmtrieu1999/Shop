@@ -1,0 +1,204 @@
+﻿.smpl-step {
+    margin-top: 40px;
+}
+
+.smpl-step {
+    border-bottom: solid 1px #e0e0e0;
+    padding: 0 0 10px 0;
+}
+
+    .smpl-step > .smpl-step-step {
+        padding: 0;
+        position: relative;
+        width: 10%;
+        min-width: 120px;
+    }
+
+        .smpl-step > .smpl-step-step .smpl-step-num {
+            font-size: 17px;
+            margin-top: 40px;
+            margin-left: 40px;
+        }
+
+        .smpl-step > .smpl-step-step > .smpl-step-icon {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            display: block;
+            background: #5CB85C;
+            top: 45px;
+            left: 50%;
+            margin-top: -35px;
+            margin-left: -15px;
+            border-radius: 50%;
+        }
+
+        .smpl-step > .smpl-step-step > .progress {
+            position: relative;
+            border-radius: 0px;
+            height: 8px;
+            box-shadow: none;
+            margin-top: 37px;
+        }
+
+            .smpl-step > .smpl-step-step > .progress > .progress-bar {
+                width: 0px;
+                box-shadow: none;
+                background: #428BCA;
+            }
+
+        .smpl-step > .smpl-step-step.success > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step.completed > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step.processing > .progress > .progress-bar {
+            width: 50%;
+        }
+
+        .smpl-step > .smpl-step-step.rejected > .progress > .progress-bar {
+            width: 0%;
+        }
+
+        .smpl-step > .smpl-step-step.cancel > .progress > .progress-bar {
+            width: 0%;
+        }
+
+        .smpl-step > .smpl-step-step.success:last-child > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step.completed:last-child > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step.processing:last-child > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step.success > .smpl-step-icon {
+            background-color: #39ceae;
+        }
+
+        .smpl-step > .smpl-step-step.completed > .smpl-step-icon {
+            background-color: #889bbd;
+        }
+
+        .smpl-step > .smpl-step-step.processing > .smpl-step-icon {
+            background-color: #51a6f4;
+        }
+
+        .smpl-step > .smpl-step-step.rejected > .smpl-step-icon {
+            background-color: lightcoral;
+        }
+
+        .smpl-step > .smpl-step-step.cancel > .smpl-step-icon {
+            background-color: orange;
+        }
+
+        .smpl-step > .smpl-step-step.disabled > .smpl-step-icon {
+            background-color: #f0f6ff;
+        }
+
+        .smpl-step > .smpl-step-step:first-child > .progress {
+            left: 50%;
+            width: 50%;
+        }
+
+        .smpl-step > .smpl-step-step.processing:first-child > .progress > .progress-bar {
+            width: 100%;
+        }
+
+        .smpl-step > .smpl-step-step:last-child > .progress {
+            width: 50%;
+        }
+
+.timeline,
+.timeline .timeline-list {
+    position: relative;
+    border-color: #e5ebf8;
+}
+
+    .timeline .timeline-list {
+        padding-bottom: 1px;
+    }
+
+        .timeline .timeline-list:before {
+            display: table;
+            content: " ";
+        }
+
+        .timeline .timeline-list:after {
+            display: table;
+            position: absolute;
+            top: 18px;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            margin-left: -6px;
+            content: "";
+            border-width: 1px;
+            border-style: solid;
+            border-color: inherit;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px #e5ebf8 inset;
+        }
+
+.timeline-secondary:after {
+    box-shadow: 0 0 0 3px #788db4 inset !important;
+}
+
+.timeline .timeline-list .timeline-info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-size: 0.875rem;
+}
+
+.timeline-border {
+    border-left: 1px solid #e5ebf8;
+}
+
+.timeline-list.timeline-border {
+    margin-left: -1px;
+}
+
+.timeline-secondary {
+    border-color: #788db4 !important;
+}
+
+.timeline-success {
+    border-color: #2fbfa0 !important;
+}
+
+    .timeline-success:after {
+        box-shadow: 0 0 0 3px #2fbfa0 inset !important;
+    }
+
+.timeline-warning {
+    border-color: #FFCE67 !important;
+}
+
+    .timeline-warning:after {
+        box-shadow: 0 0 0 3px #FFCE67 inset !important;
+    }
+
+.timeline-info {
+    border-color: #399AF2 !important;
+}
+
+    .timeline-info:after {
+        box-shadow: 0 0 0 3px #399AF2 inset !important;
+    }
+
+.timeline-danger {
+    border-color: #ff5c75 !important;
+}
+
+    .timeline-danger:after {
+        box-shadow: 0 0 0 3px #ff5c75 inset !important;
+    }
