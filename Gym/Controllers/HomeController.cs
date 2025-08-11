@@ -88,5 +88,33 @@ namespace Gym.Controllers
             }
             return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
         }
+
+        public ContentResult fnGetRoom(string strInput)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var model = JObject.Parse(strInput);
+                var room = new RoomModel();
+                var list = room.fnGetRoom(model);
+                var jsonResult = new
+                {
+                    list
+                };
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+
+        public ContentResult fnPostRoom(string strInput)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var model = JObject.Parse(strInput);
+                var room = new RoomModel();
+                var jsonResult = room.fnPostRoom(model);
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
     }
 }
