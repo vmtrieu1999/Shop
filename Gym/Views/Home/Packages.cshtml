@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Khách hàng";
+    ViewBag.Title = "Gói đăng ký";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
@@ -115,10 +115,10 @@
                             </a>
                         </div>
                     </div>
-                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary m-2" style="border-radius: 20px;">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
                         Khách hàng
                     </a>
-                    <a href="@Url.Action("Packages", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
+                    <a href="@Url.Action("Packages", "Home")" class="btn btn-primary m-2" style="border-radius: 20px;">
                         Gói đăng ký
                     </a>
                     <a href="@Url.Action("About", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
@@ -133,24 +133,11 @@
                 <div class="col-xl-2 m-10 p-10 mb-3">
                     <div class="p-3 shadow rounded-border" style="background-color: whitesmoke; border-radius: 20px;">
                         <div class="form-group">
-                            <label>Mã phòng :</label>
-                            <select id="cbbRoomSearch" class="form-control" onchange="">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Mã :</label>
-                            <input type="text" class="form-control" id="txtCode">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên :</label>
+                            <label>Tên gói:</label>
                             <input type="text" class="form-control" id="txtName">
                         </div>
-                        <div class="form-group">
-                            <label>CCCD :</label>
-                            <input type="text" class="form-control" id="txtCCCD">
-                        </div>
                         <div class="text-right">
-                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetCustomer()"><i class="fas fa-search"></i>Tìm kiếm</button>
+                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetPackages()"><i class="fas fa-search"></i>Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
@@ -159,7 +146,7 @@
                         <div class="row no-gutters">
                             <div class="col-auto">
                                 <button type="button"
-                                        id="add-customer-btn"
+                                        id="add-packages-btn"
                                         class="btn btn-primary"
                                         style="margin-bottom: 8px; border-radius: 20px;">
                                     <i class="fas fa-plus"></i> Thêm
@@ -167,23 +154,13 @@
                             </div>
                         </div>
                         <div id="LayoutDesktop">
-                            <table id="customer-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                            <table id="packages-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Mã phòng</th>
-                                        <th>Mã</th>
-                                        <th>Tên</th>
-                                        <th>Giới tính</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th>CCCD</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Ngày hết hạn</th>
-                                        <th>Người tạo</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ghi chú</th>
+                                        <th>Tên gói</th>
+                                        <th>Số ngày</th>
+                                        <th>Gía</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -191,7 +168,7 @@
                         </div>
                         <div id="LayoutMobile">
                             <input type="text" id="txtSearchInvoice" class="form-control mb-3" placeholder="Tìm kiếm mã, tên, đvt, giá, mô tả..." />
-                            <div id="cardInvoice"></div>
+                            <div id="cardPackages"></div>
                         </div>
                     </div>
                 </div>
@@ -200,67 +177,32 @@
         </div>
     </div>
 
-    <div class="modal fade" id="customer-modal" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="packages-modal" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 20px">
                 <div class="modal-header">
-                    <h4 class="modal-title">Khách hàng</h4>
+                    <h4 class="modal-title">Gói đăng ký</h4>
                     <button type="button" class="close" data-dismiss="modal" id="close-modal">&times;</button>
                 </div>
-                <form id="customer-form">
+                <form id="packages-form">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Mã</label>
+                            <label>Tên gói</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-code" class="form-control" readonly />
-                        </div>
-                        <div class="form-group">
-                            <label>Tên</label>
-                            <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-name" class="form-control" />
+                            <input type="text" id="packages-name" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Số ngày</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-email" class="form-control" />
+                            <input type="number" id="packages-day" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>SĐT</label>
+                            <label>Gía</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-phone" class="form-control" />
+                            <input type="number" id="packages-price" class="form-control" />
                             <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>CCCD</label>
-                            <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-cccd" class="form-control" />
-                            <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>Giới tính</label>
-                            <label style="color: red;">(*)</label>
-                            <select id="customer-gender" class="form-control">
-                                <option value="">-- Chọn giới tính --</option>
-                                <option value="1">Nam</option>
-                                <option value="0">Nữ</option>
-                            </select>
-                            <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>Địa chỉ</label>
-                            <input type="text" id="customer-address" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Phòng</label>
-                            <select id="cbbRoom" class="form-control" onchange="">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Ghi chú</label>
-                            <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-note" class="form-control" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -276,53 +218,51 @@
 </body>
 </html>
 <script>
-    let _list_customer = [];
-    let _customer_index = -1;
+    let _list_packages = [];
+    let _packages_index = -1;
+    var _packages_action = "";
 
 	$(document).ready(function () {
-        fnSetupTHTable('customer-table');
-        fnGetCustomer();
+        fnSetupTHTable('packages-table');
+        fnGetPackages();
 
         document.getElementById("overlay").style.display = "none";
-        $("#customer-modal").on("show.bs.modal", function (e) {
-            $("#item-code").removeClass("is-invalid");
-            $("#item-name").removeClass("is-invalid");
+        $("#packages-modal").on("show.bs.modal", function (e) {
+            $("#packages-name").removeClass("is-invalid");
+            $("#packages-day").removeClass("is-invalid");
+            $("#packages-price").removeClass("is-invalid");
 		});
 
-        $("#add-customer-btn").on("click", function () {
-			fnOpenAddcustomerModal();
+        $("#add-packages-btn").on("click", function () {
+			fnOpenAddPackagesModal();
 		});
 
         $("#close-modal").on("click", function () {
-            $("#customer-modal").modal("hide");
+            $("#packages-modal").modal("hide");
         });
 
-        $("#customer-form").on("submit", function (e) {
+        $("#packages-form").on("submit", function (e) {
 			e.preventDefault();
-			fnValidateToPostCustomer();
+            fnValidateToPostPackages();
         });
 
         $('#txtSearchInvoice').on('keyup', function () {
             const searchValue = $(this).val();
-            fnUpdateItemCard(searchValue);
+            fnUpdatePackagesCard(searchValue);
         });
 	});
 
-    function fnGetCustomer() {
-        const customer = {
-            ROOM_CODE: $("#cbbRoomSearch").val(),
-            CUSTOMER_CODE: $("#txtCode").val(),
-            CUSTOMER_NAME: $("#txtName").val(),
-            CUSTOMER_CCCD: $("#txtCCCD").val(),
+    function fnGetPackages() {
+        const packages = {
+            PACKAGENAME: $("#txtName").val(),
 		}
 		fnPostData(
-			'@Url.Action("fnGetCustomer", "Home")',
-            JSON.stringify(customer),
+			'@Url.Action("fnGetPackages", "Home")',
+            JSON.stringify(packages),
 			function (msg) {
-                _list_customer = msg.list;
-                console.log(_list_customer);
-                fnUpdateCustomerDataTable();
-                //fnUpdateItemCard();
+                _list_packages = msg.list;
+                fnUpdatePackagesDataTable();
+                fnUpdatePackagesCard();
 			}
 		);
 	}
@@ -338,9 +278,9 @@
         textinput.value = fileinput.value;
 	}
 
-    function fnUpdateCustomerDataTable() {
-		if (!$.fn.dataTable.isDataTable('#customer-table')) {
-            const table = $('#customer-table').DataTable({
+    function fnUpdatePackagesDataTable() {
+		if (!$.fn.dataTable.isDataTable('#packages-table')) {
+            const table = $('#packages-table').DataTable({
 				"dom": 'lrtip', "paging": false,
 				"order": [],
 				"scrollX": true,
@@ -368,37 +308,11 @@
 							return "";
 						}
                     },
-                    { data: 'ROOM_CODE' },
-                    { data: 'CUSTOMER_CODE' },
-                    { data: 'CUSTOMER_NAME' },
-                    { data: 'CUSTOMER_GENDER' },
-                    { data: 'CUSTOMER_EMAIL' },
-                    { data: 'CUSTOMER_PHONE' },
-                    { data: 'CUSTOMER_CCCD' },
-                    { data: 'CUSTOMER_ADDRESS' },
-                    {
-                        data: 'CUSTOMER_EXPIRYDATE',
-                        render: function (data, type, row) {
-                            return (new Date(data)).toLocaleDateString("en-GB");
-                        }
-                    },
-                    { data: 'CREATE_USER' },
-                    {
-                        data: 'CREATE_DATE',
-                        render: function (data, type, row) {
-                            return (new Date(data)).toLocaleDateString("en-GB");
-                        }
-                    },
-                    {
-                        data: "STATUS",
-                        render: function (data, type, row) {
-                            if (data === "OBSOLETE") return "Hết hạn";
-                            if (data === "ACTIVE") return "Đang hoạt động";
-                            if (data === "PROCESSING") return "Chưa hoạt động";
-                            return data ?? "";
-                        }
-                    },
-                    { data: 'NOTE' },
+                    
+                    { data: 'PACKAGENAME' },
+                    { data: 'DURATIONDAYS' },
+                    { data: 'PRICE' },
+                    
 					{
 						data: null,
 						render: function (data, type, row) {
@@ -406,13 +320,13 @@
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-success"
-								onclick="fnOpenEditCustomerModal(${_list_customer.indexOf(row)})">
+								onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(row)})">
 								<i class="fas fa-edit"></i> Sửa
 							</a>`;
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-danger"
-								onclick="fnRemoveCustomerClick(${_list_customer.indexOf(row)})">
+								onclick="fnRemovePackagesClick(${_list_packages.indexOf(row)})">
 								<i class="fas fa-trash"></i> xóa
 							</a>`;
 							return htmlActionContent;
@@ -421,21 +335,13 @@
 				],
 				'columnDefs': [
 					{
-						targets: 14,
+						targets: 3,
 						createdCell: function (td, cellData, rowData, row, col) {
 							$(td).css('min-width', '130px');
 							$(td).css('text-align', 'right');
 						},
 					},
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (data.STATUS == "OBSOLETE") {
-                        $(row).css("background-image", "linear-gradient(to right, #fff, #9e9e9e)");
-                    }
-                    else if (data.STATUS == "ACTIVE") {
-                        $(row).css("background-image", "linear-gradient(to right, #fff, #d0f0d0)");
-                    }
-                }
 			});
 			table.on('order.dt search.dt', function () {
 				table.column(0, {
@@ -445,23 +351,22 @@
 				});
 			}).draw();
 		}
-        $('#customer-table').dataTable().fnClearTable();
-        if (_list_customer.length > 0) {
-            $('#customer-table').dataTable().fnAddData(_list_customer);
+        $('#packages-table').dataTable().fnClearTable();
+        if (_list_packages.length > 0) {
+            $('#packages-table').dataTable().fnAddData(_list_packages);
 		}
-        fnUpdateDatalistTable('customer-table');
+        fnUpdateDatalistTable('packages-table');
     }
 
-    function fnUpdateItemCard(filter = '') {
+    function fnUpdatePackagesCard(filter = '') {
         var html = ``;
         let keyword = filter.toLowerCase();
 
-        _list_customer
+        _list_packages
             .filter(item =>
-                item.ITEM_CODE.toLowerCase().includes(keyword) ||
-                item.ITEM_NAME.toLowerCase().includes(keyword) ||
-                item.UNIT.toLowerCase().includes(keyword) ||
-                item.DESCRIPTION.toLowerCase().includes(keyword)
+                item.PACKAGENAME.toLowerCase().includes(keyword) ||
+                item.DURATIONDAYS.toLowerCase().includes(keyword) ||
+                item.PRICE.toLowerCase().includes(keyword) 
             ).forEach(function (item, index) {
                 html += ``;
                 html += `<div class="card col-12 mb-3 shadow" style="border-radius: 20px; background-color: whitesmoke ">`;
@@ -471,41 +376,31 @@
                 html += `<div style="width:100%">`;
                 html += `<div class="row">`;
                 html += `<div class="col-xr-4 mr-3">`;
-                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.ITEM_CODE}</h3>`;
+                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.PACKAGENAME}</h3>`;
                 html += `</div>`;
                 html += `</div>`;
                 html += `<div class="row mt-2">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.ITEM_NAME}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.PACKAGENAME}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Tax: ${item.UNIT}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Tax: ${item.DURATIONDAYS}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Total: ${item.PRICE.toLocaleString('vi-VN')}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Note: ${item.DESCRIPTION}</h4>`;
                 html += `</div>`;
-                html += `<div class="row">`;
-                html += `</div>`;
-                //html += `<div class="row mt-2 d-flex flex-row-reverse">`;
-                //html += ` <a href="javascript:void(0);"
-                //    class="badge badge-pill bg-danger mr-2"
-                //    onclick="fnRemoveSupplierClick(${_list_supplier.indexOf(item)})">
-                //    <i class="fas fa-trash"></i> Xóa
-                //</a>`;
-                //html += `</div>`;
                 html += `<div class="d-flex mt-2 gap-2">`;
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-warning text-dark flex-fill text-center py-2"
-                    onclick="fnOpenEditSupplierModal(${_list_item.indexOf(item)})">
+                    onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(item)})">
                     <i class="fas fa-edit"></i> Sửa
                 </a>`;
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-danger text-white flex-fill text-center py-2"
-                    onclick="fnRemoveSupplierClick(${_list_item.indexOf(item)})">
+                    onclick="fnRemovePackagesClick(${_list_packages.indexOf(item)})">
                     <i class="fas fa-trash"></i> Xóa
                 </a>`;
 
@@ -517,82 +412,87 @@
                 html += `</div>`;
                 html += `</div>`;
             });
-        $('#cardInvoice').empty();
-        $('#cardInvoice').html(html);
+        $('#cardPackages').empty();
+        $('#cardPackages').html(html);
     }
 
-    function fnOpenAddcustomerModal() {
-        $("#item-code").val("");
-        $("#item-code").focus();
-        $("#item-name").val("");
-        $("#item-unit").val("");
-        $("#item-price").val("");
-
-        $("#item-description").val("");
-        $("#customer-modal").modal("show");
+    function fnOpenAddPackagesModal() {
+        _packages_index = -1;
+        _packages_action = "INSERT";
+        $("#packages-name").val("");
+        $("#packages-name").focus();
+        $("#packages-day").val("")
+        $("#packages-price").val("");
+        $("#packages-modal").modal("show");
 	}
 
-    function fnOpenEditCustomerModal(index) {
-		_customer_index = index;
-        const selectedItem = _list_customer[index];
-        $("#item-code").val(selectedItem.ITEM_CODE);
-        $("#item-code").focus();
-        $("#item-name").val(selectedItem.ITEM_NAME);
-        $("#item-unit").val(selectedItem.UNIT);
-        $("#item-price").val(Number(selectedItem.PRICE).toLocaleString("vi-VN"));
-        $("#item-description").val(selectedItem.DESCRIPTION);
-        $("#customer-modal").modal("show");
+    function fnOpenEditPackagesModal(index) {
+        _packages_index = index;
+        _packages_action = "UPDATE";
+        const selectedPackages = _list_packages[index];
+        _packages_index = selectedPackages.PACKAGEID;
+        $("#packages-name").val(selectedPackages.PACKAGENAME);
+        $("#packages-name").focus();
+        $("#packages-day").val(selectedPackages.DURATIONDAYS);
+        $("#packages-price").val(selectedPackages.PRICE);
+        $("#packages-modal").modal("show");
 	}
 
-    function fnRemoveCustomerClick(index) {
+    function fnRemovePackagesClick(index) {
 		if (index > -1) {
-            const selectedItem = _list_customer[index];
-            fnShowConfirm("DELETE " + selectedItem.ITEM_CODE).then(result => {
+            const selectedPackages = _list_packages[index];
+            fnShowConfirm("DELETE " + selectedPackages.PACKAGEID).then(result => {
 				if (result.value) {
-                    fnRemoveItem(selectedItem);
+                    fnRemovePackages(selectedPackages);
 				}
 			});
 		}
 	}
 
-    function fnValidateToPostCustomer() {
-        $("#item-code").removeClass("is-invalid");
-        $("#item-name").removeClass("is-invalid");
-        $("#item-unit").removeClass("is-invalid");
-        $("#item-price").removeClass("is-invalid");
-        const customerData = {
-            item_CODE: $("#item-code").val(),
-            item_NAME: $("#item-name").val(),
-            UNIT: $("#item-unit").val(),
-            PRICE: getPriceValue(),
-            DESCRIPTION: $("#item-description").val(),
-		};
-        if (customerrData.item_NAME == "") {
-            $("#item-name").addClass("is-invalid");
-		}
+    function fnValidateToPostPackages() {
 
-        else if (_list_customer.some(s => s.ITEM_CODE == customerData.ITEM_CODE)
-            && (_list_customer[_customer_index].ITEM_CODE != customerData.ITEM_CODE)) {
-			fnShowError("ERR")
-		}
+        $("#packages-name").removeClass("is-invalid");
+        $("#packages-day").removeClass("is-invalid");
+        $("#packages-price").removeClass("is-invalid");
+        const packagesData = {
+            PACKAGEID: _packages_index,
+            PACKAGENAME: $("#packages-name").val(),
+            DURATIONDAYS: $("#packages-day").val(),
+            PRICE: $("#packages-price").val(),
+            ACTION: _packages_action,
+        };
+        if (packagesData.PACKAGENAME == "") {
+            $("#packages-name").addClass("is-invalid");
+        }
+        else if (packagesData.DURATIONDAYS <= 0) {
+            $("#packages-day").addClass("is-invalid");
+        }
+        else if (packagesData.PRICE <= 0) {
+            $("#packages-price").addClass("is-invalid");
+        }
+        else if (_list_packages.some(s =>
+            s.PACKAGENAME == packagesData.PACKAGENAME &&
+            s.DURATIONDAYS == packagesData.DURATIONDAYS) && _packages_index == -1) {
+            fnShowError("ERR");
+        }
 		else {
-            fnShowConfirm("Lưu " + customerData.item_CODE).then(result => {
+            fnShowConfirm("Lưu " + packagesData.PACKAGENAME).then(result => {
 				if (result.value) {
-                    fnPostCustomer(customerData);
+                    fnPostPackages(packagesData);
 				}
 			})
 		}
 	}
 
-    function fnPostCustomer(customer) {
+    function fnPostPackages(customer) {
 		fnPostData(
-			'@Url.Action("fnPostCustomer", "Home")',
+			'@Url.Action("fnPostPackages", "Home")',
             JSON.stringify(customer),
 			function (msg) {
 				if (msg.ErrCode == "1") {
-                    $("#customer-modal").modal("hide");
+                    $("#packages-modal").modal("hide");
 					fnShowSuccess();
-                    fnGetCustomer();
+                    fnGetPackages();
 				}
 				else {
 					fnShowError(msg.ErrMsg);
@@ -601,15 +501,15 @@
 		);
     }
 
-    function fnRemoveItem(customer) {
+    function fnRemovePackages(packages) {
 		fnPostData(
-			'@Url.Action("fnRemoveItem", "Home")',
-            JSON.stringify(customer),
+			'@Url.Action("fnPostPackages", "Home")',
+            JSON.stringify(packages),
 			function (msg) {
 				if (msg.ErrCode == "1") {
-                    $("#customer-modal").modal("hide");
+                    $("#packages-modal").modal("hide");
 					fnShowSuccess();
-                    fnGetItem();
+                    fnGetPackages();
 				}
 				else {
 					fnShowError(msg.ErrMsg);
@@ -668,51 +568,6 @@
         });
     }
 
-    //const priceInput = document.getElementById("item-price");
-
-    //priceInput.addEventListener("input", function (e) {
-    //    let value = e.target.value.replace(/[^0-9]/g, "");
-    //    if (value === "") {
-    //        e.target.value = "";
-    //        return;
-    //    }
-    //    e.target.value = parseInt(value, 10).toLocaleString("vi-VN");
-    //});
-
-    //function getPriceValue() {
-    //    const raw = priceInput.value;
-    //    return raw.replace(/\./g, "");
-    //}
-
-    function fnGetRoom() {
-        var item = {
-            OPR_ID: $('#cbbOPR').val(),
-			PROCESS_TYPE: "ACC"
-        };
-        fnPostDataWithoutOverlay(
-            '@Url.Action("fnGetRoom", "Home")',
-            JSON.stringify(item),
-            function (msg) {
-                fnUpdateListRoom(msg.list);
-                fnUpdateListRoomSearch(msg.list);
-            }
-        );
-    }
-    function fnUpdateListRoom(list) {
-        var html = '<option value="">All</option>';
-        list.forEach(function (item, index) {
-            html += '<option value="' + item.ROOM_CODE + '">' + item.ROOM_NAME + '</option>';
-        });
-        $('#cbbRoom').empty();
-        $('#cbbRoom').html(html);
-    }
-
-    function fnUpdateListRoomSearch(list) {
-        var html = '<option value="">All</option>';
-        list.forEach(function (item, index) {
-            html += '<option value="' + item.ROOM_CODE + '">' + item.ROOM_NAME + '</option>';
-        });
-        $('#cbbRoomSearch').empty();
-        $('#cbbRoomSearch').html(html);
-    }
+    
+    
 </script>

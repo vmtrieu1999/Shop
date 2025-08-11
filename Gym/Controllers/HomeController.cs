@@ -54,11 +54,39 @@ namespace Gym.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
 
+        public ActionResult Packages()
+        {
             return View();
+        }
+
+        public ContentResult fnGetPackages(string strInput)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var model = JObject.Parse(strInput);
+                var packages = new PackagesModel();
+                var list = packages.fnGetPackages(model);
+                var jsonResult = new
+                {
+                    list
+                };
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+
+        public ContentResult fnPostPackages(string strInput)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var model = JObject.Parse(strInput);
+                var packages = new PackagesModel();
+                var jsonResult = packages.fnPostPackages(model);
+
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
         }
     }
 }
