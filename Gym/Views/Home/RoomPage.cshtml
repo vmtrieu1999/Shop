@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Khách hàng";
+    ViewBag.Title = "Phòng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
@@ -115,13 +115,13 @@
                             </a>
                         </div>
                     </div>
-                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary m-2" style="border-radius: 20px;">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
                         Khách hàng
                     </a>
                     <a href="@Url.Action("Packages", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
                         Gói đăng ký
                     </a>
-                    <a href="@Url.Action("RoomPage", "Home")" class="btn btn-light m-2" style="border-radius: 20px;">
+                    <a href="@Url.Action("RoomPage", "Home")" class="btn btn-primary m-2" style="border-radius: 20px;">
                         Phòng
                     </a>
                 </div>
@@ -133,11 +133,6 @@
                 <div class="col-xl-2 m-10 p-10 mb-3">
                     <div class="p-3 shadow rounded-border" style="background-color: whitesmoke; border-radius: 20px;">
                         <div class="form-group">
-                            <label>Mã phòng :</label>
-                            <select id="cbbRoomSearch" class="form-control" onchange="">
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Mã :</label>
                             <input type="text" class="form-control" id="txtCode">
                         </div>
@@ -145,12 +140,8 @@
                             <label>Tên :</label>
                             <input type="text" class="form-control" id="txtName">
                         </div>
-                        <div class="form-group">
-                            <label>CCCD :</label>
-                            <input type="text" class="form-control" id="txtCCCD">
-                        </div>
                         <div class="text-right">
-                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetCustomer()"><i class="fas fa-search"></i>Tìm kiếm</button>
+                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetRoom()"><i class="fas fa-search"></i>Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
@@ -159,7 +150,7 @@
                         <div class="row no-gutters">
                             <div class="col-auto">
                                 <button type="button"
-                                        id="add-customer-btn"
+                                        id="add-room-btn"
                                         class="btn btn-primary"
                                         style="margin-bottom: 8px; border-radius: 20px;">
                                     <i class="fas fa-plus"></i> Thêm
@@ -167,21 +158,14 @@
                             </div>
                         </div>
                         <div id="LayoutDesktop">
-                            <table id="customer-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                            <table id="room-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>Mã phòng</th>
-                                        <th>Mã</th>
-                                        <th>Tên</th>
-                                        <th>Giới tính</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th>CCCD</th>
+                                        <th>Tên phòng</th>
+                                        <th>Sức chứa</th>
                                         <th>Địa chỉ</th>
-                                        <th>Ngày hết hạn</th>
-                                        <th>Người tạo</th>
-                                        <th>Ngày tạo</th>
                                         <th>Trạng thái</th>
                                         <th>Ghi chú</th>
                                         <th></th>
@@ -190,8 +174,8 @@
                             </table>
                         </div>
                         <div id="LayoutMobile">
-                            <input type="text" id="txtSearchInvoice" class="form-control mb-3" placeholder="Tìm kiếm mã, tên, đvt, giá, mô tả..." />
-                            <div id="cardInvoice"></div>
+                            <input type="text" id="txtSearchInvoice" class="form-control mb-3" placeholder="Tìm kiếm mã, tên...." />
+                            <div id="cardRoom"></div>
                         </div>
                     </div>
                 </div>
@@ -200,67 +184,51 @@
         </div>
     </div>
 
-    <div class="modal fade" id="customer-modal" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="room-modal" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 20px">
                 <div class="modal-header">
-                    <h4 class="modal-title">Khách hàng</h4>
+                    <h4 class="modal-title">Phòng</h4>
                     <button type="button" class="close" data-dismiss="modal" id="close-modal">&times;</button>
                 </div>
-                <form id="customer-form">
+                <form id="room-form">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Mã</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-code" class="form-control" readonly />
+                            <input type="text" id="room-code" class="form-control" readonly />
                         </div>
                         <div class="form-group">
                             <label>Tên</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-name" class="form-control" />
+                            <input type="text" id="room-name" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Sức chứa</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-email" class="form-control" />
-                            <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>SĐT</label>
-                            <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-phone" class="form-control" />
-                            <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>CCCD</label>
-                            <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-cccd" class="form-control" />
-                            <div class="invalid-feedback">err</div>
-                        </div>
-                        <div class="form-group">
-                            <label>Giới tính</label>
-                            <label style="color: red;">(*)</label>
-                            <select id="customer-gender" class="form-control">
-                                <option value="">-- Chọn giới tính --</option>
-                                <option value="1">Nam</option>
-                                <option value="0">Nữ</option>
-                            </select>
+                            <input type="text" id="room-capacity" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
                             <label>Địa chỉ</label>
-                            <input type="text" id="customer-address" class="form-control" />
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="room-address" class="form-control" />
+                            <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>Phòng</label>
-                            <select id="cbbRoom" class="form-control" onchange="">
+                            <label>Trạng thái</label>
+                            <label style="color: red;">(*)</label>
+                            <select id="room-status" class="form-control">
+                                <option value="ACTIVE">Sử dụng</option>
+                                <option value="INACTIVE">Không sử dụng</option>
                             </select>
+                            <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
                             <label>Ghi chú</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-note" class="form-control" />
+                            <input type="text" id="room-note" class="form-control" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -276,53 +244,52 @@
 </body>
 </html>
 <script>
-    let _list_customer = [];
-    let _customer_index = -1;
+    let _list_room = [];
+    let _room_index = -1;
+    var _room_action = "";
 
 	$(document).ready(function () {
-        fnSetupTHTable('customer-table');
-        fnGetCustomer();
+        fnSetupTHTable('room-table');
+        fnGetRoom();
 
         document.getElementById("overlay").style.display = "none";
-        $("#customer-modal").on("show.bs.modal", function (e) {
-            $("#item-code").removeClass("is-invalid");
-            $("#item-name").removeClass("is-invalid");
+        $("#room-modal").on("show.bs.modal", function (e) {
+            $("#room-code").removeClass("is-invalid");
+            $("#room-name").removeClass("is-invalid");
 		});
 
-        $("#add-customer-btn").on("click", function () {
-			fnOpenAddcustomerModal();
+        $("#add-room-btn").on("click", function () {
+			fnOpenAddRoomModal();
 		});
 
         $("#close-modal").on("click", function () {
-            $("#customer-modal").modal("hide");
+            $("#room-modal").modal("hide");
         });
 
-        $("#customer-form").on("submit", function (e) {
+        $("#room-form").on("submit", function (e) {
 			e.preventDefault();
-			fnValidateToPostCustomer();
+			fnValidateToPostRoom();
         });
 
         $('#txtSearchInvoice').on('keyup', function () {
             const searchValue = $(this).val();
-            fnUpdateItemCard(searchValue);
+            fnUpdateRoomCard(searchValue);
         });
 	});
 
-    function fnGetCustomer() {
+    function fnGetRoom() {
         const customer = {
-            ROOM_CODE: $("#cbbRoomSearch").val(),
-            CUSTOMER_CODE: $("#txtCode").val(),
-            CUSTOMER_NAME: $("#txtName").val(),
-            CUSTOMER_CCCD: $("#txtCCCD").val(),
+            ROOM_CODE: $("#txtCode").val(),
+            ROOM_NAME: $("#txtName").val(),
 		}
 		fnPostData(
-			'@Url.Action("fnGetCustomer", "Home")',
+			'@Url.Action("fnGetRoom", "Home")',
             JSON.stringify(customer),
 			function (msg) {
-                _list_customer = msg.list;
-                console.log(_list_customer);
+                _list_room = msg.list;
+                console.log(_list_room);
                 fnUpdateCustomerDataTable();
-                //fnUpdateItemCard();
+                fnUpdateRoomCard();
 			}
 		);
 	}
@@ -339,8 +306,8 @@
 	}
 
     function fnUpdateCustomerDataTable() {
-		if (!$.fn.dataTable.isDataTable('#customer-table')) {
-            const table = $('#customer-table').DataTable({
+        if (!$.fn.dataTable.isDataTable('#room-table')) {
+            const table = $('#room-table').DataTable({
 				"dom": 'lrtip', "paging": false,
 				"order": [],
 				"scrollX": true,
@@ -369,35 +336,10 @@
 						}
                     },
                     { data: 'ROOM_CODE' },
-                    { data: 'CUSTOMER_CODE' },
-                    { data: 'CUSTOMER_NAME' },
-                    { data: 'CUSTOMER_GENDER' },
-                    { data: 'CUSTOMER_EMAIL' },
-                    { data: 'CUSTOMER_PHONE' },
-                    { data: 'CUSTOMER_CCCD' },
-                    { data: 'CUSTOMER_ADDRESS' },
-                    {
-                        data: 'CUSTOMER_EXPIRYDATE',
-                        render: function (data, type, row) {
-                            return (new Date(data)).toLocaleDateString("en-GB");
-                        }
-                    },
-                    { data: 'CREATE_USER' },
-                    {
-                        data: 'CREATE_DATE',
-                        render: function (data, type, row) {
-                            return (new Date(data)).toLocaleDateString("en-GB");
-                        }
-                    },
-                    {
-                        data: "STATUS",
-                        render: function (data, type, row) {
-                            if (data === "OBSOLETE") return "Hết hạn";
-                            if (data === "ACTIVE") return "Đang hoạt động";
-                            if (data === "PROCESSING") return "Chưa hoạt động";
-                            return data ?? "";
-                        }
-                    },
+                    { data: 'ROOM_NAME' },
+                    { data: 'CAPACITY' },
+                    { data: 'LOCATION' },
+                    { data: 'STATUS' },
                     { data: 'NOTE' },
 					{
 						data: null,
@@ -406,13 +348,13 @@
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-success"
-								onclick="fnOpenEditCustomerModal(${_list_customer.indexOf(row)})">
+								onclick="fnOpenEditRoomModal(${_list_room.indexOf(row)})">
 								<i class="fas fa-edit"></i> Sửa
 							</a>`;
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-danger"
-								onclick="fnRemoveCustomerClick(${_list_customer.indexOf(row)})">
+								onclick="fnRemoveRoomClick(${_list_room.indexOf(row)})">
 								<i class="fas fa-trash"></i> xóa
 							</a>`;
 							return htmlActionContent;
@@ -421,21 +363,13 @@
 				],
 				'columnDefs': [
 					{
-						targets: 14,
+						targets: 7,
 						createdCell: function (td, cellData, rowData, row, col) {
 							$(td).css('min-width', '130px');
 							$(td).css('text-align', 'right');
 						},
 					},
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (data.STATUS == "OBSOLETE") {
-                        $(row).css("background-image", "linear-gradient(to right, #fff, #9e9e9e)");
-                    }
-                    else if (data.STATUS == "ACTIVE") {
-                        $(row).css("background-image", "linear-gradient(to right, #fff, #d0f0d0)");
-                    }
-                }
 			});
 			table.on('order.dt search.dt', function () {
 				table.column(0, {
@@ -445,23 +379,21 @@
 				});
 			}).draw();
 		}
-        $('#customer-table').dataTable().fnClearTable();
-        if (_list_customer.length > 0) {
-            $('#customer-table').dataTable().fnAddData(_list_customer);
+        $('#room-table').dataTable().fnClearTable();
+        if (_list_room.length > 0) {
+            $('#room-table').dataTable().fnAddData(_list_room);
 		}
-        fnUpdateDatalistTable('customer-table');
+        fnUpdateDatalistTable('room-table');
     }
 
-    function fnUpdateItemCard(filter = '') {
+    function fnUpdateRoomCard(filter = '') {
         var html = ``;
         let keyword = filter.toLowerCase();
 
-        _list_customer
+        _list_room
             .filter(item =>
-                item.ITEM_CODE.toLowerCase().includes(keyword) ||
-                item.ITEM_NAME.toLowerCase().includes(keyword) ||
-                item.UNIT.toLowerCase().includes(keyword) ||
-                item.DESCRIPTION.toLowerCase().includes(keyword)
+                item.ROOM_CODE.toLowerCase().includes(keyword) ||
+                item.ROOM_NAME.toLowerCase().includes(keyword) 
             ).forEach(function (item, index) {
                 html += ``;
                 html += `<div class="card col-12 mb-3 shadow" style="border-radius: 20px; background-color: whitesmoke ">`;
@@ -471,41 +403,37 @@
                 html += `<div style="width:100%">`;
                 html += `<div class="row">`;
                 html += `<div class="col-xr-4 mr-3">`;
-                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.ITEM_CODE}</h3>`;
+                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.ROOM_CODE}</h3>`;
                 html += `</div>`;
                 html += `</div>`;
                 html += `<div class="row mt-2">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.ITEM_NAME}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.ROOM_NAME}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Tax: ${item.UNIT}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Capacity: ${item.CAPACITY}</h4>`;
+                html += `</div>`;
+                html += `<div class="row mt-2">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Address: ${item.LOCATION}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Total: ${item.PRICE.toLocaleString('vi-VN')}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Status: ${item.STATUS}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Note: ${item.DESCRIPTION}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Note: ${item.NOTE}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `</div>`;
-                //html += `<div class="row mt-2 d-flex flex-row-reverse">`;
-                //html += ` <a href="javascript:void(0);"
-                //    class="badge badge-pill bg-danger mr-2"
-                //    onclick="fnRemoveSupplierClick(${_list_supplier.indexOf(item)})">
-                //    <i class="fas fa-trash"></i> Xóa
-                //</a>`;
-                //html += `</div>`;
                 html += `<div class="d-flex mt-2 gap-2">`;
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-warning text-dark flex-fill text-center py-2"
-                    onclick="fnOpenEditSupplierModal(${_list_item.indexOf(item)})">
+                    onclick="fnOpenEditRoomModal(${_list_item.indexOf(item)})">
                     <i class="fas fa-edit"></i> Sửa
                 </a>`;
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-danger text-white flex-fill text-center py-2"
-                    onclick="fnRemoveSupplierClick(${_list_item.indexOf(item)})">
+                    onclick="fnRemoveRoomClick(${_list_item.indexOf(item)})">
                     <i class="fas fa-trash"></i> Xóa
                 </a>`;
 
@@ -521,78 +449,91 @@
         $('#cardInvoice').html(html);
     }
 
-    function fnOpenAddcustomerModal() {
-        $("#item-code").val("");
-        $("#item-code").focus();
-        $("#item-name").val("");
-        $("#item-unit").val("");
-        $("#item-price").val("");
-
+    function fnOpenAddRoomModal() {
+        $("#room-code").val("");
+        $("#room-code").focus();
+        $("#room-name").val("");
+        $("#item-capacity").val("");
+        $("#item-location").val("");
+        $("#item-status").val("ACTIVE");
         $("#item-description").val("");
-        $("#customer-modal").modal("show");
+        $("#room-modal").modal("show");
 	}
 
-    function fnOpenEditCustomerModal(index) {
-		_customer_index = index;
-        const selectedItem = _list_customer[index];
-        $("#item-code").val(selectedItem.ITEM_CODE);
-        $("#item-code").focus();
-        $("#item-name").val(selectedItem.ITEM_NAME);
-        $("#item-unit").val(selectedItem.UNIT);
-        $("#item-price").val(Number(selectedItem.PRICE).toLocaleString("vi-VN"));
-        $("#item-description").val(selectedItem.DESCRIPTION);
-        $("#customer-modal").modal("show");
+    function fnOpenEditRoomModal(index) {
+        _room_index = index;
+        _room_action = "UPDATE";
+        const selectedRoom = _list_room[index];
+        $("#room-code").val(selectedRoom.ROOM_CODE);
+        $("#room-code").focus();
+        $("#room-name").val(selectedRoom.ROOM_NAME);
+        $("#room-capacity").val(selectedRoom.CAPACITY);
+        $("#room-location").val(selectedRoom.LOCATION);
+        $("#room-status").val(selectedRoom.STATUS);
+        $("#room-note").val(selectedRoom.NOTE);
+        $("#room-modal").modal("show");
 	}
 
-    function fnRemoveCustomerClick(index) {
+    function fnRemoveRoomClick(index) {
 		if (index > -1) {
-            const selectedItem = _list_customer[index];
+            const selectedItem = _list_room[index];
             fnShowConfirm("DELETE " + selectedItem.ITEM_CODE).then(result => {
 				if (result.value) {
-                    fnRemoveItem(selectedItem);
+                    fnRemoveRoom(selectedItem);
 				}
 			});
 		}
 	}
 
-    function fnValidateToPostCustomer() {
-        $("#item-code").removeClass("is-invalid");
-        $("#item-name").removeClass("is-invalid");
-        $("#item-unit").removeClass("is-invalid");
-        $("#item-price").removeClass("is-invalid");
-        const customerData = {
-            item_CODE: $("#item-code").val(),
-            item_NAME: $("#item-name").val(),
-            UNIT: $("#item-unit").val(),
-            PRICE: getPriceValue(),
-            DESCRIPTION: $("#item-description").val(),
+    function fnValidateToPostRoom() {
+        $("#room-code").removeClass("is-invalid");
+        $("#room-name").removeClass("is-invalid");
+        $("#room-capacity").removeClass("is-invalid");
+        $("#room-location").removeClass("is-invalid");
+        $("#room-status").removeClass("is-invalid");
+        const roomData = {
+            ROOM_CODE: $("#room-code").val(),
+            ROOM_NAME: $("#room-name").val(),
+            CAPACITY: $("#room-capacity").val(),
+            LOCATION: $("#room-location").val(),
+            STATUS: $("#room-sattus").val(),
+            NOTE: $("#room-note").val(),
+            ACTION: _room_action,
 		};
-        if (customerrData.item_NAME == "") {
-            $("#item-name").addClass("is-invalid");
+        if (roomData.ROOM_NAME == "") {
+            $("#room-name").addClass("is-invalid");
 		}
-
-        else if (_list_customer.some(s => s.ITEM_CODE == customerData.ITEM_CODE)
-            && (_list_customer[_customer_index].ITEM_CODE != customerData.ITEM_CODE)) {
+        else if (roomData.ROOM_CODE == "") {
+            $("#room-code").addClass("is-invalid");
+        }
+        else if (roomData.CAPACITY <= 0) {
+            $("#room-capacity").addClass("is-invalid");
+        }
+        else if (roomData.LOCATION == "") {
+            $("#room-location").addClass("is-invalid");
+        }
+        else if (_list_room.some(s => s.ROOM_CODE == roomData.ROOM_CODE)
+            && (_list_room[_room_index].ROOM_CODE != roomData.ROOM_CODE)) {
 			fnShowError("ERR")
 		}
 		else {
-            fnShowConfirm("Lưu " + customerData.item_CODE).then(result => {
+            fnShowConfirm("Lưu " + roomData.room_CODE).then(result => {
 				if (result.value) {
-                    fnPostCustomer(customerData);
+                    fnPostRoom(customerData);
 				}
 			})
 		}
 	}
 
-    function fnPostCustomer(customer) {
+    function fnPostRoom(room) {
 		fnPostData(
-			'@Url.Action("fnPostCustomer", "Home")',
-            JSON.stringify(customer),
+			'@Url.Action("fnPostRoom", "Home")',
+            JSON.stringify(room),
 			function (msg) {
 				if (msg.ErrCode == "1") {
-                    $("#customer-modal").modal("hide");
+                    $("#room-modal").modal("hide");
 					fnShowSuccess();
-                    fnGetCustomer();
+                    fnGetRoom();
 				}
 				else {
 					fnShowError(msg.ErrMsg);
@@ -601,15 +542,15 @@
 		);
     }
 
-    function fnRemoveItem(customer) {
+    function fnRemoveRoom(room) {
 		fnPostData(
-			'@Url.Action("fnRemoveItem", "Home")',
-            JSON.stringify(customer),
+			'@Url.Action("fnPostRoom", "Home")',
+            JSON.stringify(room),
 			function (msg) {
 				if (msg.ErrCode == "1") {
-                    $("#customer-modal").modal("hide");
-					fnShowSuccess();
-                    fnGetItem();
+                    $("#room-modal").modal("hide");
+                    fnShowSuccess();
+                    fnGetRoom();
 				}
 				else {
 					fnShowError(msg.ErrMsg);
@@ -668,51 +609,5 @@
         });
     }
 
-    //const priceInput = document.getElementById("item-price");
-
-    //priceInput.addEventListener("input", function (e) {
-    //    let value = e.target.value.replace(/[^0-9]/g, "");
-    //    if (value === "") {
-    //        e.target.value = "";
-    //        return;
-    //    }
-    //    e.target.value = parseInt(value, 10).toLocaleString("vi-VN");
-    //});
-
-    //function getPriceValue() {
-    //    const raw = priceInput.value;
-    //    return raw.replace(/\./g, "");
-    //}
-
-    function fnGetRoom() {
-        var item = {
-            OPR_ID: $('#cbbOPR').val(),
-			PROCESS_TYPE: "ACC"
-        };
-        fnPostDataWithoutOverlay(
-            '@Url.Action("fnGetRoom", "Home")',
-            JSON.stringify(item),
-            function (msg) {
-                fnUpdateListRoom(msg.list);
-                fnUpdateListRoomSearch(msg.list);
-            }
-        );
-    }
-    function fnUpdateListRoom(list) {
-        var html = '<option value="">All</option>';
-        list.forEach(function (item, index) {
-            html += '<option value="' + item.ROOM_CODE + '">' + item.ROOM_NAME + '</option>';
-        });
-        $('#cbbRoom').empty();
-        $('#cbbRoom').html(html);
-    }
-
-    function fnUpdateListRoomSearch(list) {
-        var html = '<option value="">All</option>';
-        list.forEach(function (item, index) {
-            html += '<option value="' + item.ROOM_CODE + '">' + item.ROOM_NAME + '</option>';
-        });
-        $('#cbbRoomSearch').empty();
-        $('#cbbRoomSearch').html(html);
-    }
+    
 </script>

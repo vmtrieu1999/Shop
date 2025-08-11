@@ -13,6 +13,7 @@ namespace Gym.Controllers
 {
     public class HomeController : Controller
     {
+        #region Customer
         public ActionResult Index()
         {
             return View();
@@ -46,15 +47,8 @@ namespace Gym.Controllers
             }
             return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-
+        #endregion
+        #region Packages
         public ActionResult Packages()
         {
             return View();
@@ -88,6 +82,12 @@ namespace Gym.Controllers
             }
             return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
         }
+        #endregion
+        #region Room
+        public ActionResult RoomPage()
+        {
+            return View();
+        }
 
         public ContentResult fnGetRoom(string strInput)
         {
@@ -116,5 +116,6 @@ namespace Gym.Controllers
             }
             return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
         }
+        #endregion
     }
 }
