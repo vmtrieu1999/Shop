@@ -980,7 +980,7 @@ namespace Gym
 		
 		private string _CUSTOMER_PHOTOURL;
 		
-		private System.DateTime _CUSTOMER_EXPIRYDATE;
+		private System.Nullable<System.DateTime> _CUSTOMER_EXPIRYDATE;
 		
 		private string _STATUS;
 		
@@ -1022,7 +1022,7 @@ namespace Gym
     partial void OnCUSTOMER_ADDRESSChanged();
     partial void OnCUSTOMER_PHOTOURLChanging(string value);
     partial void OnCUSTOMER_PHOTOURLChanged();
-    partial void OnCUSTOMER_EXPIRYDATEChanging(System.DateTime value);
+    partial void OnCUSTOMER_EXPIRYDATEChanging(System.Nullable<System.DateTime> value);
     partial void OnCUSTOMER_EXPIRYDATEChanged();
     partial void OnSTATUSChanging(string value);
     partial void OnSTATUSChanged();
@@ -1249,8 +1249,8 @@ namespace Gym
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_EXPIRYDATE", DbType="DateTime NOT NULL")]
-		public System.DateTime CUSTOMER_EXPIRYDATE
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_EXPIRYDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CUSTOMER_EXPIRYDATE
 		{
 			get
 			{

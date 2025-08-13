@@ -31,6 +31,7 @@ namespace Gym.Models
                             .Select(s => new
                             {
                                 s.ROOM_CODE,
+                                ROOM_NAME = db.ROOMs.Where(v=> v.ROOM_CODE == s.ROOM_CODE).Select(n=> n.ROOM_NAME).FirstOrDefault(),
                                 s.CUSTOMER_ID,
                                 s.CUSTOMER_CODE,
                                 s.CUSTOMER_NAME,
@@ -156,10 +157,10 @@ namespace Gym.Models
                 var address = (model["CUSTOMER_ADDRESS"] ?? "").ToString();
                 var note = (model["NOTE"] ?? "").ToString();
                 var room_code = (model["ROOM_CODE"] ?? "").ToString();
-                var status = "ACTIVE";
+                var status = (model["STATUS"] ?? "").ToString();
                 using (var db = ConnectionModel.GymShopDataContext())
                 {
-                    if (action == "ADD")
+                    if (action == "INSERT")
                     {
                             customer_code = string.Concat(
                             Regex.Replace(fullname.Normalize(NormalizationForm.FormD), @"\p{Mn}", "")
@@ -177,16 +178,19 @@ namespace Gym.Models
                         item.CUSTOMER_GENDER = gender.Trim();
                         item.CUSTOMER_ADDRESS = address.Trim();
                         item.CUSTOMER_PHOTOURL = "";
-                        item.STATUS = status;
+                        item.STATUS = "PROCESSING";
                         item.NOTE = note.Trim();
                         item.CREATE_DATE = dnow;
                         item.CREATE_USER = "admin";
 
                         db.CUSTOMERs.InsertOnSubmit(item);
 
+                        db.SubmitChanges();
                         result["ErrCode"] = "1";
                         result["ErrMsg"] = "Success";
                         result["ErrBack"] = customer_code;
+
+
                     }
                     else if(action == "EDIT")
                     {
