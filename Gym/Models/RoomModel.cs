@@ -15,11 +15,12 @@ namespace Gym.Models
             {
                 var room_code = model["ROOM_CODE"]?.ToString() ?? "";
                 var room_name = model["ROOM_NAME"]?.ToString() ?? "";
+                var company_code = (model["COMPANY_CODE"] ?? "").ToString();
                 using (var db = ConnectionModel.GymShopDataContext())
                 {
                     list = JArray.FromObject(db.ROOMs
                         .Where(x => (x.ROOM_CODE == room_code || room_code == "") &&
-                        (x.ROOM_NAME == room_name || room_name == "")).
+                        (x.ROOM_NAME == room_name || room_name == "") && x.COMPANY_CODE == company_code).
                         Select(s => new { 
                             s.ROOM_ID,
                             s.ROOM_CODE,
@@ -52,6 +53,7 @@ namespace Gym.Models
                 var room_location = model["LOCATION"]?.ToString() ?? "";
                 var room_note = model["NOTE"]?.ToString() ?? "";
                 var room_status = model["STATUS"]?.ToString() ?? "";
+                var company_code = (model["COMPANY_CODE"] ?? "").ToString();
 
                 using (var db = ConnectionModel.GymShopDataContext())
                 {
@@ -64,6 +66,7 @@ namespace Gym.Models
                         room.LOCATION = room_location;
                         room.STATUS = room_status;
                         room.NOTE = room_note;
+                        room.COMPANY_CODE = company_code;
 
                         db.ROOMs.InsertOnSubmit(room);
                     }

@@ -10,21 +10,7 @@
 
     <link rel="manifest" href="@Url.Content("~/manifest.json")">
 
-    <!-- Apple -->
-    <link rel="apple-touch-icon" sizes="180x180" href="~/images/iconShopFhish.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Shop Fish">
-
-    <!-- Android -->
-    <link rel="manifest" href="~/manifest.json">
-    <meta name="theme-color" content="#0077b6">
-
-    <!-- Windows -->
-    <meta name="msapplication-TileColor" content="#0077b6">
-    <meta name="msapplication-TileImage" content="~/images/iconShopFhish.png">
-
-    <!-- Add icon library -->
+    
     <link rel="stylesheet" href="~/css/all.min.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link href="~/css/theme-default.css" rel="stylesheet" class="template-customizer-theme-css" />
@@ -36,8 +22,7 @@
 <body>
     <style>
         body {
-            /*background: url(../images/hinh-nen-cong-ty-matsuya-rnd.jpg) no-repeat center center fixed !important;*/
-            background: url('@Url.Content("~/image/backback.jpg")') no-repeat center center fixed !important;
+            background: url('@Url.Content("~/images/gym_back.jpg")') no-repeat center center fixed !important;
             height: 100% !important;
             background-size: cover !important;
         }
@@ -52,7 +37,7 @@
             right: 9px;
         }
     </style>
-    
+
     <div class="container p-4 shadow" style="max-width: 400px; border-radius: 20px; margin-top: 50px; background-color: whitesmoke">
         <img class="mx-auto d-block" style="width:60%" src="~/images/gym_10484999.png" />
         <h3 style="text-align: center">Welcome to Shop Gym</h3>
@@ -78,13 +63,11 @@
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
-        // Disable form submissions if there are invalid fields
+        
         (function () {
             'use strict';
             window.addEventListener('load', function () {
-                // Get the forms we want to add validation styles to
                 var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
                 var validation = Array.prototype.filter.call(forms, function (form) {
                     form.addEventListener('submit', function (event) {
                         if (form.checkValidity() === false) {
@@ -92,7 +75,7 @@
                             event.stopPropagation();
                         }
                         else {
-                            document.getElementById("overlay").style.display = "block";*
+                            document.getElementById("overlay").style.display = "block";
                         }
                         form.classList.add('was-validated');
                     }, false);

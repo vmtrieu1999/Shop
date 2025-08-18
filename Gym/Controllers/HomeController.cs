@@ -14,7 +14,6 @@ namespace Gym.Controllers
     public class HomeController : Controller
     {
         #region Login,Logout
-        [HttpGet]
         public ActionResult Login(string username = "", string password = "")
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
@@ -25,18 +24,13 @@ namespace Gym.Controllers
             username = username.ToLower();
             password = password.ToLower();
 
-            //var pr = new PRModel();
-            //var user = db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
-            //var session = pr.fnLoginUser(username, password);
-            var session = "a";
+            var con = new ConnectionModel();
+            var session = con.fnLoginUser(username, password);
             if (session != null)
             {
                 Session["USER_SESSION"] = session;
 
-                if (session == "a")
-                    return RedirectToAction("Index", "Home");
-                else
-                    return RedirectToAction("About", "Home");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -45,18 +39,40 @@ namespace Gym.Controllers
             }
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            Session.Abandon();
+
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            Response.Cache.SetNoStore();
+
+            return RedirectToAction("Login", "Home");
+        }
         #endregion
         #region Customer
         public ActionResult Index()
         {
-            return View();
+            var user = Session["USER_SESSION"] as UserSession;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.User = user;
+                return View();
+            }
         }
 
         public ContentResult fnGetCustomer(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var cus = new CustomerModel();
                 var list = cus.fnGetCustomer(model);
                 var jsonResult = new
@@ -70,11 +86,48 @@ namespace Gym.Controllers
 
         public ContentResult fnPostCustomer(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["USER"] = user.Username;
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var cus = new CustomerModel();
                 var jsonResult = cus.fnPostCustomer(model);
+
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+
+        public ContentResult fnGetCustomerShip(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
+            {
+                var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
+                var cus = new CustomerModel();
+                var list = cus.fnGetCustomerShip(model);
+                var jsonResult = new
+                {
+                    list
+                };
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+
+        public ContentResult fnPostCustomerShip(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
+            {
+                var model = JObject.Parse(strInput);
+                model["USER"] = user.Username;
+                model["COMPANY_CODE"] = user.CompanyCode;
+                var cus = new CustomerModel();
+                var jsonResult = cus.fnPostCustomerShip(model);
 
                 return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
             }
@@ -84,14 +137,25 @@ namespace Gym.Controllers
         #region Packages
         public ActionResult Packages()
         {
-            return View();
+            var user = Session["USER_SESSION"] as UserSession;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.User = user;
+                return View();
+            }
         }
 
         public ContentResult fnGetPackages(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var packages = new PackagesModel();
                 var list = packages.fnGetPackages(model);
                 var jsonResult = new
@@ -105,9 +169,11 @@ namespace Gym.Controllers
 
         public ContentResult fnPostPackages(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var packages = new PackagesModel();
                 var jsonResult = packages.fnPostPackages(model);
 
@@ -119,14 +185,25 @@ namespace Gym.Controllers
         #region Room
         public ActionResult RoomPage()
         {
-            return View();
+            var user = Session["USER_SESSION"] as UserSession;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.User = user;
+                return View();
+            }
         }
 
         public ContentResult fnGetRoom(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var room = new RoomModel();
                 var list = room.fnGetRoom(model);
                 var jsonResult = new
@@ -140,9 +217,11 @@ namespace Gym.Controllers
 
         public ContentResult fnPostRoom(string strInput)
         {
-            if (Request.IsAjaxRequest())
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
+                model["COMPANY_CODE"] = user.CompanyCode;
                 var room = new RoomModel();
                 var jsonResult = room.fnPostRoom(model);
                 return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);

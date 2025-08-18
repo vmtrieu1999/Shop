@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <label>Mã</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="customer-code" class="form-control" readonly/>
+                            <input type="text" id="customer-code" class="form-control" readonly />
                         </div>
                         <div class="form-group">
                             <label>Tên</label>
@@ -215,19 +215,146 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="customer-modal-pay" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thanh toán</h4>
+                    <button type="button" class="close" data-dismiss="modal" id="close-modal-pay">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row p-3 mb-4"
+                         style="background-color: #f5f5f5; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Mã</label>
+                                <input type="text" id="customer-code-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Họ tên</label>
+                                <input type="text" id="customer-fullname-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" id="customer-email-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>SĐT</label>
+                                <input type="text" id="customer-phone-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Phòng</label>
+                                <input type="text" id="customer-room-pay" class="form-control" readonly />
+                                <div class="invalid-feedback">err</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số buổi còn lại</label>
+                                <input type="text" id="customer-last-day-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gói <span style="color:red;">(*)</span></label>
+                                <select id="cbbPackage" class="form-control"></select>
+                                <div class="invalid-feedback">err</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="required">Tổng tiền</label>
+                                <input type="text" id="customer-total-pay" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Thanh toán <span style="color:red;">(*)</span></label>
+                                <select id="customer-payment" class="form-control">
+                                    <option value="CASH">Tiền mặt</option>
+                                    <option value="BANKING">Chuyển khoản</option>
+                                </select>
+                                <div class="invalid-feedback">err</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ngày thanh toán</label>
+                                <span style="color:red;">(*)</span>
+                                <input type="date" id="customer-payment-date" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <input type="text" id="customer-note-pay" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 mb-4"
+                         style="background-color: #f5f5f5; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); overflow-x: auto;">
+
+                        <table id="customer-table-pay" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                            <thead style="background-color: transparent;">
+                                <tr>
+                                    <th></th>
+                                    <th>Gói</th>
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Ngày thanh toán</th>
+                                    <th>Hình thức thanh toán</th>
+                                    <th>Người thanh toán</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnPay"
+                            class="btn btn-success rounded-border" onclick="fnValidateToPostCustomerShip()">
+                        <i class="fa fa-save"></i> Thanh toán
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
     let _list_customer = [];
+    let _list_customer_ship = [];
     let _list_room = [];
+    let _list_packages = [];
     let _customer_index = -1;
     var _customer_action = "";
     var _customer_id = 0;
 
 	$(document).ready(function () {
         fnSetupTHTable('customer-table');
+        fnSetupTHTable('customer-table-pay');
         fnGetRoom();
+        fnGetPackages();
         fnGetCustomer();
+
 
         document.getElementById("overlay").style.display = "none";
         $("#customer-modal").on("show.bs.modal", function (e) {
@@ -252,6 +379,25 @@
             const searchValue = $(this).val();
             fnUpdateCustomerCard(searchValue);
         });
+
+        $("#customer-modal-pay").on("show.bs.modal", function (e) {
+            $("#cbbPackage").removeClass("is-invalid");
+            $("#customer-payment").removeClass("is-invalid");
+            $("#customer-payment-date").removeClass("is-invalid");
+        });
+
+        $("#close-modal-pay").on("click", function () {
+            $("#customer-modal-pay").modal("hide");
+        });
+
+        $(document).on("change", "#cbbPackage", function () {
+            var price = $(this).find(":selected").data("price") || 0;
+            var formatted = new Intl.NumberFormat('vi-VN').format(price);
+            $("#customer-total-pay").val(formatted);
+        });
+
+        const today = new Date();
+        $("#customer-payment-date").val(today.toLocaleString("sv-SE").substring(0, 10));
 	});
 
     function fnGetCustomer() {
@@ -270,6 +416,20 @@
 
                 fnUpdateCustomerDataTable();
                 fnUpdateCustomerCard();
+			}
+		);
+    }
+
+    function fnGetCustomerShip(customer_code) {
+        const customer = {
+            CUSTOMER_CODE: customer_code,
+		}
+		fnPostData(
+			'@Url.Action("fnGetCustomerShip", "Home")',
+            JSON.stringify(customer),
+			function (msg) {
+                _list_customer_ship = msg.list;
+                fnUpdateCustomerShipDataTable();
 			}
 		);
 	}
@@ -318,7 +478,17 @@
                     { data: 'ROOM_NAME' },
                     { data: 'CUSTOMER_CODE' },
                     { data: 'CUSTOMER_NAME' },
-                    { data: 'CUSTOMER_GENDER' },
+                    {
+                        data: 'CUSTOMER_GENDER',
+                        render: function (data) {
+                            if (data === "0") {
+                                return 'Nữ';
+                            }
+                            else {
+                                return 'Nam';
+                            }
+                        }
+                    },
                     { data: 'CUSTOMER_EMAIL' },
                     { data: 'CUSTOMER_PHONE' },
                     { data: 'CUSTOMER_CCCD' },
@@ -360,7 +530,7 @@
 							let htmlActionContent = ``;
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
-								class="badge badge-pill bg-success"
+								class="badge badge-pill bg-warning"
 								onclick="fnOpenEditCustomerModal(${_list_customer.indexOf(row)})">
 								<i class="fas fa-edit"></i> Sửa
 							</a>`;
@@ -370,6 +540,12 @@
 								onclick="fnRemoveCustomerClick(${_list_customer.indexOf(row)})">
 								<i class="fas fa-trash"></i> xóa
 							</a>`;
+                            htmlActionContent +=
+                            `<a href="javascript:void(0);"
+                                class="badge badge-pill bg-success"
+                                onclick="fnOpenPayCustomerModal(${_list_customer.indexOf(row)})">
+                                <i class="fas fa-credit-card"></i> Thanh toán
+                            </a>`;
 							return htmlActionContent;
 						}
 					},
@@ -407,6 +583,104 @@
         fnUpdateDatalistTable('customer-table');
     }
 
+    function fnUpdateCustomerShipDataTable() {
+        if (!$.fn.dataTable.isDataTable('#customer-table-pay')) {
+            const table = $('#customer-table-pay').DataTable({
+                "dom": 'lrtip', "paging": false,
+                "order": [],
+                "scrollX": true,
+                "scrollY": "60vh",
+                "scrollCollapse": true,
+                "initComplete": function () {
+                    // Apply the search
+                    this.api().columns().every(function () {
+                        var that = this;
+                        $('input', this.header()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "responsive": true,
+                "destroy": true,
+                "columns": [
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return "";
+                        }
+                    },
+                    { data: 'PACKAGE_NAME' },
+                    {
+                        data: 'STARTDATE',
+                        render: function (data, type, row) {
+                            if (!data) return '';
+                            return (new Date(data)).toLocaleDateString("en-GB");
+                        }
+                    },
+                    {
+                        data: 'ENDDATE',
+                        render: function (data, type, row) {
+                            if (!data) return '';
+                            return (new Date(data)).toLocaleDateString("en-GB");
+                        }
+                    },
+                    {
+                        data: 'TOTALPRICE',
+                        className: 'text-left',
+                        render: function (data) {
+                            if (data == null) return '';
+                            return parseFloat(data).toLocaleString('vi-VN');
+                        }
+                    },
+                    {
+                        data: 'PAYMENT_DATE',
+                        render: function (data, type, row) {
+                            return (new Date(data)).toLocaleDateString("en-GB");
+                        }
+                    },
+                    {
+                        data: 'PAYMENT',
+                        render: function (data) {
+                            if (data == "CASH") {
+                                return "Tiền mặt";
+                            }
+                            else {
+                                return "Chuyển khoản";
+                            }
+                        }
+                    },
+                    { data: 'CREATE_USER' },
+                    { data: 'NOTE' },
+                ],
+                'columnDefs': [
+                    {
+                        targets: 7,
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            $(td).css('min-width', '130px');
+                            $(td).css('text-align', 'right');
+                        },
+                    },
+                ],
+            });
+            table.on('order.dt search.dt', function () {
+                table.column(0, {
+                    search: 'applied', order: 'applied'
+                }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        }
+        $('#customer-table-pay').dataTable().fnClearTable();
+        if (_list_customer_ship.length > 0) {
+            $('#customer-table-pay').dataTable().fnAddData(_list_customer_ship);
+        }
+        fnUpdateDatalistTable('customer-table-pay');
+    }
+
     function fnUpdateCustomerCard(filter = '') {
         var html = ``;
         let keyword = filter.toLowerCase();
@@ -416,7 +690,7 @@
                 item.CUSTOMER_CODE.toLowerCase().includes(keyword) ||
                 item.CUSTOMER_NAME.toLowerCase().includes(keyword) ||
                 item.CUSTOMER_GENDER.toLowerCase().includes(keyword) ||
-                item.CUSTOMER_EMAIL.toLowerCase().includes(keyword) || 
+                item.CUSTOMER_EMAIL.toLowerCase().includes(keyword) ||
                 item.CUSTOMER_PHONE.toLowerCase().includes(keyword) ||
                 item.CUSTOMER_CCCD.toLowerCase().includes(keyword) ||
                 item.CUSTOMER_ADDRESS.toLowerCase().includes(keyword) ||
@@ -438,22 +712,39 @@
                 html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Tên: ${item.CUSTOMER_NAME}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Giới tính: ${item.CUSTOMER_GENDER}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Giới tính: ${item.CUSTOMER_GENDER === "0" ? "Nữ" : "Nam"}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Email: ${item.CUSTOMER_EMAIL}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Email: ${item.CUSTOMER_EMAIL}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">SĐT: ${item.CUSTOMER_PHONE}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Cccd: ${item.CUSTOMER_CCCD}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Cccd: ${item.CUSTOMER_CCCD}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Địa chỉ: ${item.CUSTOMER_ADDRESS}</h4>`;                
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Địa chỉ: ${item.CUSTOMER_ADDRESS}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Phòng: ${item.ROOM_NAME}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">${item.STATUS === "OBSOLETE"
+                    ? '<span class="badge badge-danger shadow" style="font-size:18px;">Hết hạn</span>'
+                    : item.STATUS === "ACTIVE"
+                        ? '<span class="badge badge-success shadow" style="font-size:18px;">Đang hoạt động</span>'
+                        : item.STATUS === "PROCESSING"
+                            ? '<span class="badge badge-warning shadow" style="font-size:18px;">Chưa hoạt động</span>'
+                            : '<span class="badge badge-secondary shadow" style="font-size:18px;">Không xác định</span>'}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                if (item.CUSTOMER_EXPIRYDATE) {
+                    html += `<h4 class="badge badge-pill badge-secondary shadow"
+                         style="font-size:20px; white-space: normal; word-break: break-word;">
+                         Ngày hết hạn: ${fnFormatDate(item.CUSTOMER_EXPIRYDATE)}
+                     </h4>`;
+                }
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Ghi chú: ${item.NOTE}</h4>`;
@@ -472,6 +763,12 @@
                     class="badge bg-danger text-white flex-fill text-center py-2"
                     onclick="fnRemoveCustomerClick(${_list_customer.indexOf(item)})">
                     <i class="fas fa-trash"></i> Xóa
+                </a>`;
+
+                html += `<a href="javascript:void(0);"
+                    class="badge bg-success text-white flex-fill text-center py-2"
+                    onclick="fnOpenPayCustomerModal(${_list_customer.indexOf(item)})">
+                    <i class="fas fa-credit-card"></i> Thanh toán
                 </a>`;
 
                 html += `</div>`;
@@ -518,12 +815,40 @@
         $("#cbbRoom").val(selectedCustomer.ROOM_CODE);
         $("#customer-note").val(selectedCustomer.NOTE);
         $("#customer-modal").modal("show");
-	}
+    }
+
+    function fnOpenPayCustomerModal(index) {
+        const selectedCustomer = _list_customer[index];
+        _customer_id = selectedCustomer.CUSTOMER_ID;
+
+        if (selectedCustomer.CUSTOMER_EXPIRYDATE) {
+            let expiryDate = new Date(selectedCustomer.CUSTOMER_EXPIRYDATE);
+            let today = new Date();
+
+            expiryDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+
+            let diffTime = expiryDate - today;
+            let remainingDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            $("#customer-last-day-pay").val(remainingDays);
+        } else {
+            $("#customer-last-day-pay").val(0);
+        }
+        $("#customer-code-pay").val(selectedCustomer.CUSTOMER_CODE);
+        $("#customer-fullname-pay").val(selectedCustomer.CUSTOMER_NAME);
+        $("#customer-email-pay").val(selectedCustomer.CUSTOMER_EMAIL);
+        $("#customer-phone-pay").val(selectedCustomer.CUSTOMER_PHONE);
+        $("#customer-room-pay").val(selectedCustomer.ROOM_CODE);
+
+        fnGetCustomerShip(selectedCustomer.CUSTOMER_CODE);
+        $("#customer-modal-pay").modal("show");
+    }
 
     function fnRemoveCustomerClick(index) {
 		if (index > -1) {
             const selectedCustomer = _list_customer[index];
-            fnShowConfirm("DELETE " + selectedCustomer.CUSTOMER_NAME).then(result => {
+            fnShowConfirm("Xóa " + selectedCustomer.CUSTOMER_NAME).then(result => {
 				if (result.value) {
                     fnRemoveCustomer(selectedCustomer);
 				}
@@ -612,6 +937,53 @@
 		);
 	}
 
+    function fnValidateToPostCustomerShip() {
+        $("#cbbPackage").removeClass("is-invalid");
+        $("#customer-payment").removeClass("is-invalid");
+        const customerData = {
+            ACTION: "ADD",
+            CUSTOMER_CODE: $("#customer-code-pay").val(),
+            PACKAGE_ID: $("#cbbPackage").val(),
+            PAYMENT: $("#customer-payment").val(),
+            NOTE: $("#customer-note-pay").val(),
+            PAYMENT_DATE: $("#customer-payment-date").val(),
+        };
+        if (customerData.PACKAGE_ID == "") {
+            $("#cbbPackage").addClass("is-invalid");
+        }
+        else if (customerData.PAYMENT == "") {
+            $("#customer-payment").addClass("is-invalid");
+        }
+        else if (customerData.PAYMENT_DATE == "") {
+            $("#customer-payment-date").addClass("is-invalid");
+        }
+        else {
+            fnShowConfirm("Lưu " + customerData.CUSTOMER_CODE).then(result => {
+                if (result.value) {
+                    fnPostCustomerShip(customerData);
+                }
+            })
+        }
+    }
+
+    function fnPostCustomerShip(customer) {
+		fnPostData(
+			'@Url.Action("fnPostCustomerShip", "Home")',
+            JSON.stringify(customer),
+			function (msg) {
+				if (msg.ErrCode == "1") {
+                    $("#customer-modal-pay").modal("hide");
+                    fnShowSuccess();
+                    fnGetCustomer();
+                    fnGetCustomerShip(msg.ErrBack);
+				}
+				else {
+					fnShowError(msg.ErrMsg);
+				}
+			}
+		);
+    }
+
     function fnGetRoom() {
         var item = {
             OPR_ID: $('#cbbOPR').val(),
@@ -642,5 +1014,27 @@
         });
         $('#cbbRoomSearch').empty();
         $('#cbbRoomSearch').html(html);
+    }
+
+    function fnGetPackages() {
+        const packages = {
+		}
+		fnPostData(
+			'@Url.Action("fnGetPackages", "Home")',
+            JSON.stringify(packages),
+            function (msg) {
+                _list_packages = msg.list;
+                fnUpdateListPackage(_list_packages);
+			}
+		);
+    }
+
+    function fnUpdateListPackage(list) {
+        var html = '<option value=""></option>';
+        list.forEach(function (item) {
+            html += '<option value="' + item.PACKAGEID + '" data-price="' + item.PRICE + '">'
+                + item.PACKAGENAME + '</option>';
+        });
+        $('#cbbPackage').empty().html(html);
     }
 </script>

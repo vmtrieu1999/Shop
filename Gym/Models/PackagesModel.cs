@@ -14,13 +14,14 @@ namespace Gym.Models
             try
             {
                 var packages_name = model["PACKAGENAME"]?.ToString() ?? "";
+                var company_code = (model["COMPANY_CODE"] ?? "").ToString();
                 int day = model["DURATIONDAYS"]?.ToObject<int?>() ?? 0;
                 using (var db = ConnectionModel.GymShopDataContext())
                 {
                     list = JArray.FromObject(
                         db.PACKAGEs
                         .Where(x => (x.PACKAGENAME == packages_name || packages_name == "") &&
-                        (x.DURATIONDAYS == day || day == 0)) 
+                        (x.DURATIONDAYS == day || day == 0) && x.COMPANY_CODE == company_code) 
                         .Select(s => new { 
                             s.PACKAGEID,
                             s.PACKAGENAME,
@@ -46,7 +47,7 @@ namespace Gym.Models
                 var packages_name = model["PACKAGENAME"]?.ToString() ?? "";
                 int day = model["DURATIONDAYS"]?.ToObject<int?>() ?? 0;
                 decimal price = model["PRICE"]?.ToObject<decimal?>() ?? 0;
-
+                var company_code = (model["COMPANY_CODE"] ?? "").ToString();
                 using (var db = ConnectionModel.GymShopDataContext())
                 {
                     if(action == "INSERT")
@@ -55,7 +56,7 @@ namespace Gym.Models
                         packages.PACKAGENAME = packages_name;
                         packages.DURATIONDAYS = day;
                         packages.PRICE = price;
-
+                        packages.COMPANY_CODE = company_code;
                         db.PACKAGEs.InsertOnSubmit(packages);
                     }
                     else if(action == "UPDATE")

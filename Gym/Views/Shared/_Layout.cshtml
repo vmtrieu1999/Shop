@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userSession = Session["USER_SESSION"] as Gym.UserSession;
+    var username = userSession?.Username ?? "Guest";
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -37,7 +41,7 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         body {
-            background-image: url('@Url.Content("~/images/mic_background.png")');
+            background-image: url('@Url.Content("~/images/gym_back.jpg")');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -169,67 +173,72 @@
     </div>
     <div class="">
         @RenderBody()
-        <div class="container-fluid bg-white fixed-top" style="background-color: rgba(255,255,255,0.9)">
-            <div class="row justify-content-center px-3 py-2">
-                <!-- Nút hamburger thu gọn, chỉ hiển thị trên màn nhỏ -->
-                <div class="d-lg-none d-flex justify-content-between align-items-center mb-2 px-3">
-                    <div class="flex-grow-1 text-center">
-                        <h5 class="fw-bold text-primary m-0" style="letter-spacing: 1px;">
-                            GYM SHOP
-                        </h5>
-                    </div>
-                    <button id="btnMenu"
-                            class="btn btn-outline-secondary ms-3"
-                            type="button"
-                            aria-expanded="false"
-                            aria-controls="mainMenu">
-                        ☰ Menu
+        <div class="container-fluid fixed-top" style="background-color: rgba(255,255,255,0.7)">
+            <!-- Nút hamburger thu gọn, chỉ hiển thị trên màn nhỏ -->
+            <div class="d-lg-none d-flex justify-content-between align-items-center mb-2 px-3">
+                <div class="flex-grow-1 text-center">
+                    <h5 class="fw-bold text-primary m-0" style="letter-spacing: 1px;">
+                        GYM SHOP
+                    </h5>
+                </div>
+                <button id="btnMenu"
+                        class="btn btn-outline-secondary ms-3"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="mainMenu">
+                    ☰ Menu
+                </button>
+            </div>
+
+            <!-- Menu chính -->
+            <div class="collapse d-lg-flex flex-wrap align-items-center justify-content-center" id="mainMenu">
+                <div class="dropdown m-2">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="border-radius: 20px;">
+                        <i class="fas fa-user"></i>  @username
                     </button>
-                </div>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-user"></i> <span>Thông tin người dùng</span>
+                        </a>
 
-                <!-- Menu chính -->
-                <div class="collapse d-lg-flex flex-wrap align-items-center justify-content-center" id="mainMenu">
-                    <div class="dropdown m-2">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                style="border-radius: 20px;">
-                            <i class="fas fa-user"></i> 6011
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user"></i> <span>Thông tin người dùng</span>
-                            </a>
-                            <a class="dropdown-item" href="@Url.Action("Note", "Home")">
-                                <i class="far fa-sticky-note"></i> <span>Ghi chú</span>
-                            </a>
-                            <a class="dropdown-item" href="@Url.Action("Logout", "Home")">
-                                <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
-                            </a>
-                        </div>
+                        <a class="dropdown-item" href="@Url.Action("Logout", "Home")">
+                            <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
+                        </a>
                     </div>
-                    @{
-                        string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
-                        string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-                    }
-
-                    <a href="@Url.Action("Index", "Home")"
-                       class="btn @(currentAction == "Index" ? "btn-primary" : "btn-light") m-2"
-                       style="border-radius: 20px;">
-                        <i class="fas fa-users"></i> Khách hàng
-                    </a>
-
-                    <a href="@Url.Action("Packages", "Home")"
-                       class="btn @(currentAction == "Packages" ? "btn-primary" : "btn-light") m-2"
-                       style="border-radius: 20px;">
-                        <i class="fas fa-box"></i> Gói đăng ký
-                    </a>
-
-                    <a href="@Url.Action("RoomPage", "Home")"
-                       class="btn @(currentAction == "RoomPage" ? "btn-primary" : "btn-light") m-2"
-                       style="border-radius: 20px;">
-                        <i class="fas fa-door-open"></i> Phòng
-                    </a>
                 </div>
+                @{
+                    string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+                    string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                }
+
+                @if (username == "admin")
+                {
+                    <a href="@Url.Action("CompanyPage", "Home")"
+                       class="btn @(currentAction == "CompanyPage" ? "btn-primary" : "btn-light") m-2"
+                       style="border-radius: 20px;">
+                        <i class="fas fa-building"></i> Danh sách công ty
+                    </a>
+                }
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="btn @(currentAction == "Index" ? "btn-primary" : "btn-light") m-2"
+                   style="border-radius: 20px;">
+                    <i class="fas fa-users"></i> Khách hàng
+                </a>
+
+                <a href="@Url.Action("Packages", "Home")"
+                   class="btn @(currentAction == "Packages" ? "btn-primary" : "btn-light") m-2"
+                   style="border-radius: 20px;">
+                    <i class="fas fa-box"></i> Gói đăng ký
+                </a>
+
+                <a href="@Url.Action("RoomPage", "Home")"
+                   class="btn @(currentAction == "RoomPage" ? "btn-primary" : "btn-light") m-2"
+                   style="border-radius: 20px;">
+                    <i class="fas fa-door-open"></i> Phòng
+                </a>
             </div>
         </div>
     </div>
@@ -356,6 +365,20 @@
             });
         }
 
+        function fnFormatDate(dateString) {
+            let date = new Date(dateString);
+
+            let day = String(date.getDate()).padStart(2, '0');
+            let month = String(date.getMonth() + 1).padStart(2, '0');
+            let year = date.getFullYear();
+
+            let hours = String(date.getHours()).padStart(2, '0');
+            let minutes = String(date.getMinutes()).padStart(2, '0');
+            let seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${day}/${month}/${year}`;
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             initMenuBehavior('#btnMenu', '#mainMenu');
         });
@@ -370,7 +393,7 @@
             }
 
             const bsCollapse = new bootstrap.Collapse(menuCollapse, {
-                toggle: false 
+                toggle: false
             });
 
             btnMenu.addEventListener('click', () => {

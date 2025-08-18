@@ -30,21 +30,24 @@ namespace Gym
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertPACKAGE(PACKAGE instance);
-    partial void UpdatePACKAGE(PACKAGE instance);
-    partial void DeletePACKAGE(PACKAGE instance);
-    partial void InsertUSER(USER instance);
-    partial void UpdateUSER(USER instance);
-    partial void DeleteUSER(USER instance);
-    partial void InsertCUSTOMER_SHIP(CUSTOMER_SHIP instance);
-    partial void UpdateCUSTOMER_SHIP(CUSTOMER_SHIP instance);
-    partial void DeleteCUSTOMER_SHIP(CUSTOMER_SHIP instance);
-    partial void InsertROOM(ROOM instance);
-    partial void UpdateROOM(ROOM instance);
-    partial void DeleteROOM(ROOM instance);
     partial void InsertCUSTOMER(CUSTOMER instance);
     partial void UpdateCUSTOMER(CUSTOMER instance);
     partial void DeleteCUSTOMER(CUSTOMER instance);
+    partial void InsertCUSTOMER_SHIP(CUSTOMER_SHIP instance);
+    partial void UpdateCUSTOMER_SHIP(CUSTOMER_SHIP instance);
+    partial void DeleteCUSTOMER_SHIP(CUSTOMER_SHIP instance);
+    partial void InsertPACKAGE(PACKAGE instance);
+    partial void UpdatePACKAGE(PACKAGE instance);
+    partial void DeletePACKAGE(PACKAGE instance);
+    partial void InsertROOM(ROOM instance);
+    partial void UpdateROOM(ROOM instance);
+    partial void DeleteROOM(ROOM instance);
+    partial void InsertCOMPANY(COMPANY instance);
+    partial void UpdateCOMPANY(COMPANY instance);
+    partial void DeleteCOMPANY(COMPANY instance);
+    partial void InsertUSER(USER instance);
+    partial void UpdateUSER(USER instance);
+    partial void DeleteUSER(USER instance);
     #endregion
 		
 		public GymShopDataContext(string connection) : 
@@ -71,19 +74,11 @@ namespace Gym
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<PACKAGE> PACKAGEs
+		public System.Data.Linq.Table<CUSTOMER> CUSTOMERs
 		{
 			get
 			{
-				return this.GetTable<PACKAGE>();
-			}
-		}
-		
-		public System.Data.Linq.Table<USER> USERs
-		{
-			get
-			{
-				return this.GetTable<USER>();
+				return this.GetTable<CUSTOMER>();
 			}
 		}
 		
@@ -95,6 +90,14 @@ namespace Gym
 			}
 		}
 		
+		public System.Data.Linq.Table<PACKAGE> PACKAGEs
+		{
+			get
+			{
+				return this.GetTable<PACKAGE>();
+			}
+		}
+		
 		public System.Data.Linq.Table<ROOM> ROOMs
 		{
 			get
@@ -103,854 +106,20 @@ namespace Gym
 			}
 		}
 		
-		public System.Data.Linq.Table<CUSTOMER> CUSTOMERs
+		public System.Data.Linq.Table<COMPANY> COMPANies
 		{
 			get
 			{
-				return this.GetTable<CUSTOMER>();
+				return this.GetTable<COMPANY>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PACKAGES")]
-	public partial class PACKAGE : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PACKAGEID;
-		
-		private string _PACKAGENAME;
-		
-		private int _DURATIONDAYS;
-		
-		private decimal _PRICE;
-		
-		private EntitySet<CUSTOMER_SHIP> _CUSTOMER_SHIPs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPACKAGEIDChanging(int value);
-    partial void OnPACKAGEIDChanged();
-    partial void OnPACKAGENAMEChanging(string value);
-    partial void OnPACKAGENAMEChanged();
-    partial void OnDURATIONDAYSChanging(int value);
-    partial void OnDURATIONDAYSChanged();
-    partial void OnPRICEChanging(decimal value);
-    partial void OnPRICEChanged();
-    #endregion
-		
-		public PACKAGE()
-		{
-			this._CUSTOMER_SHIPs = new EntitySet<CUSTOMER_SHIP>(new Action<CUSTOMER_SHIP>(this.attach_CUSTOMER_SHIPs), new Action<CUSTOMER_SHIP>(this.detach_CUSTOMER_SHIPs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGEID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PACKAGEID
+		public System.Data.Linq.Table<USER> USERs
 		{
 			get
 			{
-				return this._PACKAGEID;
+				return this.GetTable<USER>();
 			}
-			set
-			{
-				if ((this._PACKAGEID != value))
-				{
-					this.OnPACKAGEIDChanging(value);
-					this.SendPropertyChanging();
-					this._PACKAGEID = value;
-					this.SendPropertyChanged("PACKAGEID");
-					this.OnPACKAGEIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGENAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string PACKAGENAME
-		{
-			get
-			{
-				return this._PACKAGENAME;
-			}
-			set
-			{
-				if ((this._PACKAGENAME != value))
-				{
-					this.OnPACKAGENAMEChanging(value);
-					this.SendPropertyChanging();
-					this._PACKAGENAME = value;
-					this.SendPropertyChanged("PACKAGENAME");
-					this.OnPACKAGENAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DURATIONDAYS", DbType="Int NOT NULL")]
-		public int DURATIONDAYS
-		{
-			get
-			{
-				return this._DURATIONDAYS;
-			}
-			set
-			{
-				if ((this._DURATIONDAYS != value))
-				{
-					this.OnDURATIONDAYSChanging(value);
-					this.SendPropertyChanging();
-					this._DURATIONDAYS = value;
-					this.SendPropertyChanged("DURATIONDAYS");
-					this.OnDURATIONDAYSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PRICE", DbType="Decimal(18,2) NOT NULL")]
-		public decimal PRICE
-		{
-			get
-			{
-				return this._PRICE;
-			}
-			set
-			{
-				if ((this._PRICE != value))
-				{
-					this.OnPRICEChanging(value);
-					this.SendPropertyChanging();
-					this._PRICE = value;
-					this.SendPropertyChanged("PRICE");
-					this.OnPRICEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PACKAGE_CUSTOMER_SHIP", Storage="_CUSTOMER_SHIPs", ThisKey="PACKAGEID", OtherKey="PACKAGEID")]
-		public EntitySet<CUSTOMER_SHIP> CUSTOMER_SHIPs
-		{
-			get
-			{
-				return this._CUSTOMER_SHIPs;
-			}
-			set
-			{
-				this._CUSTOMER_SHIPs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_CUSTOMER_SHIPs(CUSTOMER_SHIP entity)
-		{
-			this.SendPropertyChanging();
-			entity.PACKAGE = this;
-		}
-		
-		private void detach_CUSTOMER_SHIPs(CUSTOMER_SHIP entity)
-		{
-			this.SendPropertyChanging();
-			entity.PACKAGE = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.USERS")]
-	public partial class USER : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _USERID;
-		
-		private string _USERNAME;
-		
-		private string _PASSWORDHASH;
-		
-		private string _ROLE;
-		
-		private System.Nullable<bool> _ISACTIVE;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUSERIDChanging(int value);
-    partial void OnUSERIDChanged();
-    partial void OnUSERNAMEChanging(string value);
-    partial void OnUSERNAMEChanged();
-    partial void OnPASSWORDHASHChanging(string value);
-    partial void OnPASSWORDHASHChanged();
-    partial void OnROLEChanging(string value);
-    partial void OnROLEChanged();
-    partial void OnISACTIVEChanging(System.Nullable<bool> value);
-    partial void OnISACTIVEChanged();
-    #endregion
-		
-		public USER()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USERID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int USERID
-		{
-			get
-			{
-				return this._USERID;
-			}
-			set
-			{
-				if ((this._USERID != value))
-				{
-					this.OnUSERIDChanging(value);
-					this.SendPropertyChanging();
-					this._USERID = value;
-					this.SendPropertyChanged("USERID");
-					this.OnUSERIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USERNAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string USERNAME
-		{
-			get
-			{
-				return this._USERNAME;
-			}
-			set
-			{
-				if ((this._USERNAME != value))
-				{
-					this.OnUSERNAMEChanging(value);
-					this.SendPropertyChanging();
-					this._USERNAME = value;
-					this.SendPropertyChanged("USERNAME");
-					this.OnUSERNAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PASSWORDHASH", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string PASSWORDHASH
-		{
-			get
-			{
-				return this._PASSWORDHASH;
-			}
-			set
-			{
-				if ((this._PASSWORDHASH != value))
-				{
-					this.OnPASSWORDHASHChanging(value);
-					this.SendPropertyChanging();
-					this._PASSWORDHASH = value;
-					this.SendPropertyChanged("PASSWORDHASH");
-					this.OnPASSWORDHASHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROLE", DbType="NVarChar(10)")]
-		public string ROLE
-		{
-			get
-			{
-				return this._ROLE;
-			}
-			set
-			{
-				if ((this._ROLE != value))
-				{
-					this.OnROLEChanging(value);
-					this.SendPropertyChanging();
-					this._ROLE = value;
-					this.SendPropertyChanged("ROLE");
-					this.OnROLEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ISACTIVE", DbType="Bit")]
-		public System.Nullable<bool> ISACTIVE
-		{
-			get
-			{
-				return this._ISACTIVE;
-			}
-			set
-			{
-				if ((this._ISACTIVE != value))
-				{
-					this.OnISACTIVEChanging(value);
-					this.SendPropertyChanging();
-					this._ISACTIVE = value;
-					this.SendPropertyChanged("ISACTIVE");
-					this.OnISACTIVEChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CUSTOMER_SHIPS")]
-	public partial class CUSTOMER_SHIP : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _CUSTOMER_SHIPID;
-		
-		private string _CUSTOMER_CODE;
-		
-		private int _PACKAGEID;
-		
-		private System.DateTime _STARTDATE;
-		
-		private System.DateTime _ENDDATE;
-		
-		private decimal _TOTALPRICE;
-		
-		private System.Nullable<System.DateTime> _CREATEDAT;
-		
-		private EntityRef<PACKAGE> _PACKAGE;
-		
-		private EntityRef<CUSTOMER> _CUSTOMER;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCUSTOMER_SHIPIDChanging(int value);
-    partial void OnCUSTOMER_SHIPIDChanged();
-    partial void OnCUSTOMER_CODEChanging(string value);
-    partial void OnCUSTOMER_CODEChanged();
-    partial void OnPACKAGEIDChanging(int value);
-    partial void OnPACKAGEIDChanged();
-    partial void OnSTARTDATEChanging(System.DateTime value);
-    partial void OnSTARTDATEChanged();
-    partial void OnENDDATEChanging(System.DateTime value);
-    partial void OnENDDATEChanged();
-    partial void OnTOTALPRICEChanging(decimal value);
-    partial void OnTOTALPRICEChanged();
-    partial void OnCREATEDATChanging(System.Nullable<System.DateTime> value);
-    partial void OnCREATEDATChanged();
-    #endregion
-		
-		public CUSTOMER_SHIP()
-		{
-			this._PACKAGE = default(EntityRef<PACKAGE>);
-			this._CUSTOMER = default(EntityRef<CUSTOMER>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_SHIPID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int CUSTOMER_SHIPID
-		{
-			get
-			{
-				return this._CUSTOMER_SHIPID;
-			}
-			set
-			{
-				if ((this._CUSTOMER_SHIPID != value))
-				{
-					this.OnCUSTOMER_SHIPIDChanging(value);
-					this.SendPropertyChanging();
-					this._CUSTOMER_SHIPID = value;
-					this.SendPropertyChanged("CUSTOMER_SHIPID");
-					this.OnCUSTOMER_SHIPIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_CODE", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string CUSTOMER_CODE
-		{
-			get
-			{
-				return this._CUSTOMER_CODE;
-			}
-			set
-			{
-				if ((this._CUSTOMER_CODE != value))
-				{
-					if (this._CUSTOMER.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCUSTOMER_CODEChanging(value);
-					this.SendPropertyChanging();
-					this._CUSTOMER_CODE = value;
-					this.SendPropertyChanged("CUSTOMER_CODE");
-					this.OnCUSTOMER_CODEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGEID", DbType="Int NOT NULL")]
-		public int PACKAGEID
-		{
-			get
-			{
-				return this._PACKAGEID;
-			}
-			set
-			{
-				if ((this._PACKAGEID != value))
-				{
-					if (this._PACKAGE.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPACKAGEIDChanging(value);
-					this.SendPropertyChanging();
-					this._PACKAGEID = value;
-					this.SendPropertyChanged("PACKAGEID");
-					this.OnPACKAGEIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STARTDATE", DbType="DateTime NOT NULL")]
-		public System.DateTime STARTDATE
-		{
-			get
-			{
-				return this._STARTDATE;
-			}
-			set
-			{
-				if ((this._STARTDATE != value))
-				{
-					this.OnSTARTDATEChanging(value);
-					this.SendPropertyChanging();
-					this._STARTDATE = value;
-					this.SendPropertyChanged("STARTDATE");
-					this.OnSTARTDATEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENDDATE", DbType="DateTime NOT NULL")]
-		public System.DateTime ENDDATE
-		{
-			get
-			{
-				return this._ENDDATE;
-			}
-			set
-			{
-				if ((this._ENDDATE != value))
-				{
-					this.OnENDDATEChanging(value);
-					this.SendPropertyChanging();
-					this._ENDDATE = value;
-					this.SendPropertyChanged("ENDDATE");
-					this.OnENDDATEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TOTALPRICE", DbType="Decimal(18,2) NOT NULL")]
-		public decimal TOTALPRICE
-		{
-			get
-			{
-				return this._TOTALPRICE;
-			}
-			set
-			{
-				if ((this._TOTALPRICE != value))
-				{
-					this.OnTOTALPRICEChanging(value);
-					this.SendPropertyChanging();
-					this._TOTALPRICE = value;
-					this.SendPropertyChanged("TOTALPRICE");
-					this.OnTOTALPRICEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATEDAT", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CREATEDAT
-		{
-			get
-			{
-				return this._CREATEDAT;
-			}
-			set
-			{
-				if ((this._CREATEDAT != value))
-				{
-					this.OnCREATEDATChanging(value);
-					this.SendPropertyChanging();
-					this._CREATEDAT = value;
-					this.SendPropertyChanged("CREATEDAT");
-					this.OnCREATEDATChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PACKAGE_CUSTOMER_SHIP", Storage="_PACKAGE", ThisKey="PACKAGEID", OtherKey="PACKAGEID", IsForeignKey=true)]
-		public PACKAGE PACKAGE
-		{
-			get
-			{
-				return this._PACKAGE.Entity;
-			}
-			set
-			{
-				PACKAGE previousValue = this._PACKAGE.Entity;
-				if (((previousValue != value) 
-							|| (this._PACKAGE.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PACKAGE.Entity = null;
-						previousValue.CUSTOMER_SHIPs.Remove(this);
-					}
-					this._PACKAGE.Entity = value;
-					if ((value != null))
-					{
-						value.CUSTOMER_SHIPs.Add(this);
-						this._PACKAGEID = value.PACKAGEID;
-					}
-					else
-					{
-						this._PACKAGEID = default(int);
-					}
-					this.SendPropertyChanged("PACKAGE");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CUSTOMER_CUSTOMER_SHIP", Storage="_CUSTOMER", ThisKey="CUSTOMER_CODE", OtherKey="CUSTOMER_CODE", IsForeignKey=true)]
-		public CUSTOMER CUSTOMER
-		{
-			get
-			{
-				return this._CUSTOMER.Entity;
-			}
-			set
-			{
-				CUSTOMER previousValue = this._CUSTOMER.Entity;
-				if (((previousValue != value) 
-							|| (this._CUSTOMER.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._CUSTOMER.Entity = null;
-						previousValue.CUSTOMER_SHIPs.Remove(this);
-					}
-					this._CUSTOMER.Entity = value;
-					if ((value != null))
-					{
-						value.CUSTOMER_SHIPs.Add(this);
-						this._CUSTOMER_CODE = value.CUSTOMER_CODE;
-					}
-					else
-					{
-						this._CUSTOMER_CODE = default(string);
-					}
-					this.SendPropertyChanged("CUSTOMER");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ROOMS")]
-	public partial class ROOM : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ROOM_ID;
-		
-		private string _ROOM_CODE;
-		
-		private string _ROOM_NAME;
-		
-		private System.Nullable<int> _CAPACITY;
-		
-		private string _LOCATION;
-		
-		private string _STATUS;
-		
-		private string _NOTE;
-		
-		private EntitySet<CUSTOMER> _CUSTOMERs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnROOM_IDChanging(int value);
-    partial void OnROOM_IDChanged();
-    partial void OnROOM_CODEChanging(string value);
-    partial void OnROOM_CODEChanged();
-    partial void OnROOM_NAMEChanging(string value);
-    partial void OnROOM_NAMEChanged();
-    partial void OnCAPACITYChanging(System.Nullable<int> value);
-    partial void OnCAPACITYChanged();
-    partial void OnLOCATIONChanging(string value);
-    partial void OnLOCATIONChanged();
-    partial void OnSTATUSChanging(string value);
-    partial void OnSTATUSChanged();
-    partial void OnNOTEChanging(string value);
-    partial void OnNOTEChanged();
-    #endregion
-		
-		public ROOM()
-		{
-			this._CUSTOMERs = new EntitySet<CUSTOMER>(new Action<CUSTOMER>(this.attach_CUSTOMERs), new Action<CUSTOMER>(this.detach_CUSTOMERs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ROOM_ID
-		{
-			get
-			{
-				return this._ROOM_ID;
-			}
-			set
-			{
-				if ((this._ROOM_ID != value))
-				{
-					this.OnROOM_IDChanging(value);
-					this.SendPropertyChanging();
-					this._ROOM_ID = value;
-					this.SendPropertyChanged("ROOM_ID");
-					this.OnROOM_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_CODE", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string ROOM_CODE
-		{
-			get
-			{
-				return this._ROOM_CODE;
-			}
-			set
-			{
-				if ((this._ROOM_CODE != value))
-				{
-					this.OnROOM_CODEChanging(value);
-					this.SendPropertyChanging();
-					this._ROOM_CODE = value;
-					this.SendPropertyChanged("ROOM_CODE");
-					this.OnROOM_CODEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_NAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string ROOM_NAME
-		{
-			get
-			{
-				return this._ROOM_NAME;
-			}
-			set
-			{
-				if ((this._ROOM_NAME != value))
-				{
-					this.OnROOM_NAMEChanging(value);
-					this.SendPropertyChanging();
-					this._ROOM_NAME = value;
-					this.SendPropertyChanged("ROOM_NAME");
-					this.OnROOM_NAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CAPACITY", DbType="Int")]
-		public System.Nullable<int> CAPACITY
-		{
-			get
-			{
-				return this._CAPACITY;
-			}
-			set
-			{
-				if ((this._CAPACITY != value))
-				{
-					this.OnCAPACITYChanging(value);
-					this.SendPropertyChanging();
-					this._CAPACITY = value;
-					this.SendPropertyChanged("CAPACITY");
-					this.OnCAPACITYChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LOCATION", DbType="NVarChar(100)")]
-		public string LOCATION
-		{
-			get
-			{
-				return this._LOCATION;
-			}
-			set
-			{
-				if ((this._LOCATION != value))
-				{
-					this.OnLOCATIONChanging(value);
-					this.SendPropertyChanging();
-					this._LOCATION = value;
-					this.SendPropertyChanged("LOCATION");
-					this.OnLOCATIONChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STATUS", DbType="NVarChar(20)")]
-		public string STATUS
-		{
-			get
-			{
-				return this._STATUS;
-			}
-			set
-			{
-				if ((this._STATUS != value))
-				{
-					this.OnSTATUSChanging(value);
-					this.SendPropertyChanging();
-					this._STATUS = value;
-					this.SendPropertyChanged("STATUS");
-					this.OnSTATUSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NOTE", DbType="NVarChar(100)")]
-		public string NOTE
-		{
-			get
-			{
-				return this._NOTE;
-			}
-			set
-			{
-				if ((this._NOTE != value))
-				{
-					this.OnNOTEChanging(value);
-					this.SendPropertyChanging();
-					this._NOTE = value;
-					this.SendPropertyChanged("NOTE");
-					this.OnNOTEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ROOM_CUSTOMER", Storage="_CUSTOMERs", ThisKey="ROOM_CODE", OtherKey="ROOM_CODE")]
-		public EntitySet<CUSTOMER> CUSTOMERs
-		{
-			get
-			{
-				return this._CUSTOMERs;
-			}
-			set
-			{
-				this._CUSTOMERs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_CUSTOMERs(CUSTOMER entity)
-		{
-			this.SendPropertyChanging();
-			entity.ROOM = this;
-		}
-		
-		private void detach_CUSTOMERs(CUSTOMER entity)
-		{
-			this.SendPropertyChanging();
-			entity.ROOM = null;
 		}
 	}
 	
@@ -994,6 +163,8 @@ namespace Gym
 		
 		private System.Nullable<System.DateTime> _LAST_UPDATE_DATE;
 		
+		private string _COMPANY_CODE;
+		
 		private EntitySet<CUSTOMER_SHIP> _CUSTOMER_SHIPs;
 		
 		private EntityRef<ROOM> _ROOM;
@@ -1036,6 +207,8 @@ namespace Gym
     partial void OnLAST_UPDATE_USERChanged();
     partial void OnLAST_UPDATE_DATEChanging(System.Nullable<System.DateTime> value);
     partial void OnLAST_UPDATE_DATEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
     #endregion
 		
 		public CUSTOMER()
@@ -1389,6 +562,26 @@ namespace Gym
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CUSTOMER_CUSTOMER_SHIP", Storage="_CUSTOMER_SHIPs", ThisKey="CUSTOMER_CODE", OtherKey="CUSTOMER_CODE")]
 		public EntitySet<CUSTOMER_SHIP> CUSTOMER_SHIPs
 		{
@@ -1466,6 +659,1387 @@ namespace Gym
 		{
 			this.SendPropertyChanging();
 			entity.CUSTOMER = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CUSTOMER_SHIPS")]
+	public partial class CUSTOMER_SHIP : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CUSTOMER_SHIPID;
+		
+		private string _CUSTOMER_CODE;
+		
+		private int _PACKAGEID;
+		
+		private System.DateTime _STARTDATE;
+		
+		private System.DateTime _ENDDATE;
+		
+		private decimal _TOTALPRICE;
+		
+		private System.Nullable<System.DateTime> _CREATEDAT;
+		
+		private string _PAYMENT;
+		
+		private System.Nullable<System.DateTime> _PAYMENT_DATE;
+		
+		private string _CREATE_USER;
+		
+		private string _LAST_UPDATE_USER;
+		
+		private System.Nullable<System.DateTime> _LAST_UPDATE_DATE;
+		
+		private string _NOTE;
+		
+		private string _COMPANY_CODE;
+		
+		private EntityRef<CUSTOMER> _CUSTOMER;
+		
+		private EntityRef<PACKAGE> _PACKAGE;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCUSTOMER_SHIPIDChanging(int value);
+    partial void OnCUSTOMER_SHIPIDChanged();
+    partial void OnCUSTOMER_CODEChanging(string value);
+    partial void OnCUSTOMER_CODEChanged();
+    partial void OnPACKAGEIDChanging(int value);
+    partial void OnPACKAGEIDChanged();
+    partial void OnSTARTDATEChanging(System.DateTime value);
+    partial void OnSTARTDATEChanged();
+    partial void OnENDDATEChanging(System.DateTime value);
+    partial void OnENDDATEChanged();
+    partial void OnTOTALPRICEChanging(decimal value);
+    partial void OnTOTALPRICEChanged();
+    partial void OnCREATEDATChanging(System.Nullable<System.DateTime> value);
+    partial void OnCREATEDATChanged();
+    partial void OnPAYMENTChanging(string value);
+    partial void OnPAYMENTChanged();
+    partial void OnPAYMENT_DATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnPAYMENT_DATEChanged();
+    partial void OnCREATE_USERChanging(string value);
+    partial void OnCREATE_USERChanged();
+    partial void OnLAST_UPDATE_USERChanging(string value);
+    partial void OnLAST_UPDATE_USERChanged();
+    partial void OnLAST_UPDATE_DATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnLAST_UPDATE_DATEChanged();
+    partial void OnNOTEChanging(string value);
+    partial void OnNOTEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    #endregion
+		
+		public CUSTOMER_SHIP()
+		{
+			this._CUSTOMER = default(EntityRef<CUSTOMER>);
+			this._PACKAGE = default(EntityRef<PACKAGE>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_SHIPID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int CUSTOMER_SHIPID
+		{
+			get
+			{
+				return this._CUSTOMER_SHIPID;
+			}
+			set
+			{
+				if ((this._CUSTOMER_SHIPID != value))
+				{
+					this.OnCUSTOMER_SHIPIDChanging(value);
+					this.SendPropertyChanging();
+					this._CUSTOMER_SHIPID = value;
+					this.SendPropertyChanged("CUSTOMER_SHIPID");
+					this.OnCUSTOMER_SHIPIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CUSTOMER_CODE", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string CUSTOMER_CODE
+		{
+			get
+			{
+				return this._CUSTOMER_CODE;
+			}
+			set
+			{
+				if ((this._CUSTOMER_CODE != value))
+				{
+					if (this._CUSTOMER.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCUSTOMER_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._CUSTOMER_CODE = value;
+					this.SendPropertyChanged("CUSTOMER_CODE");
+					this.OnCUSTOMER_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGEID", DbType="Int NOT NULL")]
+		public int PACKAGEID
+		{
+			get
+			{
+				return this._PACKAGEID;
+			}
+			set
+			{
+				if ((this._PACKAGEID != value))
+				{
+					if (this._PACKAGE.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPACKAGEIDChanging(value);
+					this.SendPropertyChanging();
+					this._PACKAGEID = value;
+					this.SendPropertyChanged("PACKAGEID");
+					this.OnPACKAGEIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STARTDATE", DbType="DateTime NOT NULL")]
+		public System.DateTime STARTDATE
+		{
+			get
+			{
+				return this._STARTDATE;
+			}
+			set
+			{
+				if ((this._STARTDATE != value))
+				{
+					this.OnSTARTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._STARTDATE = value;
+					this.SendPropertyChanged("STARTDATE");
+					this.OnSTARTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENDDATE", DbType="DateTime NOT NULL")]
+		public System.DateTime ENDDATE
+		{
+			get
+			{
+				return this._ENDDATE;
+			}
+			set
+			{
+				if ((this._ENDDATE != value))
+				{
+					this.OnENDDATEChanging(value);
+					this.SendPropertyChanging();
+					this._ENDDATE = value;
+					this.SendPropertyChanged("ENDDATE");
+					this.OnENDDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TOTALPRICE", DbType="Decimal(18,2) NOT NULL")]
+		public decimal TOTALPRICE
+		{
+			get
+			{
+				return this._TOTALPRICE;
+			}
+			set
+			{
+				if ((this._TOTALPRICE != value))
+				{
+					this.OnTOTALPRICEChanging(value);
+					this.SendPropertyChanging();
+					this._TOTALPRICE = value;
+					this.SendPropertyChanged("TOTALPRICE");
+					this.OnTOTALPRICEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATEDAT", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CREATEDAT
+		{
+			get
+			{
+				return this._CREATEDAT;
+			}
+			set
+			{
+				if ((this._CREATEDAT != value))
+				{
+					this.OnCREATEDATChanging(value);
+					this.SendPropertyChanging();
+					this._CREATEDAT = value;
+					this.SendPropertyChanged("CREATEDAT");
+					this.OnCREATEDATChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PAYMENT", DbType="NVarChar(10)")]
+		public string PAYMENT
+		{
+			get
+			{
+				return this._PAYMENT;
+			}
+			set
+			{
+				if ((this._PAYMENT != value))
+				{
+					this.OnPAYMENTChanging(value);
+					this.SendPropertyChanging();
+					this._PAYMENT = value;
+					this.SendPropertyChanged("PAYMENT");
+					this.OnPAYMENTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PAYMENT_DATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PAYMENT_DATE
+		{
+			get
+			{
+				return this._PAYMENT_DATE;
+			}
+			set
+			{
+				if ((this._PAYMENT_DATE != value))
+				{
+					this.OnPAYMENT_DATEChanging(value);
+					this.SendPropertyChanging();
+					this._PAYMENT_DATE = value;
+					this.SendPropertyChanged("PAYMENT_DATE");
+					this.OnPAYMENT_DATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATE_USER", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string CREATE_USER
+		{
+			get
+			{
+				return this._CREATE_USER;
+			}
+			set
+			{
+				if ((this._CREATE_USER != value))
+				{
+					this.OnCREATE_USERChanging(value);
+					this.SendPropertyChanging();
+					this._CREATE_USER = value;
+					this.SendPropertyChanged("CREATE_USER");
+					this.OnCREATE_USERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LAST_UPDATE_USER", DbType="NVarChar(20)")]
+		public string LAST_UPDATE_USER
+		{
+			get
+			{
+				return this._LAST_UPDATE_USER;
+			}
+			set
+			{
+				if ((this._LAST_UPDATE_USER != value))
+				{
+					this.OnLAST_UPDATE_USERChanging(value);
+					this.SendPropertyChanging();
+					this._LAST_UPDATE_USER = value;
+					this.SendPropertyChanged("LAST_UPDATE_USER");
+					this.OnLAST_UPDATE_USERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LAST_UPDATE_DATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LAST_UPDATE_DATE
+		{
+			get
+			{
+				return this._LAST_UPDATE_DATE;
+			}
+			set
+			{
+				if ((this._LAST_UPDATE_DATE != value))
+				{
+					this.OnLAST_UPDATE_DATEChanging(value);
+					this.SendPropertyChanging();
+					this._LAST_UPDATE_DATE = value;
+					this.SendPropertyChanged("LAST_UPDATE_DATE");
+					this.OnLAST_UPDATE_DATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NOTE", DbType="NVarChar(50)")]
+		public string NOTE
+		{
+			get
+			{
+				return this._NOTE;
+			}
+			set
+			{
+				if ((this._NOTE != value))
+				{
+					this.OnNOTEChanging(value);
+					this.SendPropertyChanging();
+					this._NOTE = value;
+					this.SendPropertyChanged("NOTE");
+					this.OnNOTEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CUSTOMER_CUSTOMER_SHIP", Storage="_CUSTOMER", ThisKey="CUSTOMER_CODE", OtherKey="CUSTOMER_CODE", IsForeignKey=true)]
+		public CUSTOMER CUSTOMER
+		{
+			get
+			{
+				return this._CUSTOMER.Entity;
+			}
+			set
+			{
+				CUSTOMER previousValue = this._CUSTOMER.Entity;
+				if (((previousValue != value) 
+							|| (this._CUSTOMER.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CUSTOMER.Entity = null;
+						previousValue.CUSTOMER_SHIPs.Remove(this);
+					}
+					this._CUSTOMER.Entity = value;
+					if ((value != null))
+					{
+						value.CUSTOMER_SHIPs.Add(this);
+						this._CUSTOMER_CODE = value.CUSTOMER_CODE;
+					}
+					else
+					{
+						this._CUSTOMER_CODE = default(string);
+					}
+					this.SendPropertyChanged("CUSTOMER");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PACKAGE_CUSTOMER_SHIP", Storage="_PACKAGE", ThisKey="PACKAGEID", OtherKey="PACKAGEID", IsForeignKey=true)]
+		public PACKAGE PACKAGE
+		{
+			get
+			{
+				return this._PACKAGE.Entity;
+			}
+			set
+			{
+				PACKAGE previousValue = this._PACKAGE.Entity;
+				if (((previousValue != value) 
+							|| (this._PACKAGE.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PACKAGE.Entity = null;
+						previousValue.CUSTOMER_SHIPs.Remove(this);
+					}
+					this._PACKAGE.Entity = value;
+					if ((value != null))
+					{
+						value.CUSTOMER_SHIPs.Add(this);
+						this._PACKAGEID = value.PACKAGEID;
+					}
+					else
+					{
+						this._PACKAGEID = default(int);
+					}
+					this.SendPropertyChanged("PACKAGE");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PACKAGES")]
+	public partial class PACKAGE : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PACKAGEID;
+		
+		private string _PACKAGENAME;
+		
+		private int _DURATIONDAYS;
+		
+		private decimal _PRICE;
+		
+		private string _COMPANY_CODE;
+		
+		private EntitySet<CUSTOMER_SHIP> _CUSTOMER_SHIPs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPACKAGEIDChanging(int value);
+    partial void OnPACKAGEIDChanged();
+    partial void OnPACKAGENAMEChanging(string value);
+    partial void OnPACKAGENAMEChanged();
+    partial void OnDURATIONDAYSChanging(int value);
+    partial void OnDURATIONDAYSChanged();
+    partial void OnPRICEChanging(decimal value);
+    partial void OnPRICEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    #endregion
+		
+		public PACKAGE()
+		{
+			this._CUSTOMER_SHIPs = new EntitySet<CUSTOMER_SHIP>(new Action<CUSTOMER_SHIP>(this.attach_CUSTOMER_SHIPs), new Action<CUSTOMER_SHIP>(this.detach_CUSTOMER_SHIPs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGEID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PACKAGEID
+		{
+			get
+			{
+				return this._PACKAGEID;
+			}
+			set
+			{
+				if ((this._PACKAGEID != value))
+				{
+					this.OnPACKAGEIDChanging(value);
+					this.SendPropertyChanging();
+					this._PACKAGEID = value;
+					this.SendPropertyChanged("PACKAGEID");
+					this.OnPACKAGEIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PACKAGENAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string PACKAGENAME
+		{
+			get
+			{
+				return this._PACKAGENAME;
+			}
+			set
+			{
+				if ((this._PACKAGENAME != value))
+				{
+					this.OnPACKAGENAMEChanging(value);
+					this.SendPropertyChanging();
+					this._PACKAGENAME = value;
+					this.SendPropertyChanged("PACKAGENAME");
+					this.OnPACKAGENAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DURATIONDAYS", DbType="Int NOT NULL")]
+		public int DURATIONDAYS
+		{
+			get
+			{
+				return this._DURATIONDAYS;
+			}
+			set
+			{
+				if ((this._DURATIONDAYS != value))
+				{
+					this.OnDURATIONDAYSChanging(value);
+					this.SendPropertyChanging();
+					this._DURATIONDAYS = value;
+					this.SendPropertyChanged("DURATIONDAYS");
+					this.OnDURATIONDAYSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PRICE", DbType="Decimal(18,2) NOT NULL")]
+		public decimal PRICE
+		{
+			get
+			{
+				return this._PRICE;
+			}
+			set
+			{
+				if ((this._PRICE != value))
+				{
+					this.OnPRICEChanging(value);
+					this.SendPropertyChanging();
+					this._PRICE = value;
+					this.SendPropertyChanged("PRICE");
+					this.OnPRICEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PACKAGE_CUSTOMER_SHIP", Storage="_CUSTOMER_SHIPs", ThisKey="PACKAGEID", OtherKey="PACKAGEID")]
+		public EntitySet<CUSTOMER_SHIP> CUSTOMER_SHIPs
+		{
+			get
+			{
+				return this._CUSTOMER_SHIPs;
+			}
+			set
+			{
+				this._CUSTOMER_SHIPs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CUSTOMER_SHIPs(CUSTOMER_SHIP entity)
+		{
+			this.SendPropertyChanging();
+			entity.PACKAGE = this;
+		}
+		
+		private void detach_CUSTOMER_SHIPs(CUSTOMER_SHIP entity)
+		{
+			this.SendPropertyChanging();
+			entity.PACKAGE = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ROOMS")]
+	public partial class ROOM : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ROOM_ID;
+		
+		private string _ROOM_CODE;
+		
+		private string _ROOM_NAME;
+		
+		private System.Nullable<int> _CAPACITY;
+		
+		private string _LOCATION;
+		
+		private string _STATUS;
+		
+		private string _NOTE;
+		
+		private string _COMPANY_CODE;
+		
+		private EntitySet<CUSTOMER> _CUSTOMERs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnROOM_IDChanging(int value);
+    partial void OnROOM_IDChanged();
+    partial void OnROOM_CODEChanging(string value);
+    partial void OnROOM_CODEChanged();
+    partial void OnROOM_NAMEChanging(string value);
+    partial void OnROOM_NAMEChanged();
+    partial void OnCAPACITYChanging(System.Nullable<int> value);
+    partial void OnCAPACITYChanged();
+    partial void OnLOCATIONChanging(string value);
+    partial void OnLOCATIONChanged();
+    partial void OnSTATUSChanging(string value);
+    partial void OnSTATUSChanged();
+    partial void OnNOTEChanging(string value);
+    partial void OnNOTEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    #endregion
+		
+		public ROOM()
+		{
+			this._CUSTOMERs = new EntitySet<CUSTOMER>(new Action<CUSTOMER>(this.attach_CUSTOMERs), new Action<CUSTOMER>(this.detach_CUSTOMERs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ROOM_ID
+		{
+			get
+			{
+				return this._ROOM_ID;
+			}
+			set
+			{
+				if ((this._ROOM_ID != value))
+				{
+					this.OnROOM_IDChanging(value);
+					this.SendPropertyChanging();
+					this._ROOM_ID = value;
+					this.SendPropertyChanged("ROOM_ID");
+					this.OnROOM_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_CODE", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string ROOM_CODE
+		{
+			get
+			{
+				return this._ROOM_CODE;
+			}
+			set
+			{
+				if ((this._ROOM_CODE != value))
+				{
+					this.OnROOM_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._ROOM_CODE = value;
+					this.SendPropertyChanged("ROOM_CODE");
+					this.OnROOM_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROOM_NAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ROOM_NAME
+		{
+			get
+			{
+				return this._ROOM_NAME;
+			}
+			set
+			{
+				if ((this._ROOM_NAME != value))
+				{
+					this.OnROOM_NAMEChanging(value);
+					this.SendPropertyChanging();
+					this._ROOM_NAME = value;
+					this.SendPropertyChanged("ROOM_NAME");
+					this.OnROOM_NAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CAPACITY", DbType="Int")]
+		public System.Nullable<int> CAPACITY
+		{
+			get
+			{
+				return this._CAPACITY;
+			}
+			set
+			{
+				if ((this._CAPACITY != value))
+				{
+					this.OnCAPACITYChanging(value);
+					this.SendPropertyChanging();
+					this._CAPACITY = value;
+					this.SendPropertyChanged("CAPACITY");
+					this.OnCAPACITYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LOCATION", DbType="NVarChar(100)")]
+		public string LOCATION
+		{
+			get
+			{
+				return this._LOCATION;
+			}
+			set
+			{
+				if ((this._LOCATION != value))
+				{
+					this.OnLOCATIONChanging(value);
+					this.SendPropertyChanging();
+					this._LOCATION = value;
+					this.SendPropertyChanged("LOCATION");
+					this.OnLOCATIONChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STATUS", DbType="NVarChar(20)")]
+		public string STATUS
+		{
+			get
+			{
+				return this._STATUS;
+			}
+			set
+			{
+				if ((this._STATUS != value))
+				{
+					this.OnSTATUSChanging(value);
+					this.SendPropertyChanging();
+					this._STATUS = value;
+					this.SendPropertyChanged("STATUS");
+					this.OnSTATUSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NOTE", DbType="NVarChar(100)")]
+		public string NOTE
+		{
+			get
+			{
+				return this._NOTE;
+			}
+			set
+			{
+				if ((this._NOTE != value))
+				{
+					this.OnNOTEChanging(value);
+					this.SendPropertyChanging();
+					this._NOTE = value;
+					this.SendPropertyChanged("NOTE");
+					this.OnNOTEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ROOM_CUSTOMER", Storage="_CUSTOMERs", ThisKey="ROOM_CODE", OtherKey="ROOM_CODE")]
+		public EntitySet<CUSTOMER> CUSTOMERs
+		{
+			get
+			{
+				return this._CUSTOMERs;
+			}
+			set
+			{
+				this._CUSTOMERs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CUSTOMERs(CUSTOMER entity)
+		{
+			this.SendPropertyChanging();
+			entity.ROOM = this;
+		}
+		
+		private void detach_CUSTOMERs(CUSTOMER entity)
+		{
+			this.SendPropertyChanging();
+			entity.ROOM = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.COMPANY")]
+	public partial class COMPANY : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _COMPANY_ID;
+		
+		private string _COMPANY_NAME;
+		
+		private string _COMPANY_CODE;
+		
+		private string _COMPANY_ADDRESS;
+		
+		private string _COMPANY_EMAIL;
+		
+		private string _COMPANY_PHONE;
+		
+		private System.Nullable<System.DateTime> _CREATED_DATE;
+		
+		private string _CREATED_BY;
+		
+		private EntitySet<USER> _USERs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCOMPANY_IDChanging(int value);
+    partial void OnCOMPANY_IDChanged();
+    partial void OnCOMPANY_NAMEChanging(string value);
+    partial void OnCOMPANY_NAMEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    partial void OnCOMPANY_ADDRESSChanging(string value);
+    partial void OnCOMPANY_ADDRESSChanged();
+    partial void OnCOMPANY_EMAILChanging(string value);
+    partial void OnCOMPANY_EMAILChanged();
+    partial void OnCOMPANY_PHONEChanging(string value);
+    partial void OnCOMPANY_PHONEChanged();
+    partial void OnCREATED_DATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnCREATED_DATEChanged();
+    partial void OnCREATED_BYChanging(string value);
+    partial void OnCREATED_BYChanged();
+    #endregion
+		
+		public COMPANY()
+		{
+			this._USERs = new EntitySet<USER>(new Action<USER>(this.attach_USERs), new Action<USER>(this.detach_USERs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int COMPANY_ID
+		{
+			get
+			{
+				return this._COMPANY_ID;
+			}
+			set
+			{
+				if ((this._COMPANY_ID != value))
+				{
+					this.OnCOMPANY_IDChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_ID = value;
+					this.SendPropertyChanged("COMPANY_ID");
+					this.OnCOMPANY_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_NAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string COMPANY_NAME
+		{
+			get
+			{
+				return this._COMPANY_NAME;
+			}
+			set
+			{
+				if ((this._COMPANY_NAME != value))
+				{
+					this.OnCOMPANY_NAMEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_NAME = value;
+					this.SendPropertyChanged("COMPANY_NAME");
+					this.OnCOMPANY_NAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ADDRESS", DbType="NVarChar(100)")]
+		public string COMPANY_ADDRESS
+		{
+			get
+			{
+				return this._COMPANY_ADDRESS;
+			}
+			set
+			{
+				if ((this._COMPANY_ADDRESS != value))
+				{
+					this.OnCOMPANY_ADDRESSChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_ADDRESS = value;
+					this.SendPropertyChanged("COMPANY_ADDRESS");
+					this.OnCOMPANY_ADDRESSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_EMAIL", DbType="NVarChar(30)")]
+		public string COMPANY_EMAIL
+		{
+			get
+			{
+				return this._COMPANY_EMAIL;
+			}
+			set
+			{
+				if ((this._COMPANY_EMAIL != value))
+				{
+					this.OnCOMPANY_EMAILChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_EMAIL = value;
+					this.SendPropertyChanged("COMPANY_EMAIL");
+					this.OnCOMPANY_EMAILChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_PHONE", DbType="NVarChar(15)")]
+		public string COMPANY_PHONE
+		{
+			get
+			{
+				return this._COMPANY_PHONE;
+			}
+			set
+			{
+				if ((this._COMPANY_PHONE != value))
+				{
+					this.OnCOMPANY_PHONEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_PHONE = value;
+					this.SendPropertyChanged("COMPANY_PHONE");
+					this.OnCOMPANY_PHONEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_DATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CREATED_DATE
+		{
+			get
+			{
+				return this._CREATED_DATE;
+			}
+			set
+			{
+				if ((this._CREATED_DATE != value))
+				{
+					this.OnCREATED_DATEChanging(value);
+					this.SendPropertyChanging();
+					this._CREATED_DATE = value;
+					this.SendPropertyChanged("CREATED_DATE");
+					this.OnCREATED_DATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_BY", DbType="NVarChar(100)")]
+		public string CREATED_BY
+		{
+			get
+			{
+				return this._CREATED_BY;
+			}
+			set
+			{
+				if ((this._CREATED_BY != value))
+				{
+					this.OnCREATED_BYChanging(value);
+					this.SendPropertyChanging();
+					this._CREATED_BY = value;
+					this.SendPropertyChanged("CREATED_BY");
+					this.OnCREATED_BYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="COMPANY_USER", Storage="_USERs", ThisKey="COMPANY_CODE", OtherKey="COMPANY_CODE")]
+		public EntitySet<USER> USERs
+		{
+			get
+			{
+				return this._USERs;
+			}
+			set
+			{
+				this._USERs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_USERs(USER entity)
+		{
+			this.SendPropertyChanging();
+			entity.COMPANY = this;
+		}
+		
+		private void detach_USERs(USER entity)
+		{
+			this.SendPropertyChanging();
+			entity.COMPANY = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.USERS")]
+	public partial class USER : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _USERID;
+		
+		private string _USERNAME;
+		
+		private string _PASSWORDHASH;
+		
+		private string _ROLE;
+		
+		private System.Nullable<bool> _ISACTIVE;
+		
+		private string _COMPANY_CODE;
+		
+		private EntityRef<COMPANY> _COMPANY;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUSERIDChanging(int value);
+    partial void OnUSERIDChanged();
+    partial void OnUSERNAMEChanging(string value);
+    partial void OnUSERNAMEChanged();
+    partial void OnPASSWORDHASHChanging(string value);
+    partial void OnPASSWORDHASHChanged();
+    partial void OnROLEChanging(string value);
+    partial void OnROLEChanged();
+    partial void OnISACTIVEChanging(System.Nullable<bool> value);
+    partial void OnISACTIVEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    #endregion
+		
+		public USER()
+		{
+			this._COMPANY = default(EntityRef<COMPANY>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USERID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int USERID
+		{
+			get
+			{
+				return this._USERID;
+			}
+			set
+			{
+				if ((this._USERID != value))
+				{
+					this.OnUSERIDChanging(value);
+					this.SendPropertyChanging();
+					this._USERID = value;
+					this.SendPropertyChanged("USERID");
+					this.OnUSERIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USERNAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string USERNAME
+		{
+			get
+			{
+				return this._USERNAME;
+			}
+			set
+			{
+				if ((this._USERNAME != value))
+				{
+					this.OnUSERNAMEChanging(value);
+					this.SendPropertyChanging();
+					this._USERNAME = value;
+					this.SendPropertyChanged("USERNAME");
+					this.OnUSERNAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PASSWORDHASH", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string PASSWORDHASH
+		{
+			get
+			{
+				return this._PASSWORDHASH;
+			}
+			set
+			{
+				if ((this._PASSWORDHASH != value))
+				{
+					this.OnPASSWORDHASHChanging(value);
+					this.SendPropertyChanging();
+					this._PASSWORDHASH = value;
+					this.SendPropertyChanged("PASSWORDHASH");
+					this.OnPASSWORDHASHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROLE", DbType="NVarChar(10)")]
+		public string ROLE
+		{
+			get
+			{
+				return this._ROLE;
+			}
+			set
+			{
+				if ((this._ROLE != value))
+				{
+					this.OnROLEChanging(value);
+					this.SendPropertyChanging();
+					this._ROLE = value;
+					this.SendPropertyChanged("ROLE");
+					this.OnROLEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ISACTIVE", DbType="Bit")]
+		public System.Nullable<bool> ISACTIVE
+		{
+			get
+			{
+				return this._ISACTIVE;
+			}
+			set
+			{
+				if ((this._ISACTIVE != value))
+				{
+					this.OnISACTIVEChanging(value);
+					this.SendPropertyChanging();
+					this._ISACTIVE = value;
+					this.SendPropertyChanged("ISACTIVE");
+					this.OnISACTIVEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					if (this._COMPANY.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="COMPANY_USER", Storage="_COMPANY", ThisKey="COMPANY_CODE", OtherKey="COMPANY_CODE", IsForeignKey=true)]
+		public COMPANY COMPANY
+		{
+			get
+			{
+				return this._COMPANY.Entity;
+			}
+			set
+			{
+				COMPANY previousValue = this._COMPANY.Entity;
+				if (((previousValue != value) 
+							|| (this._COMPANY.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._COMPANY.Entity = null;
+						previousValue.USERs.Remove(this);
+					}
+					this._COMPANY.Entity = value;
+					if ((value != null))
+					{
+						value.USERs.Add(this);
+						this._COMPANY_CODE = value.COMPANY_CODE;
+					}
+					else
+					{
+						this._COMPANY_CODE = default(string);
+					}
+					this.SendPropertyChanged("COMPANY");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
