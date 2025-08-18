@@ -1,6 +1,7 @@
 ﻿@{
     var userSession = Session["USER_SESSION"] as Gym.UserSession;
     var username = userSession?.Username ?? "Guest";
+    var company_code = userSession?.CompanyCode ?? "";
 }
 <!DOCTYPE html>
 <html>
@@ -213,7 +214,7 @@
                     string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
                 }
 
-                @if (username == "admin")
+                @if (username == "admin" && company_code == "VMT")
                 {
                     <a href="@Url.Action("CompanyPage", "Home")"
                        class="btn @(currentAction == "CompanyPage" ? "btn-primary" : "btn-light") m-2"
