@@ -1838,6 +1838,8 @@ namespace Gym
 		
 		private string _COMPANY_CODE;
 		
+		private string _FULLNAME;
+		
 		private EntityRef<COMPANY> _COMPANY;
 		
     #region Extensibility Method Definitions
@@ -1856,6 +1858,8 @@ namespace Gym
     partial void OnISACTIVEChanged();
     partial void OnCOMPANY_CODEChanging(string value);
     partial void OnCOMPANY_CODEChanged();
+    partial void OnFULLNAMEChanging(string value);
+    partial void OnFULLNAMEChanged();
     #endregion
 		
 		public USER()
@@ -1984,6 +1988,26 @@ namespace Gym
 					this._COMPANY_CODE = value;
 					this.SendPropertyChanged("COMPANY_CODE");
 					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FULLNAME", DbType="NVarChar(50)")]
+		public string FULLNAME
+		{
+			get
+			{
+				return this._FULLNAME;
+			}
+			set
+			{
+				if ((this._FULLNAME != value))
+				{
+					this.OnFULLNAMEChanging(value);
+					this.SendPropertyChanging();
+					this._FULLNAME = value;
+					this.SendPropertyChanged("FULLNAME");
+					this.OnFULLNAMEChanged();
 				}
 			}
 		}

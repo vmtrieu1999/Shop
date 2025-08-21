@@ -1,0 +1,500 @@
+﻿@{
+    ViewBag.Title = "Công ty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Công ty</title>
+    <style>
+        @@media screen and (orientation:portrait) {
+
+            td {
+                font-size: 20px;
+            }
+
+            th {
+                white-space: nowrap;
+            }
+
+            #LayoutMobile {
+                display: block;
+            }
+
+            #LayoutDesktop {
+                display: none !important;
+            }
+
+            #LayoutDetailMobile {
+                display: block;
+            }
+
+            #LayoutDetailDesktop {
+                display: none;
+            }
+        }
+
+        @@media screen and (orientation:landscape) {
+            #LayoutMobile {
+                display: none;
+            }
+
+            #LayoutDesktop {
+                display: block;
+            }
+
+            #LayoutDetailMobile {
+                display: none;
+            }
+
+            #LayoutDetailDesktop {
+                display: block;
+            }
+        }
+
+        .block {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            width: 100%
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP TOOLBAR WRAPPER -->
+    <!-- END TOP TOOLBAR WRAPPER -->
+    <div class="row m-0">
+        <div class="col-12 m-0 p-0 shadow" style="background-color: rgba(255,255,255,0.9)">
+            <div id="divGroup" class="d-flex flex-wrap">
+            </div>
+        </div>
+        <div class="col-12" style="padding-top: 80px; margin-top: 20px;">
+            <div class="row p-2 m-0">
+                <div class="col-xl-2 m-10 p-10 mb-3">
+                    <div class="p-3 shadow rounded-border" style="background-color: whitesmoke; border-radius: 20px;">
+                        <div class="form-group">
+                            <label>Mã:</label>
+                            <input type="text" class="form-control" id="txtCode">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên:</label>
+                            <input type="text" class="form-control" id="txtName">
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetCompany()"><i class="fas fa-search"></i>Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-10 m-10 p-10">
+                    <div class="p-3 shadow rounded-border" style="border-radius: 20px; background-color: whitesmoke">
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <button type="button"
+                                        id="add-company-btn"
+                                        class="btn btn-primary"
+                                        style="margin-bottom: 8px; border-radius: 20px;">
+                                    <i class="fas fa-plus"></i> Thêm
+                                </button>
+                            </div>
+                        </div>
+                        <div id="LayoutDesktop">
+                            <table id="company-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Mã</th>
+                                        <th>Tên</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div id="LayoutMobile">
+                            <input type="text" id="txtSearchCompany" class="form-control mb-3" placeholder="Tìm kiếm mã, tên, địa chỉ, sđt, mail..." />
+                            <div id="cardCompany"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="company-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px">
+                <div class="modal-header">
+                    <h4 class="modal-title">Công ty</h4>
+                    <button type="button" class="close" data-dismiss="modal" id="close-modal">&times;</button>
+                </div>
+                <form id="company-form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Mã</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="company-code" class="form-control" readonly/>
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tên</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="company-name" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="company-address" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="company-email" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="number" id="company-phone" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit"
+                                class="btn btn-success rounded-border">
+                            <i class="fa fa-save"></i> Lưu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let _list_company = [];
+    let _company_index = -1;
+    var _company_action = "";
+
+	$(document).ready(function () {
+        fnSetupTHTable('company-table');
+        fnGetCompany();
+
+        document.getElementById("overlay").style.display = "none";
+        $("#company-modal").on("show.bs.modal", function (e) {
+            $("#company-name").removeClass("is-invalid");
+            $("#company-address").removeClass("is-invalid");
+            $("#company-email").removeClass("is-invalid");
+            $("#company-phone").removeClass("is-invalid");
+		});
+
+        $("#add-company-btn").on("click", function () {
+            fnOpenAddCompanyModal();
+		});
+
+        $("#close-modal").on("click", function () {
+            $("#company-modal").modal("hide");
+        });
+
+        $("#company-form").on("submit", function (e) {
+			e.preventDefault();
+            fnValidateToPostCompany();
+        });
+
+        $('#txtSearchCompany').on('keyup', function () {
+            const searchValue = $(this).val();
+            fnUpdateCompanyCard(searchValue);
+        });
+	});
+
+    function fnGetCompany() {
+        const company = {
+            COMPANY_CODE: $("#txtCode").val(),
+            COMPANY_NAME: $("#txtName").val(),
+		}
+		fnPostData(
+			'@Url.Action("fnGetCompany", "Home")',
+            JSON.stringify(company),
+			function (msg) {
+                _list_company = msg.list;
+                fnUpdateCompanyDataTable();
+                fnUpdateCompanyCard();
+			}
+		);
+	}
+
+	function HandleBrowseClick() {
+        var fileinput = document.getElementById("file-template");
+        fileinput.click();
+    }
+
+    function Handlechange() {
+        var fileinput = document.getElementById("file-template");
+        var textinput = document.getElementById("filename");
+        textinput.value = fileinput.value;
+	}
+
+    function fnUpdateCompanyDataTable() {
+		if (!$.fn.dataTable.isDataTable('#company-table')) {
+            const table = $('#company-table').DataTable({
+				"dom": 'lrtip', "paging": false,
+				"order": [],
+				"scrollX": true,
+				"scrollY": "60vh",
+				"scrollCollapse": true,
+				"initComplete": function () {
+					// Apply the search
+					this.api().columns().every(function () {
+						var that = this;
+						$('input', this.header()).on('keyup change clear', function () {
+							if (that.search() !== this.value) {
+								that
+									.search(this.value)
+									.draw();
+							}
+						});
+					});
+				},
+				"responsive": true,
+				"destroy": true,
+				"columns": [
+					{
+						data: null,
+						render: function (data, type, row) {
+							return "";
+						}
+                    },
+
+                    { data: 'COMPANY_CODE' },
+                    { data: 'COMPANY_NAME' },
+                    { data: 'COMPANY_ADDRESS' },
+                    { data: 'COMPANY_EMAIL' },
+                    { data: 'COMPANY_PHONE' },
+					{
+						data: null,
+						render: function (data, type, row) {
+							let htmlActionContent = ``;
+							htmlActionContent +=
+							`<a href="javascript:void(0);"
+								class="badge badge-pill bg-success"
+								onclick="fnOpenEditCompanyModal(${_list_company.indexOf(row)})">
+								<i class="fas fa-edit"></i> Sửa
+							</a>`;
+							htmlActionContent +=
+							`<a href="javascript:void(0);"
+								class="badge badge-pill bg-danger"
+								onclick="fnRemoveCompanyClick(${_list_company.indexOf(row)})">
+								<i class="fas fa-trash"></i> xóa
+							</a>`;
+							return htmlActionContent;
+						}
+					},
+				],
+				'columnDefs': [
+					{
+						targets: 5,
+						createdCell: function (td, cellData, rowData, row, col) {
+							$(td).css('min-width', '130px');
+							$(td).css('text-align', 'right');
+						},
+					},
+                ],
+			});
+			table.on('order.dt search.dt', function () {
+				table.column(0, {
+					search: 'applied', order: 'applied'
+				}).nodes().each(function (cell, i) {
+					cell.innerHTML = i + 1;
+				});
+			}).draw();
+		}
+        $('#company-table').dataTable().fnClearTable();
+        if (_list_company.length > 0) {
+            $('#company-table').dataTable().fnAddData(_list_company);
+		}
+        fnUpdateDatalistTable('company-table');
+    }
+
+    function fnUpdateCompanyCard(filter = '') {
+        var html = ``;
+        let keyword = filter.toLowerCase();
+
+        _list_company
+            .filter(item =>
+                item.COMPANY_CODE.toLowerCase().includes(keyword) ||
+                item.COMPANY_NAME.toLowerCase().includes(keyword) ||
+                item.COMPANY_ADDRESS.toLowerCase().includes(keyword) ||
+                item.COMPANY_NAME.toLowerCase().includes(keyword) ||
+                item.COMPANY_PHONE.toLowerCase().includes(keyword)
+            ).forEach(function (item, index) {
+                html += ``;
+                html += `<div class="card col-12 mb-3 shadow" style="border-radius: 20px; background-color: whitesmoke ">`;
+                html += `<div class="card-body border-0">`;
+                html += `<div class="list-name-1">`;
+                html += `<div class="d-flex justify-content-between" style="width:100%">`;
+                html += `<div style="width:100%">`;
+                html += `<div class="row">`;
+                html += `<div class="col-xr-4 mr-3">`;
+                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.COMPANY_CODE}</h3>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `<div class="row mt-2">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.COMPANY_NAME}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Address: ${item.COMPANY_ADDRESS}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Email: ${item.COMPANY_EMAIL}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Phone: ${item.COMPANY_PHONE}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `</div>`;
+                html += `<div class="d-flex mt-2 gap-2">`;
+
+                html += `<a href="javascript:void(0);"
+                    class="badge bg-warning text-dark flex-fill text-center py-2"
+                    onclick="fnOpenAddCompanyModal(${_list_company.indexOf(item)})">
+                    <i class="fas fa-edit"></i> Sửa
+                </a>`;
+
+                html += `<a href="javascript:void(0);"
+                    class="badge bg-danger text-white flex-fill text-center py-2"
+                    onclick="fnRemoveCompanyClick(${_list_company.indexOf(item)})">
+                    <i class="fas fa-trash"></i> Xóa
+                </a>`;
+
+                html += `</div>`;
+
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+            });
+        $('#cardCompany').empty();
+        $('#cardCompany').html(html);
+    }
+
+    function fnOpenAddCompanyModal() {
+        _company_index = -1;
+        _company_action = "INSERT";
+        $("#company-code").val("");
+        $("#company-name").val("");
+        $("#company-name").focus();
+        $("#company-address").val("")
+        $("#company-email").val("");
+        $("#company-phone").val("");
+        $("#company-modal").modal("show");
+	}
+
+    function fnOpenEditCompanyModal(index) {
+        _company_index = index;
+        _company_action = "EDIT";
+        const selectedCompanys = _list_company[index];
+        _company_index = selectedCompanys.COMPANY_ID;
+        $("#company-code").val(selectedCompanys.COMPANY_CODE);
+        $("#company-name").val(selectedCompanys.COMPANY_NAME);
+        $("#company-name").focus();
+        $("#company-address").val(selectedCompanys.COMPANY_ADDRESS);
+        $("#company-email").val(selectedCompanys.COMPANY_EMAIL);
+        $("#company-phone").val(selectedCompanys.COMPANY_PHONE);
+        $("#company-modal").modal("show");
+	}
+
+    function fnRemoveCompanyClick(index) {
+		if (index > -1) {
+            const selectedCompanys = _list_company[index];
+            selectedCompanys.ACTION = "DELETE";
+            fnShowConfirm("Xóa " + selectedCompanys.COMPANY_NAME).then(result => {
+				if (result.value) {
+                    fnRemoveCompany(selectedCompanys);
+				}
+			});
+		}
+	}
+
+    function fnValidateToPostCompany() {
+        $("#company-name").removeClass("is-invalid");
+        $("#company-address").removeClass("is-invalid");
+        $("#company-email").removeClass("is-invalid");
+        $("#company-phone").removeClass("is-invalid");
+        const companyData = {
+            COMPANY_ID: _company_index,
+            COMPANY_NAME: $("#company-name").val(),
+            COMPANY_ADDRESS: $("#company-address").val(),
+            COMPANY_EMAIL: $("#company-email").val(),
+            COMPANY_PHONE: $("#company-phone").val(),
+            ACTION: _company_action,
+        };
+        if (companyData.COMPANY_NAME == "") {
+            $("#company-name").addClass("is-invalid");
+        }
+        else if (companyData.COMPANY_ADDRESS == "") {
+            $("#company-address").addClass("is-invalid");
+        }
+        else if (companyData.COMPANY_EMAIL == "") {
+            $("#company-email").addClass("is-invalid");
+        }
+        else if (companyData.COMPANY_PHONE == "") {
+            $("#company-phone").addClass("is-invalid");
+        }
+        else if (_list_company.some(s =>
+            s.COMPANY_NAME == companyData.COMPANY_NAME &&
+            s.COMPANY_ADDRESS == companyData.COMPANY_ADDRESS &&
+            s.COMPANY_PHONE == companyData.COMPANY_PHONE && 
+            s.COMPANY_EMAIL == companyData.COMPANY_EMAIL) && _company_index == -1) {
+            fnShowError("ERR");
+        }
+		else {
+            fnShowConfirm("Lưu " + companyData.COMPANY_NAME).then(result => {
+				if (result.value) {
+                    fnPostCompany(companyData);
+				}
+			})
+		}
+	}
+
+    function fnPostCompany(company) {
+		fnPostData(
+			'@Url.Action("fnPostCompany", "Home")',
+            JSON.stringify(company),
+			function (msg) {
+				if (msg.ErrCode == "1") {
+                    $("#company-modal").modal("hide");
+					fnShowSuccess();
+                    fnGetCompany();
+				}
+				else {
+					fnShowError(msg.ErrMsg);
+				}
+			}
+		);
+    }
+
+    function fnRemoveCompany(company) {
+		fnPostData(
+			'@Url.Action("fnPostCompany", "Home")',
+            JSON.stringify(company),
+			function (msg) {
+				if (msg.ErrCode == "1") {
+                    $("#company-modal").modal("hide");
+					fnShowSuccess();
+                    fnGetCompany();
+				}
+				else {
+					fnShowError(msg.ErrMsg);
+				}
+			}
+		);
+	}
+</script>

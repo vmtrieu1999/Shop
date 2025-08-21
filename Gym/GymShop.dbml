@@ -87,6 +87,7 @@
       <Column Name="ROLE" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="ISACTIVE" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="COMPANY_CODE" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="FULLNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="COMPANY_USER" Member="COMPANY" ThisKey="COMPANY_CODE" OtherKey="COMPANY_CODE" Type="COMPANY" IsForeignKey="true" />
     </Type>
   </Table>

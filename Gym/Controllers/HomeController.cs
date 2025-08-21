@@ -22,7 +22,7 @@ namespace Gym.Controllers
             }
 
             username = username.ToLower();
-            password = password.ToLower();
+            password = ConnectionModel.MaHoa(password);
 
             var con = new ConnectionModel();
             var session = con.fnLoginUser(username, password);
@@ -224,6 +224,96 @@ namespace Gym.Controllers
                 model["COMPANY_CODE"] = user.CompanyCode;
                 var room = new RoomModel();
                 var jsonResult = room.fnPostRoom(model);
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+        #endregion
+        #region Company
+        
+        public ActionResult CompanyPage()
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if(user != null && user.CompanyCode == "VMT" && user.Username == "admin")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+        public ContentResult fnGetCompany(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null && user.CompanyCode == "VMT" && user.Username == "admin")
+            {
+                var model = JObject.Parse(strInput);
+                var company = new CompanyModel();
+                var list = company.fnGetCompany(model);
+                var jsonResult = new
+                {
+                    list
+                };
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+        public ContentResult fnPostCompany(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null && user.CompanyCode == "VMT" && user.Username == "admin")
+            {
+                var model = JObject.Parse(strInput);
+                model["USER"] = user.Username;
+                var company = new CompanyModel();
+                var jsonResult = company.fnPostCompany(model);
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+        #endregion
+        #region User
+        public ActionResult UserPage()
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (user != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ContentResult fnGetUser(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
+            {
+                var model = JObject.Parse(strInput);
+                var userModel = new UserModel();
+                model["USER_MASTER"] = user.Username;
+                model["COMPANY_CODE"] = user.CompanyCode;
+                var list = userModel.fnGetUser(model);
+                var jsonResult = new
+                {
+                    list
+                };
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
+
+        public ContentResult fnPostUser(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
+            {
+                var model = JObject.Parse(strInput);
+                var userModel = new UserModel();
+                var jsonResult = userModel.fnPostUser(model);
                 return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
             }
             return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);

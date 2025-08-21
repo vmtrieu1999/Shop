@@ -1,0 +1,470 @@
+﻿@{
+    ViewBag.Title = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Danh sách người dùng</title>
+    <style>
+        @@media screen and (orientation:portrait) {
+
+            td {
+                font-size: 20px;
+            }
+
+            th {
+                white-space: nowrap;
+            }
+
+            #LayoutMobile {
+                display: block;
+            }
+
+            #LayoutDesktop {
+                display: none !important;
+            }
+
+            #LayoutDetailMobile {
+                display: block;
+            }
+
+            #LayoutDetailDesktop {
+                display: none;
+            }
+        }
+
+        @@media screen and (orientation:landscape) {
+            #LayoutMobile {
+                display: none;
+            }
+
+            #LayoutDesktop {
+                display: block;
+            }
+
+            #LayoutDetailMobile {
+                display: none;
+            }
+
+            #LayoutDetailDesktop {
+                display: block;
+            }
+        }
+
+        .block {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            width: 100%
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP TOOLBAR WRAPPER -->
+    @*@RenderPage("~/Views/Shared/_Navbar.cshtml")*@
+    <!-- END TOP TOOLBAR WRAPPER -->
+    <div class="row m-0">
+        <div class="col-12 m-0 p-0 shadow" style="background-color: rgba(255,255,255,0.9)">
+            <div id="divGroup" class="d-flex flex-wrap">
+            </div>
+        </div>
+        <div class="col-12" style="padding-top: 80px; margin-top: 20px;">
+            <div class="row p-2 m-0">
+                <div class="col-xl-2 m-10 p-10 mb-3">
+                    <div class="p-3 shadow rounded-border" style="background-color: whitesmoke; border-radius: 20px;">
+                        <div class="form-group">
+                            <label>Tên gói:</label>
+                            <input type="text" class="form-control" id="txtName">
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetPackages()"><i class="fas fa-search"></i>Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-10 m-10 p-10">
+                    <div class="p-3 shadow rounded-border" style="border-radius: 20px; background-color: whitesmoke">
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <button type="button"
+                                        id="add-packages-btn"
+                                        class="btn btn-primary"
+                                        style="margin-bottom: 8px; border-radius: 20px;">
+                                    <i class="fas fa-plus"></i> Thêm
+                                </button>
+                            </div>
+                        </div>
+                        <div id="LayoutDesktop">
+                            <table id="packages-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tên gói</th>
+                                        <th>Số ngày</th>
+                                        <th>Gía</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div id="LayoutMobile">
+                            <input type="text" id="txtSearchInvoice" class="form-control mb-3" placeholder="Tìm kiếm mã, tên, đvt, giá, mô tả..." />
+                            <div id="cardPackages"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="packages-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px">
+                <div class="modal-header">
+                    <h4 class="modal-title">Gói đăng ký</h4>
+                    <button type="button" class="close" data-dismiss="modal" id="close-modal">&times;</button>
+                </div>
+                <form id="packages-form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Tên gói</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="text" id="packages-name" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Số ngày</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="number" id="packages-day" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Gía</label>
+                            <label style="color: red;">(*)</label>
+                            <input type="number" id="packages-price" class="form-control" />
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit"
+                                class="btn btn-success rounded-border">
+                            <i class="fa fa-save"></i> Lưu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let _list_packages = [];
+    let _packages_index = -1;
+    var _packages_action = "";
+
+	$(document).ready(function () {
+        fnSetupTHTable('packages-table');
+        fnGetPackages();
+
+        document.getElementById("overlay").style.display = "none";
+        $("#packages-modal").on("show.bs.modal", function (e) {
+            $("#packages-name").removeClass("is-invalid");
+            $("#packages-day").removeClass("is-invalid");
+            $("#packages-price").removeClass("is-invalid");
+		});
+
+        $("#add-packages-btn").on("click", function () {
+			fnOpenAddPackagesModal();
+		});
+
+        $("#close-modal").on("click", function () {
+            $("#packages-modal").modal("hide");
+        });
+
+        $("#packages-form").on("submit", function (e) {
+			e.preventDefault();
+            fnValidateToPostPackages();
+        });
+
+        $('#txtSearchInvoice').on('keyup', function () {
+            const searchValue = $(this).val();
+            fnUpdatePackagesCard(searchValue);
+        });
+	});
+
+    function fnGetPackages() {
+        const packages = {
+            PACKAGENAME: $("#txtName").val(),
+		}
+		fnPostData(
+			'@Url.Action("fnGetPackages", "Home")',
+            JSON.stringify(packages),
+			function (msg) {
+                _list_packages = msg.list;
+                fnUpdatePackagesDataTable();
+                fnUpdatePackagesCard();
+			}
+		);
+	}
+
+	function HandleBrowseClick() {
+        var fileinput = document.getElementById("file-template");
+        fileinput.click();
+    }
+
+    function Handlechange() {
+        var fileinput = document.getElementById("file-template");
+        var textinput = document.getElementById("filename");
+        textinput.value = fileinput.value;
+	}
+
+    function fnUpdatePackagesDataTable() {
+		if (!$.fn.dataTable.isDataTable('#packages-table')) {
+            const table = $('#packages-table').DataTable({
+				"dom": 'lrtip', "paging": false,
+				"order": [],
+				"scrollX": true,
+				"scrollY": "60vh",
+				"scrollCollapse": true,
+				"initComplete": function () {
+					// Apply the search
+					this.api().columns().every(function () {
+						var that = this;
+						$('input', this.header()).on('keyup change clear', function () {
+							if (that.search() !== this.value) {
+								that
+									.search(this.value)
+									.draw();
+							}
+						});
+					});
+				},
+				"responsive": true,
+				"destroy": true,
+				"columns": [
+					{
+						data: null,
+						render: function (data, type, row) {
+							return "";
+						}
+                    },
+
+                    { data: 'PACKAGENAME' },
+                    { data: 'DURATIONDAYS' },
+                    {
+                        data: 'PRICE',
+                        className: 'text-left',
+                        render: function (data) {
+                            if (data == null) return '';
+                            return parseFloat(data).toLocaleString('vi-VN');
+                        }
+                    },
+					{
+						data: null,
+						render: function (data, type, row) {
+							let htmlActionContent = ``;
+							htmlActionContent +=
+							`<a href="javascript:void(0);"
+								class="badge badge-pill bg-success"
+								onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(row)})">
+								<i class="fas fa-edit"></i> Sửa
+							</a>`;
+							htmlActionContent +=
+							`<a href="javascript:void(0);"
+								class="badge badge-pill bg-danger"
+								onclick="fnRemovePackagesClick(${_list_packages.indexOf(row)})">
+								<i class="fas fa-trash"></i> xóa
+							</a>`;
+							return htmlActionContent;
+						}
+					},
+				],
+				'columnDefs': [
+					{
+						targets: 3,
+						createdCell: function (td, cellData, rowData, row, col) {
+							$(td).css('min-width', '130px');
+							$(td).css('text-align', 'right');
+						},
+					},
+                ],
+			});
+			table.on('order.dt search.dt', function () {
+				table.column(0, {
+					search: 'applied', order: 'applied'
+				}).nodes().each(function (cell, i) {
+					cell.innerHTML = i + 1;
+				});
+			}).draw();
+		}
+        $('#packages-table').dataTable().fnClearTable();
+        if (_list_packages.length > 0) {
+            $('#packages-table').dataTable().fnAddData(_list_packages);
+		}
+        fnUpdateDatalistTable('packages-table');
+    }
+
+    function fnUpdatePackagesCard(filter = '') {
+        var html = ``;
+        let keyword = filter.toLowerCase();
+
+        _list_packages
+            .filter(item =>
+                item.PACKAGENAME.toLowerCase().includes(keyword) ||
+                item.DURATIONDAYS.toLowerCase().includes(keyword) ||
+                item.PRICE.toLowerCase().includes(keyword)
+            ).forEach(function (item, index) {
+                html += ``;
+                html += `<div class="card col-12 mb-3 shadow" style="border-radius: 20px; background-color: whitesmoke ">`;
+                html += `<div class="card-body border-0">`;
+                html += `<div class="list-name-1">`;
+                html += `<div class="d-flex justify-content-between" style="width:100%">`;
+                html += `<div style="width:100%">`;
+                html += `<div class="row">`;
+                html += `<div class="col-xr-4 mr-3">`;
+                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.PACKAGENAME}</h3>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `<div class="row mt-2">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.PACKAGENAME}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Tax: ${item.DURATIONDAYS}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Total: ${item.PRICE.toLocaleString('vi-VN')}</h4>`;
+                html += `</div>`;
+                html += `<div class="row">`;
+                html += `</div>`;
+                html += `<div class="d-flex mt-2 gap-2">`;
+
+                html += `<a href="javascript:void(0);"
+                    class="badge bg-warning text-dark flex-fill text-center py-2"
+                    onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(item)})">
+                    <i class="fas fa-edit"></i> Sửa
+                </a>`;
+
+                html += `<a href="javascript:void(0);"
+                    class="badge bg-danger text-white flex-fill text-center py-2"
+                    onclick="fnRemovePackagesClick(${_list_packages.indexOf(item)})">
+                    <i class="fas fa-trash"></i> Xóa
+                </a>`;
+
+                html += `</div>`;
+
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
+            });
+        $('#cardPackages').empty();
+        $('#cardPackages').html(html);
+    }
+
+    function fnOpenAddUserModal() {
+        _user_index = -1;
+        _user_action = "INSERT";
+        $("#user-name").val("").prop("readonly", false);
+        $("#user-name").focus();
+        $("#user-role").val("0")
+        $("#user-status").val("1");
+        $("#user-company-code").val("");
+        $("#packages-modal").modal("show");
+	}
+
+    function fnOpenEditUserModal(index) {
+        _user_index = index;
+        _user_action = "EDIT";
+        const selectedUser = _list_user[index];
+        _user_index = selectedUser.USERID;
+        $("#user-name").val(selectedUser.USERNAME).prop("readonly", true);
+        $("#user-fullname").val(selectedUser.FULLNAME);
+        $("#user-fullname").focus();
+        $("#user-role").val(selectedUser.ROLE);
+        $("#user-status").val(selectedUser.ISACTIVE);
+        $("#user-company-code").val(selectedUser.COMPANY_CODE);
+        $("#user-modal").modal("show");
+	}
+
+    function fnRemoveUserClick(index) {
+		if (index > -1) {
+            const selectedUser = _list_user[index];
+            fnShowConfirm("DELETE " + selectedUser.USERID).then(result => {
+				if (result.value) {
+                    fnRemoveUser(selectedUser);
+				}
+			});
+		}
+	}
+
+    function fnValidateToPostUser() {
+        $("#user-name").removeClass("is-invalid");
+        $("#user-fullname").removeClass("is-invalid");
+        const userData = {
+            USERID: _user_index,
+            USERNAME: $("#user-name").val(),
+            FULLNAME: $("#user-fullname").val(),
+            ROLE: $("#user-role").val(),
+            STATUS_ID: $("#user-status").val(),
+            COMPANY_CODE: $("#user-company-code").val(),
+            ACTION: _user_action,
+        };
+        if (userData.USERNAME == "") {
+            $("#user-name").addClass("is-invalid");
+        }
+        else if (userData.FULLNAME == "") {
+            $("#user-fullname").addClass("is-invalid");
+        }
+        else if (_list_user.some(s =>
+            s.USERNAME == userData.USERNAME) && _user_index == -1) {
+            fnShowError("ERR");
+        }
+		else {
+            fnShowConfirm("Lưu " + userData.USERNAME).then(result => {
+				if (result.value) {
+                    fnPostUser(userData);
+				}
+			})
+		}
+	}
+
+    function fnPostUser(user) {
+		fnPostData(
+			'@Url.Action("fnPostUser", "Home")',
+            JSON.stringify(user),
+			function (msg) {
+				if (msg.ErrCode == "1") {
+                    $("#user-modal").modal("hide");
+					fnShowSuccess();
+                    fnGetUser();
+				}
+				else {
+					fnShowError(msg.ErrMsg);
+				}
+			}
+		);
+    }
+
+    function fnRemoveUser(user) {
+		fnPostData(
+			'@Url.Action("fnPostUser", "Home")',
+            JSON.stringify(user),
+			function (msg) {
+				if (msg.ErrCode == "1") {
+                    $("#user-modal").modal("hide");
+					fnShowSuccess();
+                    fnGetUser();
+				}
+				else {
+					fnShowError(msg.ErrMsg);
+				}
+			}
+		);
+	}
+</script>
+

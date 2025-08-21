@@ -48,7 +48,7 @@ namespace Gym.Models
                                         : (s.CUSTOMER_EXPIRYDATE < dnow ? "OBSOLETE" : "ACTIVE"),
                                 s.NOTE,
                                 s.CREATE_DATE,
-                                s.CREATE_USER,
+                                CREATE_USER = db.USERs.Where(x => x.USERNAME == s.CREATE_USER).Select(v => v.FULLNAME).FirstOrDefault(),
                                 s.LAST_UPDATE_DATE, 
                                 s.LAST_UPDATE_USER,
                             }).OrderBy(s => s.CUSTOMER_NAME).ToList()
