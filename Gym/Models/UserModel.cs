@@ -75,7 +75,7 @@ namespace Gym.Models
                 var username = model["USERNAME"]?.ToString() ?? "";
                 var fullname = model["FULLNAME"]?.ToString() ?? "";
                 var role = model["ROLE"]?.ToString() ?? "1";
-                var status = model["STATUS_ID"]?.ToString() ?? "1";
+                bool status = model["STATUS_ID"]?.ToObject<bool>() ?? false;
                 var company_code = model["COMPANY_CODE"]?.ToString() ?? "";
                 string pass = "456789";
                 using (var db = ConnectionModel.GymShopDataContext())
@@ -96,7 +96,7 @@ namespace Gym.Models
                         user.PASSWORDHASH = ConnectionModel.MaHoa(pass);
                         user.FULLNAME = fullname;
                         user.ROLE = role;
-                        user.ISACTIVE = Convert.ToBoolean(status);
+                        user.ISACTIVE = status;
                         
 
                         db.USERs.InsertOnSubmit(user);
@@ -113,7 +113,7 @@ namespace Gym.Models
                         {
                             user.FULLNAME = fullname;
                             user.ROLE = role;
-                            user.ISACTIVE = Convert.ToBoolean(status);
+                            user.ISACTIVE = status;
 
                             db.SubmitChanges();
 

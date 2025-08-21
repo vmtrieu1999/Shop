@@ -77,11 +77,15 @@
                 <div class="col-xl-2 m-10 p-10 mb-3">
                     <div class="p-3 shadow rounded-border" style="background-color: whitesmoke; border-radius: 20px;">
                         <div class="form-group">
-                            <label>Tên gói:</label>
-                            <input type="text" class="form-control" id="txtName">
+                            <label>Tên đăng nhập:</label>
+                            <input type="text" class="form-control" id="txtUserName">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên người dùng:</label>
+                            <input type="text" class="form-control" id="txtFullName">
                         </div>
                         <div class="text-right">
-                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetPackages()"><i class="fas fa-search"></i>Tìm kiếm</button>
+                            <button type="button" class="btn btn-outline-primary" style="border-radius: 20px;" onclick="fnGetUser()"><i class="fas fa-search"></i>Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
@@ -90,7 +94,7 @@
                         <div class="row no-gutters">
                             <div class="col-auto">
                                 <button type="button"
-                                        id="add-packages-btn"
+                                        id="add-user-btn"
                                         class="btn btn-primary"
                                         style="margin-bottom: 8px; border-radius: 20px;">
                                     <i class="fas fa-plus"></i> Thêm
@@ -98,21 +102,23 @@
                             </div>
                         </div>
                         <div id="LayoutDesktop">
-                            <table id="packages-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
+                            <table id="user-table" class="table table-rounded table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Tên gói</th>
-                                        <th>Số ngày</th>
-                                        <th>Gía</th>
+                                        <th>Tên đăng nhập</th>
+                                        <th>Tên người dùng</th>
+                                        <th>Quyền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Công ty</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                         <div id="LayoutMobile">
-                            <input type="text" id="txtSearchInvoice" class="form-control mb-3" placeholder="Tìm kiếm mã, tên, đvt, giá, mô tả..." />
-                            <div id="cardPackages"></div>
+                            <input type="text" id="txtSearchUser" class="form-control mb-3" placeholder="Tìm kiếm tên đăng nhập, tên người dùng..." />
+                            <div id="cardUser"></div>
                         </div>
                     </div>
                 </div>
@@ -121,31 +127,50 @@
         </div>
     </div>
 
-    <div class="modal fade" id="packages-modal" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="user-modal" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 20px">
                 <div class="modal-header">
-                    <h4 class="modal-title">Gói đăng ký</h4>
+                    <h4 class="modal-title">Người dùng</h4>
                     <button type="button" class="close" data-dismiss="modal" id="close-modal">&times;</button>
                 </div>
-                <form id="packages-form">
+                <form id="user-form">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Tên gói</label>
+                            <label>Tên đăng nhập</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="packages-name" class="form-control" />
+                            <input type="text" id="user-name" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>Số ngày</label>
+                            <label>Tên người dùng</label>
                             <label style="color: red;">(*)</label>
-                            <input type="number" id="packages-day" class="form-control" />
+                            <input type="text" id="user-fullname" class="form-control" />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
-                            <label>Gía</label>
+                            <label>Quyền</label>
                             <label style="color: red;">(*)</label>
-                            <input type="number" id="packages-price" class="form-control" />
+                            <select id="user-role" class="form-control">
+                                <option value="1">Admin</option>
+                                <option value="0">User</option>
+                            </select>
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Trạng thái</label>
+                            <label style="color: red;">(*)</label>
+                            <select id="user-status" class="form-control">
+                                <option value="true">Kích hoạt</option>
+                                <option value="false">Ẩn</option>
+                            </select>
+                            <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Công ty</label>
+                            <label style="color: red;">(*)</label>
+                            <select id="user-company-code" class="form-control" onchange="">
+                            </select>
                             <div class="invalid-feedback">err</div>
                         </div>
                     </div>
@@ -162,51 +187,53 @@
 </body>
 </html>
 <script>
-    let _list_packages = [];
-    let _packages_index = -1;
-    var _packages_action = "";
+    let _list_user = [];
+    let _list_company = [];
+    let _user_index = -1;
+    var _user_action = "";
 
 	$(document).ready(function () {
-        fnSetupTHTable('packages-table');
-        fnGetPackages();
+        fnSetupTHTable('user-table');
+        fnGetUser();
+        fnGetCompany();
 
         document.getElementById("overlay").style.display = "none";
-        $("#packages-modal").on("show.bs.modal", function (e) {
-            $("#packages-name").removeClass("is-invalid");
-            $("#packages-day").removeClass("is-invalid");
-            $("#packages-price").removeClass("is-invalid");
+        $("#user-modal").on("show.bs.modal", function (e) {
+            $("#user-name").removeClass("is-invalid");
+            $("#user-fullname").removeClass("is-invalid");
 		});
 
-        $("#add-packages-btn").on("click", function () {
-			fnOpenAddPackagesModal();
+        $("#add-user-btn").on("click", function () {
+			fnOpenAddUserModal();
 		});
 
         $("#close-modal").on("click", function () {
-            $("#packages-modal").modal("hide");
+            $("#user-modal").modal("hide");
         });
 
-        $("#packages-form").on("submit", function (e) {
+        $("#user-form").on("submit", function (e) {
 			e.preventDefault();
-            fnValidateToPostPackages();
+            fnValidateToPostUser();
         });
 
-        $('#txtSearchInvoice').on('keyup', function () {
+        $('#txtSearchUser').on('keyup', function () {
             const searchValue = $(this).val();
-            fnUpdatePackagesCard(searchValue);
+            fnUpdateUserCard(searchValue);
         });
 	});
 
-    function fnGetPackages() {
-        const packages = {
-            PACKAGENAME: $("#txtName").val(),
+    function fnGetUser() {
+        const user = {
+            USERNAME: $("#txtUserName").val(),
+            FULLNAME: $("#txtFullName").val(),
 		}
 		fnPostData(
-			'@Url.Action("fnGetPackages", "Home")',
-            JSON.stringify(packages),
+			'@Url.Action("fnGetUser", "Home")',
+            JSON.stringify(user),
 			function (msg) {
-                _list_packages = msg.list;
-                fnUpdatePackagesDataTable();
-                fnUpdatePackagesCard();
+                _list_user = msg.list;
+                fnUpdateUserDataTable();
+                fnUpdateUserCard();
 			}
 		);
 	}
@@ -222,9 +249,9 @@
         textinput.value = fileinput.value;
 	}
 
-    function fnUpdatePackagesDataTable() {
-		if (!$.fn.dataTable.isDataTable('#packages-table')) {
-            const table = $('#packages-table').DataTable({
+    function fnUpdateUserDataTable() {
+        if (!$.fn.dataTable.isDataTable('#user-table')) {
+            const table = $('#user-table').DataTable({
 				"dom": 'lrtip', "paging": false,
 				"order": [],
 				"scrollX": true,
@@ -253,16 +280,40 @@
 						}
                     },
 
-                    { data: 'PACKAGENAME' },
-                    { data: 'DURATIONDAYS' },
+                    { data: 'USERNAME' },
+                    { data: 'FULLNAME' },
                     {
-                        data: 'PRICE',
+                        data: 'ROLE',
                         className: 'text-left',
                         render: function (data) {
                             if (data == null) return '';
-                            return parseFloat(data).toLocaleString('vi-VN');
+                            else {
+                                if (data == true) {
+                                    return "Admin";
+                                }
+                                else {
+                                    return "User";
+                                }
+                            }
+
                         }
                     },
+                    {
+                        data: 'ISACTIVE',
+                        className: 'text-left',
+                        render: function (data) {
+                            if (data == null) return '';
+                            else {
+                                if (data == true) {
+                                    return "Kích hoạt";
+                                }
+                                else {
+                                    return "Ẩn";
+                                }
+                            }
+                        }
+                    },
+                    { data: 'COMPANY_NAME' },
 					{
 						data: null,
 						render: function (data, type, row) {
@@ -270,13 +321,13 @@
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-success"
-								onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(row)})">
+								onclick="fnOpenEditUserModal(${_list_user.indexOf(row)})">
 								<i class="fas fa-edit"></i> Sửa
 							</a>`;
 							htmlActionContent +=
 							`<a href="javascript:void(0);"
 								class="badge badge-pill bg-danger"
-								onclick="fnRemovePackagesClick(${_list_packages.indexOf(row)})">
+								onclick="fnRemoveUserClick(${_list_user.indexOf(row)})">
 								<i class="fas fa-trash"></i> xóa
 							</a>`;
 							return htmlActionContent;
@@ -285,7 +336,7 @@
 				],
 				'columnDefs': [
 					{
-						targets: 3,
+						targets: 5,
 						createdCell: function (td, cellData, rowData, row, col) {
 							$(td).css('min-width', '130px');
 							$(td).css('text-align', 'right');
@@ -301,22 +352,21 @@
 				});
 			}).draw();
 		}
-        $('#packages-table').dataTable().fnClearTable();
-        if (_list_packages.length > 0) {
-            $('#packages-table').dataTable().fnAddData(_list_packages);
+        $('#user-table').dataTable().fnClearTable();
+        if (_list_user.length > 0) {
+            $('#user-table').dataTable().fnAddData(_list_user);
 		}
-        fnUpdateDatalistTable('packages-table');
+        fnUpdateDatalistTable('user-table');
     }
 
-    function fnUpdatePackagesCard(filter = '') {
+    function fnUpdateUserCard(filter = '') {
         var html = ``;
         let keyword = filter.toLowerCase();
 
-        _list_packages
+        _list_user
             .filter(item =>
-                item.PACKAGENAME.toLowerCase().includes(keyword) ||
-                item.DURATIONDAYS.toLowerCase().includes(keyword) ||
-                item.PRICE.toLowerCase().includes(keyword)
+                item.USERNAME.toLowerCase().includes(keyword) ||
+                item.FULLNAME.toLowerCase().includes(keyword)
             ).forEach(function (item, index) {
                 html += ``;
                 html += `<div class="card col-12 mb-3 shadow" style="border-radius: 20px; background-color: whitesmoke ">`;
@@ -326,17 +376,17 @@
                 html += `<div style="width:100%">`;
                 html += `<div class="row">`;
                 html += `<div class="col-xr-4 mr-3">`;
-                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.PACKAGENAME}</h3>`;
+                html += `<h3 class=" badge-pill badge-success shadow" style="font-size:25px">${item.USERNAME}</h3>`;
                 html += `</div>`;
                 html += `</div>`;
                 html += `<div class="row mt-2">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.PACKAGENAME}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px; white-space: normal; word-break: break-word;">Name: ${item.FULLNAME}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Tax: ${item.DURATIONDAYS}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Role: ${item.ROLE}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
-                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Total: ${item.PRICE.toLocaleString('vi-VN')}</h4>`;
+                html += `<h4 class="badge badge-pill badge-secondary shadow" style="font-size:20px">Status: ${item.ISACTIVE}</h4>`;
                 html += `</div>`;
                 html += `<div class="row">`;
                 html += `</div>`;
@@ -344,13 +394,13 @@
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-warning text-dark flex-fill text-center py-2"
-                    onclick="fnOpenEditPackagesModal(${_list_packages.indexOf(item)})">
+                    onclick="fnOpenEditUserModal(${_list_user.indexOf(item)})">
                     <i class="fas fa-edit"></i> Sửa
                 </a>`;
 
                 html += `<a href="javascript:void(0);"
                     class="badge bg-danger text-white flex-fill text-center py-2"
-                    onclick="fnRemovePackagesClick(${_list_packages.indexOf(item)})">
+                    onclick="fnRemoveUserClick(${_list_user.indexOf(item)})">
                     <i class="fas fa-trash"></i> Xóa
                 </a>`;
 
@@ -362,8 +412,8 @@
                 html += `</div>`;
                 html += `</div>`;
             });
-        $('#cardPackages').empty();
-        $('#cardPackages').html(html);
+        $('#cardUser').empty();
+        $('#cardUser').html(html);
     }
 
     function fnOpenAddUserModal() {
@@ -371,10 +421,11 @@
         _user_action = "INSERT";
         $("#user-name").val("").prop("readonly", false);
         $("#user-name").focus();
+        $("#user-fullname").val("");
         $("#user-role").val("0")
         $("#user-status").val("1");
         $("#user-company-code").val("");
-        $("#packages-modal").modal("show");
+        $("#user-modal").modal("show");
 	}
 
     function fnOpenEditUserModal(index) {
@@ -465,6 +516,27 @@
 				}
 			}
 		);
-	}
+    }
+
+    function fnGetCompany() {
+        var item = {
+            
+        };
+        fnPostDataWithoutOverlay(
+            '@Url.Action("fnGetCompany", "Home")',
+            JSON.stringify(item),
+            function (msg) {
+                fnUpdateListCompany(msg.list);
+            }
+        );
+    }
+    function fnUpdateListCompany(list) {
+        var html = '<option value=""></option>';
+        list.forEach(function (item, index) {
+            html += '<option value="' + item.COMPANY_CODE + '">' + item.COMPANY_NAME + '</option>';
+        });
+        $('#user-company-code').empty();
+        $('#user-company-code').html(html);
+    }
 </script>
 
