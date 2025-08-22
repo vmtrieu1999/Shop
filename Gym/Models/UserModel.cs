@@ -114,7 +114,7 @@ namespace Gym.Models
                             user.FULLNAME = fullname;
                             user.ROLE = role;
                             user.ISACTIVE = status;
-
+                            user.COMPANY_CODE = company_code;
                             db.SubmitChanges();
 
                             result["ErrCode"] = "1";
@@ -146,6 +146,17 @@ namespace Gym.Models
                 result["ErrBack"] = "0";
             }
             return result;
+        }
+
+        public static string fnCheckPermissionSelectCompany(JObject model)
+        {
+            var userMaster = model["USER_MASTER"]?.ToString() ?? "";
+            var company_code = model["COMPANY_CODE"]?.ToString() ?? "";
+
+            if (userMaster == "admin" && company_code == "VMT")
+                return "";
+            else
+                return company_code;
         }
     }
 }

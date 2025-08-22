@@ -246,7 +246,7 @@ namespace Gym.Controllers
         public ContentResult fnGetCompany(string strInput)
         {
             var user = Session["USER_SESSION"] as UserSession;
-            if (Request.IsAjaxRequest() && user != null && user.CompanyCode == "VMT" && user.Username == "admin")
+            if (Request.IsAjaxRequest() && user != null)
             {
                 var model = JObject.Parse(strInput);
                 var company = new CompanyModel();
@@ -297,9 +297,11 @@ namespace Gym.Controllers
                 model["USER_MASTER"] = user.Username;
                 model["COMPANY_CODE"] = user.CompanyCode;
                 var list = userModel.fnGetUser(model);
+                var permissionSelectCompany = UserModel.fnCheckPermissionSelectCompany(model);
                 var jsonResult = new
                 {
-                    list
+                    list,
+                    permissionSelectCompany
                 };
                 return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
             }

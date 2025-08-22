@@ -191,6 +191,7 @@
     let _list_company = [];
     let _user_index = -1;
     var _user_action = "";
+    var _permissionSelect = "";
 
 	$(document).ready(function () {
         fnSetupTHTable('user-table');
@@ -232,6 +233,7 @@
             JSON.stringify(user),
 			function (msg) {
                 _list_user = msg.list;
+                _permissionSelect = msg.permissionSelectCompany;
                 fnUpdateUserDataTable();
                 fnUpdateUserCard();
 			}
@@ -423,8 +425,9 @@
         $("#user-name").focus();
         $("#user-fullname").val("");
         $("#user-role").val("0")
-        $("#user-status").val("1");
-        $("#user-company-code").val("");
+        $("#user-status").val("true");
+        $("#user-company-code").val(_permissionSelect);
+
         $("#user-modal").modal("show");
 	}
 
@@ -437,7 +440,7 @@
         $("#user-fullname").val(selectedUser.FULLNAME);
         $("#user-fullname").focus();
         $("#user-role").val(selectedUser.ROLE);
-        $("#user-status").val(selectedUser.ISACTIVE);
+        $("#user-status").val(selectedUser.ISACTIVE == 1 ? "true" : "false");
         $("#user-company-code").val(selectedUser.COMPANY_CODE);
         $("#user-modal").modal("show");
 	}
@@ -471,6 +474,9 @@
         else if (userData.FULLNAME == "") {
             $("#user-fullname").addClass("is-invalid");
         }
+        else if (userData.COMPANY_CODE == "") {
+            $("#user-company-code").addClass("is-invalid");
+        }
         else if (_list_user.some(s =>
             s.USERNAME == userData.USERNAME) && _user_index == -1) {
             fnShowError("ERR");
@@ -494,8 +500,8 @@
 					fnShowSuccess();
                     fnGetUser();
 				}
-				else {
-					fnShowError(msg.ErrMsg);
+                else {
+					fnShowError(msg.ErrMsg,"Lỗi");
 				}
 			}
 		);
@@ -526,7 +532,14 @@
             '@Url.Action("fnGetCompany", "Home")',
             JSON.stringify(item),
             function (msg) {
-                fnUpdateListCompany(msg.list);
+                if (_permissionSelect != "") {
+                    _list_company = msg.list.filter(x => x.COMPANY_CODE == _permissionSelect);
+                }
+                else {
+                    _list_company = msg.list;
+                }
+               
+                fnUpdateListCompany(_list_company);
             }
         );
     }
