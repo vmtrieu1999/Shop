@@ -66,19 +66,6 @@
       <Association Name="ROOM_CUSTOMER" Member="CUSTOMERs" ThisKey="ROOM_CODE" OtherKey="ROOM_CODE" Type="CUSTOMER" />
     </Type>
   </Table>
-  <Table Name="dbo.COMPANY" Member="COMPANies">
-    <Type Name="COMPANY">
-      <Column Name="COMPANY_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="COMPANY_NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="COMPANY_CODE" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
-      <Column Name="COMPANY_ADDRESS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="COMPANY_EMAIL" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
-      <Column Name="COMPANY_PHONE" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="CREATED_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="CREATED_BY" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Association Name="COMPANY_USER" Member="USERs" ThisKey="COMPANY_CODE" OtherKey="COMPANY_CODE" Type="USER" />
-    </Type>
-  </Table>
   <Table Name="dbo.USERS" Member="USERs">
     <Type Name="USER">
       <Column Name="USERID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -89,6 +76,20 @@
       <Column Name="COMPANY_CODE" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="FULLNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="COMPANY_USER" Member="COMPANY" ThisKey="COMPANY_CODE" OtherKey="COMPANY_CODE" Type="COMPANY" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COMPANY" Member="COMPANies">
+    <Type Name="COMPANY">
+      <Column Name="COMPANY_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="COMPANY_NAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPANY_CODE" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPANY_ADDRESS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="COMPANY_EMAIL" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="COMPANY_PHONE" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="CREATED_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CREATED_BY" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="COMPANY_EMAIL_APP_PASS" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="COMPANY_USER" Member="USERs" ThisKey="COMPANY_CODE" OtherKey="COMPANY_CODE" Type="USER" />
     </Type>
   </Table>
 </Database>

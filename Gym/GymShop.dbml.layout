@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.125, 9.625" name="GymShop">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.125, 9.875" name="GymShop">
   <DataContextMoniker Name="/GymShopDataContext" />
   <nestedChildShapes>
     <classShape Id="e5a0ed72-a1a8-438c-bf47-bae8c042c5a7" absoluteBounds="3.5, 1, 2, 4.2708154296875">
@@ -47,22 +47,22 @@
         <classShapeMoniker Id="e5a0ed72-a1a8-438c-bf47-bae8c042c5a7" />
       </nodes>
     </associationConnector>
-    <classShape Id="afbc54a5-91a0-474a-a482-1b918a45a960" absoluteBounds="1, 7, 2, 2.3478011067708344">
-      <DataClassMoniker Name="/GymShopDataContext/COMPANY" />
-      <nestedChildShapes>
-        <elementListCompartment Id="15febab0-2fa8-434a-91d6-7bd05573ec55" absoluteBounds="1.0150000000000001, 7.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="56aa7e51-4ec3-4043-86ff-b266fd820626" absoluteBounds="3.875, 7.125, 2, 2.1554996744791666">
       <DataClassMoniker Name="/GymShopDataContext/USER" />
       <nestedChildShapes>
         <elementListCompartment Id="efdee4e0-737c-449e-abae-052139f8b2c1" absoluteBounds="3.8899999999999997, 7.5850000000000009, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="8238013f-c5a7-42f0-9b2f-14024ef53b1b" absoluteBounds="1, 7.125, 2, 2.5401025390625">
+      <DataClassMoniker Name="/GymShopDataContext/COMPANY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3f1e6277-9129-4e26-b306-fd15bf3a06eb" absoluteBounds="1.0150000000000001, 7.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
     <associationConnector edgePoints="[(3 : 8.20274983723958); (3.875 : 8.20274983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/GymShopDataContext/COMPANY/COMPANY_USER" />
       <nodes>
-        <classShapeMoniker Id="afbc54a5-91a0-474a-a482-1b918a45a960" />
+        <classShapeMoniker Id="8238013f-c5a7-42f0-9b2f-14024ef53b1b" />
         <classShapeMoniker Id="56aa7e51-4ec3-4043-86ff-b266fd820626" />
       </nodes>
     </associationConnector>

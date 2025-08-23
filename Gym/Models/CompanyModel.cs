@@ -31,6 +31,7 @@ namespace Gym.Models
                             s.COMPANY_PHONE,
                             s.CREATED_BY, 
                             s.CREATED_DATE,
+                            COMPANY_EMAIL_APP_PASS = ConnectionModel.GiaiMa(s.COMPANY_EMAIL_APP_PASS),
                         }).ToList());
                 }
             }
@@ -53,6 +54,7 @@ namespace Gym.Models
                 var company_address = model["COMPANY_ADDRESS"]?.ToString() ?? "";
                 var company_email = model["COMPANY_EMAIL"]?.ToString() ?? "";
                 var company_phone = model["COMPANY_PHONE"]?.ToString() ?? "";
+                var company_email_app_pass = model["COMPANY_EMAIL_APP_PASS"]?.ToString() ?? "";
                 var dnow = DateTime.Now;
                 var user = model["USER"]?.ToString() ?? "";
                 using (var db = ConnectionModel.GymShopDataContext())
@@ -70,6 +72,7 @@ namespace Gym.Models
                         company.COMPANY_NAME = comapany_name;
                         company.COMPANY_ADDRESS = company_address;
                         company.COMPANY_EMAIL = company_email;
+                        company.COMPANY_EMAIL_APP_PASS = ConnectionModel.MaHoa(company_email_app_pass);
                         company.COMPANY_PHONE = company_phone;
                         company.CREATED_DATE = dnow;
                         company.CREATED_BY = user;
@@ -89,6 +92,7 @@ namespace Gym.Models
                             company.COMPANY_NAME = comapany_name;
                             company.COMPANY_ADDRESS = company_address;
                             company.COMPANY_EMAIL = company_email;
+                            company.COMPANY_EMAIL_APP_PASS = ConnectionModel.MaHoa(company_email_app_pass);
                             company.COMPANY_PHONE = company_phone;
 
                             db.SubmitChanges();

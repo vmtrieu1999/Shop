@@ -42,12 +42,12 @@ namespace Gym
     partial void InsertROOM(ROOM instance);
     partial void UpdateROOM(ROOM instance);
     partial void DeleteROOM(ROOM instance);
-    partial void InsertCOMPANY(COMPANY instance);
-    partial void UpdateCOMPANY(COMPANY instance);
-    partial void DeleteCOMPANY(COMPANY instance);
     partial void InsertUSER(USER instance);
     partial void UpdateUSER(USER instance);
     partial void DeleteUSER(USER instance);
+    partial void InsertCOMPANY(COMPANY instance);
+    partial void UpdateCOMPANY(COMPANY instance);
+    partial void DeleteCOMPANY(COMPANY instance);
     #endregion
 		
 		public GymShopDataContext(string connection) : 
@@ -106,19 +106,19 @@ namespace Gym
 			}
 		}
 		
-		public System.Data.Linq.Table<COMPANY> COMPANies
-		{
-			get
-			{
-				return this.GetTable<COMPANY>();
-			}
-		}
-		
 		public System.Data.Linq.Table<USER> USERs
 		{
 			get
 			{
 				return this.GetTable<USER>();
+			}
+		}
+		
+		public System.Data.Linq.Table<COMPANY> COMPANies
+		{
+			get
+			{
+				return this.GetTable<COMPANY>();
 			}
 		}
 	}
@@ -1562,264 +1562,6 @@ namespace Gym
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.COMPANY")]
-	public partial class COMPANY : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _COMPANY_ID;
-		
-		private string _COMPANY_NAME;
-		
-		private string _COMPANY_CODE;
-		
-		private string _COMPANY_ADDRESS;
-		
-		private string _COMPANY_EMAIL;
-		
-		private string _COMPANY_PHONE;
-		
-		private System.Nullable<System.DateTime> _CREATED_DATE;
-		
-		private string _CREATED_BY;
-		
-		private EntitySet<USER> _USERs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCOMPANY_IDChanging(int value);
-    partial void OnCOMPANY_IDChanged();
-    partial void OnCOMPANY_NAMEChanging(string value);
-    partial void OnCOMPANY_NAMEChanged();
-    partial void OnCOMPANY_CODEChanging(string value);
-    partial void OnCOMPANY_CODEChanged();
-    partial void OnCOMPANY_ADDRESSChanging(string value);
-    partial void OnCOMPANY_ADDRESSChanged();
-    partial void OnCOMPANY_EMAILChanging(string value);
-    partial void OnCOMPANY_EMAILChanged();
-    partial void OnCOMPANY_PHONEChanging(string value);
-    partial void OnCOMPANY_PHONEChanged();
-    partial void OnCREATED_DATEChanging(System.Nullable<System.DateTime> value);
-    partial void OnCREATED_DATEChanged();
-    partial void OnCREATED_BYChanging(string value);
-    partial void OnCREATED_BYChanged();
-    #endregion
-		
-		public COMPANY()
-		{
-			this._USERs = new EntitySet<USER>(new Action<USER>(this.attach_USERs), new Action<USER>(this.detach_USERs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int COMPANY_ID
-		{
-			get
-			{
-				return this._COMPANY_ID;
-			}
-			set
-			{
-				if ((this._COMPANY_ID != value))
-				{
-					this.OnCOMPANY_IDChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_ID = value;
-					this.SendPropertyChanged("COMPANY_ID");
-					this.OnCOMPANY_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_NAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string COMPANY_NAME
-		{
-			get
-			{
-				return this._COMPANY_NAME;
-			}
-			set
-			{
-				if ((this._COMPANY_NAME != value))
-				{
-					this.OnCOMPANY_NAMEChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_NAME = value;
-					this.SendPropertyChanged("COMPANY_NAME");
-					this.OnCOMPANY_NAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
-		public string COMPANY_CODE
-		{
-			get
-			{
-				return this._COMPANY_CODE;
-			}
-			set
-			{
-				if ((this._COMPANY_CODE != value))
-				{
-					this.OnCOMPANY_CODEChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_CODE = value;
-					this.SendPropertyChanged("COMPANY_CODE");
-					this.OnCOMPANY_CODEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ADDRESS", DbType="NVarChar(100)")]
-		public string COMPANY_ADDRESS
-		{
-			get
-			{
-				return this._COMPANY_ADDRESS;
-			}
-			set
-			{
-				if ((this._COMPANY_ADDRESS != value))
-				{
-					this.OnCOMPANY_ADDRESSChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_ADDRESS = value;
-					this.SendPropertyChanged("COMPANY_ADDRESS");
-					this.OnCOMPANY_ADDRESSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_EMAIL", DbType="NVarChar(30)")]
-		public string COMPANY_EMAIL
-		{
-			get
-			{
-				return this._COMPANY_EMAIL;
-			}
-			set
-			{
-				if ((this._COMPANY_EMAIL != value))
-				{
-					this.OnCOMPANY_EMAILChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_EMAIL = value;
-					this.SendPropertyChanged("COMPANY_EMAIL");
-					this.OnCOMPANY_EMAILChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_PHONE", DbType="NVarChar(15)")]
-		public string COMPANY_PHONE
-		{
-			get
-			{
-				return this._COMPANY_PHONE;
-			}
-			set
-			{
-				if ((this._COMPANY_PHONE != value))
-				{
-					this.OnCOMPANY_PHONEChanging(value);
-					this.SendPropertyChanging();
-					this._COMPANY_PHONE = value;
-					this.SendPropertyChanged("COMPANY_PHONE");
-					this.OnCOMPANY_PHONEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_DATE", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CREATED_DATE
-		{
-			get
-			{
-				return this._CREATED_DATE;
-			}
-			set
-			{
-				if ((this._CREATED_DATE != value))
-				{
-					this.OnCREATED_DATEChanging(value);
-					this.SendPropertyChanging();
-					this._CREATED_DATE = value;
-					this.SendPropertyChanged("CREATED_DATE");
-					this.OnCREATED_DATEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_BY", DbType="NVarChar(100)")]
-		public string CREATED_BY
-		{
-			get
-			{
-				return this._CREATED_BY;
-			}
-			set
-			{
-				if ((this._CREATED_BY != value))
-				{
-					this.OnCREATED_BYChanging(value);
-					this.SendPropertyChanging();
-					this._CREATED_BY = value;
-					this.SendPropertyChanged("CREATED_BY");
-					this.OnCREATED_BYChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="COMPANY_USER", Storage="_USERs", ThisKey="COMPANY_CODE", OtherKey="COMPANY_CODE")]
-		public EntitySet<USER> USERs
-		{
-			get
-			{
-				return this._USERs;
-			}
-			set
-			{
-				this._USERs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_USERs(USER entity)
-		{
-			this.SendPropertyChanging();
-			entity.COMPANY = this;
-		}
-		
-		private void detach_USERs(USER entity)
-		{
-			this.SendPropertyChanging();
-			entity.COMPANY = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.USERS")]
 	public partial class USER : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2064,6 +1806,288 @@ namespace Gym
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.COMPANY")]
+	public partial class COMPANY : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _COMPANY_ID;
+		
+		private string _COMPANY_NAME;
+		
+		private string _COMPANY_CODE;
+		
+		private string _COMPANY_ADDRESS;
+		
+		private string _COMPANY_EMAIL;
+		
+		private string _COMPANY_PHONE;
+		
+		private System.Nullable<System.DateTime> _CREATED_DATE;
+		
+		private string _CREATED_BY;
+		
+		private string _COMPANY_EMAIL_APP_PASS;
+		
+		private EntitySet<USER> _USERs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCOMPANY_IDChanging(int value);
+    partial void OnCOMPANY_IDChanged();
+    partial void OnCOMPANY_NAMEChanging(string value);
+    partial void OnCOMPANY_NAMEChanged();
+    partial void OnCOMPANY_CODEChanging(string value);
+    partial void OnCOMPANY_CODEChanged();
+    partial void OnCOMPANY_ADDRESSChanging(string value);
+    partial void OnCOMPANY_ADDRESSChanged();
+    partial void OnCOMPANY_EMAILChanging(string value);
+    partial void OnCOMPANY_EMAILChanged();
+    partial void OnCOMPANY_PHONEChanging(string value);
+    partial void OnCOMPANY_PHONEChanged();
+    partial void OnCREATED_DATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnCREATED_DATEChanged();
+    partial void OnCREATED_BYChanging(string value);
+    partial void OnCREATED_BYChanged();
+    partial void OnCOMPANY_EMAIL_APP_PASSChanging(string value);
+    partial void OnCOMPANY_EMAIL_APP_PASSChanged();
+    #endregion
+		
+		public COMPANY()
+		{
+			this._USERs = new EntitySet<USER>(new Action<USER>(this.attach_USERs), new Action<USER>(this.detach_USERs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int COMPANY_ID
+		{
+			get
+			{
+				return this._COMPANY_ID;
+			}
+			set
+			{
+				if ((this._COMPANY_ID != value))
+				{
+					this.OnCOMPANY_IDChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_ID = value;
+					this.SendPropertyChanged("COMPANY_ID");
+					this.OnCOMPANY_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_NAME", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string COMPANY_NAME
+		{
+			get
+			{
+				return this._COMPANY_NAME;
+			}
+			set
+			{
+				if ((this._COMPANY_NAME != value))
+				{
+					this.OnCOMPANY_NAMEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_NAME = value;
+					this.SendPropertyChanged("COMPANY_NAME");
+					this.OnCOMPANY_NAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_CODE", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string COMPANY_CODE
+		{
+			get
+			{
+				return this._COMPANY_CODE;
+			}
+			set
+			{
+				if ((this._COMPANY_CODE != value))
+				{
+					this.OnCOMPANY_CODEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_CODE = value;
+					this.SendPropertyChanged("COMPANY_CODE");
+					this.OnCOMPANY_CODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_ADDRESS", DbType="NVarChar(100)")]
+		public string COMPANY_ADDRESS
+		{
+			get
+			{
+				return this._COMPANY_ADDRESS;
+			}
+			set
+			{
+				if ((this._COMPANY_ADDRESS != value))
+				{
+					this.OnCOMPANY_ADDRESSChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_ADDRESS = value;
+					this.SendPropertyChanged("COMPANY_ADDRESS");
+					this.OnCOMPANY_ADDRESSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_EMAIL", DbType="NVarChar(30)")]
+		public string COMPANY_EMAIL
+		{
+			get
+			{
+				return this._COMPANY_EMAIL;
+			}
+			set
+			{
+				if ((this._COMPANY_EMAIL != value))
+				{
+					this.OnCOMPANY_EMAILChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_EMAIL = value;
+					this.SendPropertyChanged("COMPANY_EMAIL");
+					this.OnCOMPANY_EMAILChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_PHONE", DbType="NVarChar(15)")]
+		public string COMPANY_PHONE
+		{
+			get
+			{
+				return this._COMPANY_PHONE;
+			}
+			set
+			{
+				if ((this._COMPANY_PHONE != value))
+				{
+					this.OnCOMPANY_PHONEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_PHONE = value;
+					this.SendPropertyChanged("COMPANY_PHONE");
+					this.OnCOMPANY_PHONEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_DATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CREATED_DATE
+		{
+			get
+			{
+				return this._CREATED_DATE;
+			}
+			set
+			{
+				if ((this._CREATED_DATE != value))
+				{
+					this.OnCREATED_DATEChanging(value);
+					this.SendPropertyChanging();
+					this._CREATED_DATE = value;
+					this.SendPropertyChanged("CREATED_DATE");
+					this.OnCREATED_DATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CREATED_BY", DbType="NVarChar(100)")]
+		public string CREATED_BY
+		{
+			get
+			{
+				return this._CREATED_BY;
+			}
+			set
+			{
+				if ((this._CREATED_BY != value))
+				{
+					this.OnCREATED_BYChanging(value);
+					this.SendPropertyChanging();
+					this._CREATED_BY = value;
+					this.SendPropertyChanged("CREATED_BY");
+					this.OnCREATED_BYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANY_EMAIL_APP_PASS", DbType="NVarChar(255)")]
+		public string COMPANY_EMAIL_APP_PASS
+		{
+			get
+			{
+				return this._COMPANY_EMAIL_APP_PASS;
+			}
+			set
+			{
+				if ((this._COMPANY_EMAIL_APP_PASS != value))
+				{
+					this.OnCOMPANY_EMAIL_APP_PASSChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANY_EMAIL_APP_PASS = value;
+					this.SendPropertyChanged("COMPANY_EMAIL_APP_PASS");
+					this.OnCOMPANY_EMAIL_APP_PASSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="COMPANY_USER", Storage="_USERs", ThisKey="COMPANY_CODE", OtherKey="COMPANY_CODE")]
+		public EntitySet<USER> USERs
+		{
+			get
+			{
+				return this._USERs;
+			}
+			set
+			{
+				this._USERs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_USERs(USER entity)
+		{
+			this.SendPropertyChanging();
+			entity.COMPANY = this;
+		}
+		
+		private void detach_USERs(USER entity)
+		{
+			this.SendPropertyChanging();
+			entity.COMPANY = null;
 		}
 	}
 }

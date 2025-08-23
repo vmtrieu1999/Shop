@@ -10,6 +10,9 @@ using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
 using JWT.Exceptions;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Gym
 {
@@ -47,6 +50,52 @@ namespace Gym
             }
         }
 
+        static public string GiaiMa(string _input)
+        {
+            string token = _input;
+            string secret = apikey;
+            try
+            {
+                if (!string.IsNullOrEmpty(token))
+                {
+                    IJsonSerializer serializer = new JsonNetSerializer();
+                    IDateTimeProvider provider = new UtcDateTimeProvider();
+                    IJwtValidator validator = new JwtValidator(serializer, provider);
+                    IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+                    IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
+                    IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, algorithm);
+
+                    string decoded = decoder.Decode(token, secret, verify: true);
+                    var obj = JObject.Parse(decoded);
+                    return obj["password"]?.ToString() ?? string.Empty;
+                }
+                return string.Empty;
+            }
+            catch (TokenExpiredException)
+            {
+                Console.WriteLine("Token has expired");
+                return string.Empty;
+            }
+            catch (SignatureVerificationException)
+            {
+                Console.WriteLine("Token has invalid signature");
+                return string.Empty;
+            }
+        }
+
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public UserSession fnLoginUser(string username = "", string password = "")
         {
             try
@@ -72,6 +121,73 @@ namespace Gym
             catch
             {
                 return null;
+            }
+        }
+
+        public async Task<JObject> SendEmail(string toEmail, string subject, string body, string company_code = "")
+        {
+            var result = new JObject();
+            result["ErrCode"] = "0";
+            result["ErrBack"] = "";
+            result["ErrMsg"] = "";
+            try
+            {
+                using (var db = ConnectionModel.GymShopDataContext())
+                {
+                    var company = db.COMPANies.Where(x => x.COMPANY_CODE == company_code).FirstOrDefault();
+                    if (company != null)
+                    {
+                        //check mail
+                        if (IsValidEmail(company.COMPANY_EMAIL))
+                        {
+                            var smtp = new SmtpClient
+                            {
+                                Host = "smtp.gmail.com",
+                                Port = 587,
+                                EnableSsl = true,
+                                DeliveryMethod = SmtpDeliveryMethod.Network,
+                                Credentials = new NetworkCredential(company.COMPANY_EMAIL, GiaiMa(company.COMPANY_EMAIL_APP_PASS)),
+                                Timeout = 20000
+                            };
+
+                            using (var message = new MailMessage(company.COMPANY_EMAIL, toEmail)
+                            {
+                                Subject = subject,
+                                Body = body,
+                                IsBodyHtml = true
+                            })
+                            {
+                                await smtp.SendMailAsync(message);
+
+                                result["ErrCode"] = "1";
+                                result["ErrMsg"] = "Send mail success";
+                                result["ErrBack"] = "1";
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            result["ErrCode"] = "0";
+                            result["ErrMsg"] = "Invalid email address";
+                            result["ErrBack"] = "0";
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        result["ErrCode"] = "0";
+                        result["ErrMsg"] = "Company not found";
+                        result["ErrBack"] = "0";
+                        return result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result["ErrCode"] = "0";
+                result["ErrMsg"] = e.ToString();
+                result["ErrBack"] = "0";
+                return result;
             }
         }
     }

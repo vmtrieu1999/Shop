@@ -138,7 +138,7 @@
                         <div class="form-group">
                             <label>Mã</label>
                             <label style="color: red;">(*)</label>
-                            <input type="text" id="company-code" class="form-control" readonly/>
+                            <input type="text" id="company-code" class="form-control" readonly />
                             <div class="invalid-feedback">err</div>
                         </div>
                         <div class="form-group">
@@ -158,6 +158,10 @@
                             <label style="color: red;">(*)</label>
                             <input type="text" id="company-email" class="form-control" />
                             <div class="invalid-feedback">err</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu app email</label>
+                            <input type="text" id="company-email-app-pass" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label>Số điện thoại</label>
@@ -393,6 +397,7 @@
         $("#company-name").focus();
         $("#company-address").val("")
         $("#company-email").val("");
+        $("#company-email-app-pass").val("");
         $("#company-phone").val("");
         $("#company-modal").modal("show");
 	}
@@ -407,6 +412,7 @@
         $("#company-name").focus();
         $("#company-address").val(selectedCompanys.COMPANY_ADDRESS);
         $("#company-email").val(selectedCompanys.COMPANY_EMAIL);
+        $("#company-email-app-pass").val(selectedCompanys.COMPANY_EMAIL_APP_PASS);
         $("#company-phone").val(selectedCompanys.COMPANY_PHONE);
         $("#company-modal").modal("show");
 	}
@@ -433,6 +439,7 @@
             COMPANY_NAME: $("#company-name").val(),
             COMPANY_ADDRESS: $("#company-address").val(),
             COMPANY_EMAIL: $("#company-email").val(),
+            COMPANY_EMAIL_APP_PASS: $("#company-email-app-pass").val(),
             COMPANY_PHONE: $("#company-phone").val(),
             ACTION: _company_action,
         };
