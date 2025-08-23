@@ -22,10 +22,28 @@
 <body>
     <style>
         body {
-            background: url('@Url.Content("~/images/gym_back.jpg")') no-repeat center center fixed !important;
-            height: 100% !important;
-            background-size: cover !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: none;
         }
+
+        body::before {
+            content: "";
+            position: fixed;       
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('@Url.Content("~/images/gym_back.webp")');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            filter: blur(5px);     
+            z-index: -1;          
+        }
+
 
         .form-control {
             border-radius: 20px;
@@ -39,7 +57,7 @@
     </style>
 
     <div class="container p-4 shadow" style="max-width: 400px; border-radius: 20px; margin-top: 50px; background-color: whitesmoke">
-        <img class="mx-auto d-block" style="width:60%" src="~/images/gym_10484999.png" />
+        <img class="mx-auto d-block" style="width:60%" src="~/images/gym_10484999.webp" />
         <h3 style="text-align: center">Welcome to Shop Gym</h3>
         <br />
         <form method="post" action="@Url.Action("Login", "Home")" class="needs-validation" novalidate>
