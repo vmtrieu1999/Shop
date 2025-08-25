@@ -2,6 +2,7 @@
     var userSession = Session["USER_SESSION"] as Gym.UserSession;
     var username = userSession?.Username ?? "Guest";
     var company_code = userSession?.CompanyCode ?? "";
+    var role = userSession?.Role ?? "0";
 }
 <!DOCTYPE html>
 <html>
@@ -225,16 +226,15 @@
                         @*<a class="dropdown-item" href="#">
                             <i class="fas fa-user"></i> <span>Thông tin người dùng</span>
                         </a>*@
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="@Url.Action("ChangePassword","Home")">
                             <i class="fas fa-unlock"></i> <span>Đổi mật khẩu</span>
                         </a>
-                        @if (username == "admin" && company_code == "VMT")
+                        @if (role == "1")
                         {
-
-                        }
-                        <a class="dropdown-item" href="@Url.Action("UserPage","Home")">
+                            <a class="dropdown-item" href="@Url.Action("UserPage","Home")">
                             <i class="fas fa-users"></i> <span>Quản lý người dùng</span>
-                        </a>
+                            </a>
+                        }
                         <a class="dropdown-item" href="@Url.Action("Logout", "Home")">
                             <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
                         </a>

@@ -497,8 +497,23 @@
 			function (msg) {
 				if (msg.ErrCode == "1") {
                     $("#user-modal").modal("hide");
-					fnShowSuccess();
-                    fnGetUser();
+                    if (_user_action == "INSERT") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "SUCCESS",
+                            text: "Thêm người dùng thành công!. Mật khẩu mặc định là [456789]",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fnGetUser();
+                            }
+                        });
+                    }
+                    else {
+                        fnShowSuccess();
+                        fnGetUser();
+                    }
 				}
                 else {
 					fnShowError(msg.ErrMsg,"Lỗi");

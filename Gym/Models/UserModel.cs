@@ -158,5 +158,47 @@ namespace Gym.Models
             else
                 return company_code;
         }
+
+        public JObject fnPostChangePassword(JObject model)
+        {
+            var result = new JObject();
+            result["ErrCode"] = "0";
+            result["ErrMsg"] = "";
+            result["ErrBack"] = "0";
+            try
+            {
+                var user_name = model["USER_NAME"]?.ToString() ?? "";
+                var old_pwd = model["OLD_PWD"]?.ToString() ?? "";
+                var new_pwd = model["NEW_PWD"]?.ToString() ?? "";
+                var confirm_pwd = model["COMFIRM_PWD"]?.ToString() ?? "";
+                var company_code = model["COMPANY_CODE"]?.ToString() ?? "";
+                using (var db = ConnectionModel.GymShopDataContext())
+                {
+                    var user = db.USERs.Where(x => x.USERNAME == user_name && x.PASSWORDHASH == ConnectionModel.MaHoa(old_pwd)).FirstOrDefault();
+                    if (user == null)
+                    {
+                        result["ErrCode"] = "0";
+                        result["ErrMsg"] = $"Mật khẩu cũ không đúng";
+                        result["ErrBack"] = "0";
+                    }
+                    else
+                    {
+                        user.PASSWORDHASH = ConnectionModel.MaHoa(confirm_pwd);
+                        db.SubmitChanges();
+
+                        result["ErrCode"] = "1";
+                        result["ErrMsg"] = $"Cập nhật thành công";
+                        result["ErrBack"] = $"{user_name}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result["ErrCode"] = "0";
+                result["ErrMsg"] = $"{ex.ToString()}";
+                result["ErrBack"] = "0";
+            }
+            return result;
+        }
     }
 }

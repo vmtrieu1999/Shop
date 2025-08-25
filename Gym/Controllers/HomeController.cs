@@ -50,6 +50,36 @@ namespace Gym.Controllers
 
             return RedirectToAction("Login", "Home");
         }
+
+        public ActionResult ChangePassword()
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.User = user;
+                return View();
+            }
+
+        }
+        [HttpPost]
+        public ActionResult fnPostChangePassword(string strInput)
+        {
+            var user = Session["USER_SESSION"] as UserSession;
+            if (Request.IsAjaxRequest() && user != null)
+            {
+                var model = JObject.Parse(strInput);
+                model["USER_NAME"] = user.Username;
+                model["COMPANY_CODE"] = user.CompanyCode;
+                var userModel = new UserModel();
+                var jsonResult = userModel.fnPostChangePassword(model);
+                return Content(JsonConvert.SerializeObject(jsonResult), "application/json", Encoding.UTF8);
+            }
+            return Content(JsonConvert.SerializeObject(new { error_session = "1" }), "application/json", Encoding.UTF8);
+        }
         #endregion
         #region Customer
         public ActionResult Index()
